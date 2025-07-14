@@ -5,138 +5,91 @@
 /* @tailwind components; */
 /* @tailwind utilities; */
 
-/* 기본 HTML, Body 스타일 */
+/* IndexPage.css */
+
+/* 기본 스타일 */
 html, body, #root {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  overflow: hidden; /* 스크롤바 방지 */
-}
-
-.index-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* 화면 전체 높이 사용 */
-  position: relative;
   overflow: hidden;
 }
 
+.index-container {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+
 .background-image {
-  position: absolute; /* 절대 위치 */
-  top: 0;
-  left: 0;
-  width: 100%;
+  background-size: cover;
+  background-position: center;
   height: 100%;
-  background-size: cover; /* 이미지가 컨테이너를 꽉 채우도록 */
-  background-position: center; /* 이미지를 중앙에 정렬 */
-  background-repeat: no-repeat; /* 이미지 반복 방지 */
-  filter: brightness(0.8); /* 이미지 약간 어둡게 (오버레이 효과) */
-  z-index: 1; /* 다른 콘텐츠 뒤에 오도록 */
+  width: 100%;
 }
 
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 상단 텍스트와 하단 타이틀 분리 */
-  padding: 4rem 2rem 8rem 2rem; /* 패딩 */
-  box-sizing: border-box;
-  z-index: 2; /* 배경 이미지 위에 오도록 */
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 80px;
+  color: white;
 }
 
-.header-text {
-  color: white;
-  font-size: 1rem;
+.header-text p {
+  font-size: 1.2rem;
   font-weight: 500;
-  line-height: 1.6;
-  max-width: 28rem; /* 텍스트 최대 너비 제한 */
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
 .main-title {
-  color: white;
-  font-size: 3rem; /* 크고 굵은 글씨 */
+  font-size: 2.8rem;
   font-weight: bold;
-  line-height: 1.2;
+  line-height: 1.3;
+  margin: 0;
 }
 
 .brand-name {
-  color: #fdd835; /* HARU-FIT 강조 색상 */
+  color: #fbc02d;
 }
 
-.content-wrapper {
-  position: relative;
-  z-index: 10; /* 가장 위에 오도록 */
-  background-color: transparent; /* 배경 이미지가 보이도록 투명 */
-  flex: 1; /* 남은 공간을 채우도록 */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* 하단 입력/버튼 섹션을 아래로 */
-}
-
-/* Input Section */
 .input-section {
-  background-color: rgba(0, 0, 0, 0.4); /* 투명한 검은색 배경 */
-  backdrop-filter: blur(5px); /* 블러 효과 */
-  padding: 1.5rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.input-container {
-  max-width: 32rem; /* 최대 너비 */
-  margin: 0 auto; /* 중앙 정렬 */
+  margin-top: 20px; /* 제목 아래 자연스럽게 떨어지도록 */
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem; /* 요소 간 간격 */
-}
-
-.input-row {
-  display: flex;
-  gap: 1rem; /* input과 button 간 간격 */
+  justify-content: flex-start;
   align-items: center;
 }
 
+.input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nickname-wrapper {
+  display: flex;
+  gap: 0.75rem;
+}
+
 .nickname-input {
-  flex: 1; /* 남은 공간을 채우도록 */
-  background: rgba(255, 255, 255, 0.9); /* 흰색에 약간 투명 */
+  padding: 8px;
+  border-radius: 4px;
   border: none;
-  padding: 0.75rem;
-  height: 3rem;
-  font-size: 1.125rem;
-  border-radius: 0.375rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.nickname-input::placeholder {
-  color: #666;
-}
-
-.nickname-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* 파란색 포커스 링 */
 }
 
 .submit-btn {
-  background: #ea580c; /* 오렌지 색상 */
+  background-color: #d56b2f;
   color: white;
-  padding: 0 2rem;
-  height: 3rem;
-  font-size: 1.125rem;
-  font-weight: 500;
-  border-radius: 0.375rem;
+  padding: 8px 12px;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.submit-btn:hover:not(:disabled) {
-  background: #dc2626; /* 오렌지 진하게 */
 }
 
 .submit-btn:disabled {
@@ -144,98 +97,117 @@ html, body, #root {
   cursor: not-allowed;
 }
 
-.guest-mode {
-  text-align: center;
-  margin-top: 0.5rem;
-}
-
-.guest-btn {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.875rem;
+.guest-btn-inline {
   background: none;
+  color: white;
   border: none;
   text-decoration: underline;
+  font-size: 14px;
   cursor: pointer;
-  transition: color 0.2s;
 }
 
-.guest-btn:hover {
-  color: white;
-}
-
-/* Difficulty Buttons Section */
+/* 모드 선택 버튼 */
 .difficulty-buttons-container {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
-  flex-direction: column; /* 세로 정렬 유지 */
-  /* justify-content: flex-end; /* 이 줄은 세로 정렬에 영향을 줍니다. */
-  align-items: flex-end; /* ✅ 변경: 가로축(오른쪽) 정렬 */
-  gap: 1.5rem; /* 버튼 간 간격 */
-  padding: 2rem;
-  /* width: 100%; /* 이 속성은 필요에 따라 조정하세요. 여기서는 더 이상 100%를 채울 필요가 없습니다. */
-  box-sizing: border-box;
-  position: absolute; /* 부모(index-container) 기준으로 절대 위치 */
-  top: 50%; /* ✅ 변경: 화면의 중간쯤에 위치 */
-  right: 2rem; /* ✅ 변경: 오른쪽에서 2rem 떨어지게 */
-  transform: translateY(-50%); 
-  z-index: 2; /* 콘텐츠 위에 오도록 */
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.difficulty-btn-wrapper {
+  position: relative;
 }
 
 .difficulty-btn {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 6rem; /* 버튼 너비 */
-  height: 6rem; /* 버튼 높이 */
-  border-radius: 50%; /* 원형 */
-  color: white;
-  font-weight: bold;
-  font-size: 1.25rem;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  position: relative; /* ModeDescription의 기준 */
-}
-
-.difficulty-btn.easy {
-  background-color: #aed581; /* Easy 모드 색상 */
-}
-
-.difficulty-btn.normal {
-  background-color: #ce93d8; /* Normal 모드 색상 */
-}
-
-.difficulty-btn.hard {
-  background-color: #ef9a9a; /* Hard 모드 색상 */
+  transition: transform 0.3s;
 }
 
 .difficulty-btn:hover {
-  transform: scale(1.3); /* 호버 시 1.1배 확대 */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsive adjustments */
+.mode-description {
+  position: absolute;
+  top: 100%;
+  margin-top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  z-index: 10;
+  opacity: 1;
+}
+
+.difficulty-btn-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.difficulty-btn-wrapper:hover .mode-description {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 반응형 */
 @media (max-width: 768px) {
   .main-title {
     font-size: 2.5rem;
   }
+
   .header-text {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
+
   .difficulty-buttons-container {
-    justify-content: center; /* 모바일에서 중앙 정렬 */
-    bottom: 2rem; /* 모바일에서 하단으로 조정 */
+    justify-content: center;
+    bottom: 2rem;
     transform: translateY(0);
     padding: 1rem;
   }
+
+  .input-block-left {
+    margin-top: 30px;
+  }
+
   .difficulty-btn {
     width: 5rem;
     height: 5rem;
     font-size: 1rem;
   }
-  .input-section {
-    padding: 1rem;
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-  .input-container {
-    width: 90%;
+
+  .nickname-input {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: none;
+    width: 230px;
   }
 }
 
@@ -243,16 +215,8 @@ html, body, #root {
   .main-title {
     font-size: 2rem;
   }
+
   .header-text {
-    top: 2rem;
-    left: 1rem;
-    font-size: 0.8rem;
-  }
-  .input-row {
-    flex-direction: column; /* 세로로 정렬 */
-    gap: 0.5rem;
-  }
-  .nickname-input, .submit-btn {
-    width: 100%;
+    font-size: 0.85rem;
   }
 }

@@ -1,22 +1,22 @@
 .mode-description {
-    position: absolute;
-    top: -40px; /* 버튼 위로 올라오도록 조정 */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-    z-index: 20; /* 다른 요소 위에 오도록 */
-    opacity: 0; /* 초기에는 숨김 */
-    visibility: hidden; /* 초기에는 숨김 */
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  }
-  
-  /* isVisible 상태에 따라 보이도록 */
-  .difficulty-btn:hover .mode-description { /* 부모 버튼이 호버될 때 자식 설명을 보이도록 */
-    opacity: 1;
-    visibility: visible;
-  }
+  position: absolute;
+  top: 50%;
+  left: -140%; /* ✔ 버튼의 왼쪽 바깥쪽 */
+  transform: translateY(-50%);
+  color: white;
+  font-weight: 700;
+  font-size: 1.15rem;
+  white-space: nowrap;
+
+  /* ✅ 배경 제거 */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
