@@ -1,0 +1,259 @@
+.homepage-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* 배경 이미지 */
+  .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../assets/images/main_image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.8);
+    z-index: 1;
+  }
+  
+  /* 모드 버튼들 - 상단 좌측 */
+  .mode-buttons {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+  }
+  
+  .mode-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mode-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .mode-btn.active {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+  }
+  
+  /* 좌측 메뉴바 */
+  .sidebar-menu {
+    position: absolute;
+    top: 180px;
+    left: 40px;
+    z-index: 10;
+  }
+  
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .menu-list li {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .menu-list li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: translateX(5px);
+  }
+  
+  .menu-list li.active {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 메인 카드 영역 */
+  .main-cards-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 500px;
+    z-index: 5;
+  }
+  
+  .card-wrapper {
+    position: absolute;
+    width: 380px;
+    height: 230px;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .card-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .top-left {
+    top: 0;
+    left: 0;
+  }
+  
+  .top-right {
+    top: 0;
+    right: 0;
+  }
+  
+  .bottom-left {
+    bottom: 0;
+    left: 0;
+  }
+  
+  .bottom-right {
+    bottom: 0;
+    right: 0;
+  }
+  
+  /* 우측 채팅 영역 */
+  .chat-area {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+    width: 350px;
+    height: 500px;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+  }
+  
+  /* 반응형 디자인 */
+  @media (max-width: 1400px) {
+    .main-cards-area {
+      width: 700px;
+      height: 450px;
+    }
+  
+    .card-wrapper {
+      width: 330px;
+      height: 200px;
+    }
+  
+    .chat-area {
+      width: 300px;
+      height: 450px;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .main-cards-area {
+      width: 600px;
+      height: 400px;
+    }
+  
+    .card-wrapper {
+      width: 280px;
+      height: 180px;
+    }
+  
+    .chat-area {
+      width: 280px;
+      height: 400px;
+    }
+  
+    .mode-btn {
+      width: 60px;
+      height: 60px;
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .homepage-container {
+      flex-direction: column;
+    }
+  
+    .mode-buttons {
+      top: 20px;
+      left: 20px;
+      gap: 10px;
+    }
+  
+    .mode-btn {
+      width: 50px;
+      height: 50px;
+      font-size: 10px;
+    }
+  
+    .sidebar-menu {
+      top: 120px;
+      left: 20px;
+    }
+  
+    .menu-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  
+    .menu-list li {
+      padding: 8px 15px;
+      font-size: 14px;
+    }
+  
+    .main-cards-area {
+      width: calc(100vw - 40px);
+      height: 400px;
+      top: 60%;
+    }
+  
+    .card-wrapper {
+      width: calc(50% - 10px);
+      height: 180px;
+    }
+  
+    .chat-area {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: calc(100vw - 40px);
+      height: 200px;
+    }
+  }
+  
