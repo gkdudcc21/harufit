@@ -1,0 +1,26 @@
+# HaruFit/.gitignore
+
+# 공통적으로 무시할 파일 및 폴더
+.DS_Store
+.vscode/        # VS Code 관련 설정 파일
+.env            # 환경 변수 파일 (프론트/백엔드 모두 해당될 수 있음)
+
+# 프론트엔드 (frontend) 관련
+/frontend/node_modules/
+/frontend/build/   # React 빌드 결과물
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/.pnp.cjs
+/frontend/.pnp.js
+/frontend/coverage/
+
+# 백엔드 (backend) 관련
+/backend/node_modules/
+/backend/.env
+/backend/npm-debug.log*
+/backend/yarn-debug.log*
