@@ -1,0 +1,101 @@
+.manager-chat-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 20px;
+    color: white;
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: white;
+    text-align: center;
+    background: rgba(255, 182, 193, 0.9);
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.chat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.manager-message {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    flex-grow: 1;
+    overflow-y: auto;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.manager-message::-webkit-scrollbar {
+    display: none;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(5px);
+}
+
+.chat-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: rgba(174, 213, 129, 0.8);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.chat-send-btn {
+    background: rgba(174, 213, 129, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    backdrop-filter: blur(5px);
+}
+
+.chat-send-btn:hover {
+    background: rgba(139, 195, 74, 0.9);
+}
+
+@media (max-width: 768px) {
+    .manager-chat-card {
+        grid-column: span 1;
+    }
+}

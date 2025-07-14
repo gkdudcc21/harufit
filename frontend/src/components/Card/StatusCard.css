@@ -1,0 +1,66 @@
+/* src/components/Card/StatusCard.css */
+.status-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: white;
+    min-height: 0; /* ✨ 추가: Flex/Grid 아이템에서 내용이 넘치지 않도록 */
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: white;
+    text-align: center;
+    background: rgba(255, 182, 193, 0.8);
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.status-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 1;
+    overflow-y: auto; /* ✨ 추가: 내용이 넘칠 때 스크롤바 생성 */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.status-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.status-details {
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 255, 255, 0.9);
+    flex: 1; /* ✨ 추가: 내용이 길어질 때 유연하게 공간 차지 */
+}
+
+.status-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.status-message {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 2px;
+}
