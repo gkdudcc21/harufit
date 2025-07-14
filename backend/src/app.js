@@ -4,7 +4,8 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const aiRoutes = require('./routes/aiRoutes');
 const userRoutes = require('./routes/userRoutes');
-const dietRoutes = require('./routes/dietRoutes'); // ✅ 새로 추가: dietRoutes 불러오기
+const dietRoutes = require('./routes/dietRoutes');
+const workoutRoutes = require('./routes/workoutRoutes'); // ✅ 새로 추가: workoutRoutes 불러오기
 
 const app = express();
 
@@ -15,7 +16,8 @@ app.use(express.json());
 // === API 라우트들을 여기에 추가합니다 ===
 app.use('/api/users', userRoutes);
 app.use('/api/ai', aiRoutes);
-app.use('/api/diet', dietRoutes); // ✅ 새로 추가: /api/diet 경로로 dietRoutes 연결
+app.use('/api/diet', dietRoutes);
+app.use('/api/workout', workoutRoutes); // ✅ 새로 추가: /api/workout 경로로 workoutRoutes 연결
 
 // 기본 라우트 (서버 작동 확인용)
 app.get('/', (req, res) => {
