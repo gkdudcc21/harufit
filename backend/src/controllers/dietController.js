@@ -1,11 +1,10 @@
 // backend/src/controllers/dietController.js
-const DietEntry = require('../models/DietEntry'); // DietEntry 모델 불러오기
-const User = require('../models/user'); // User 모델 불러오기 (user.js 파일명에 맞춤)
+const DietEntry = require('../models/DietEntry');
+const User = require('../models/user');
+const aiService = require('../services/aiService'); // ✅ 수정: externalApi 대신 aiService 불러오기
 
 // 식단 기록 추가 (POST 요청)
 exports.addDietEntry = async (req, res) => {
-    // 실제 구현에서는 사용자 인증 (PIN 등) 후 user._id를 사용합니다.
-    // PoC를 위해 임시로 닉네임으로 유저를 찾겠습니다.
     const { nickname, pin, date, mealType, foodItems, waterIntakeMl, notes } = req.body;
 
     if (!nickname || !pin || !foodItems || foodItems.length === 0) {
@@ -19,15 +18,48 @@ exports.addDietEntry = async (req, res) => {
         }
 
         let totalCalories = 0;
-        foodItems.forEach(item => {
-            totalCalories += (item.calories || 0);
-        });
+        const processedFoodItems = [];
+
+        for (const item of foodItems) {
+            let calories = item.calories || 0;
+            let protein = item.protein || 0;
+            let carbs = item.carbs || 0;
+            let fat = item.fat || 0;
+
+            // foodName이 있으면 OpenAI를 통해 영양 정보 추정 시도
+            if (item.name) {
+                try {
+                    const estimatedNutrition = await aiService.getNutritionEstimate(item.name);
+                    if (estimatedNutrition) {
+                        calories = estimatedNutrition.calories || calories;
+                        protein = estimatedNutrition.protein || protein;
+                        carbs = estimatedNutrition.carbs || carbs;
+                        fat = estimatedNutrition.fat || fat;
+
+                        console.log(`OpenAI로 추정된 ${item.name} 영양정보: 칼로리 ${calories}, 단백질 ${protein}, 탄수화물 ${carbs}, 지방 ${fat}`);
+                    }
+                } catch (aiError) {
+                    console.warn(`OpenAI를 통해 ${item.name}의 영양정보를 추정하는데 실패했습니다:`, aiError.message);
+                    // OpenAI 오류 발생해도 기존 값 사용 또는 기본값 사용
+                }
+            }
+
+            processedFoodItems.push({
+                name: item.name,
+                calories: parseFloat(calories),
+                protein: parseFloat(protein),
+                carbs: parseFloat(carbs),
+                fat: parseFloat(fat),
+                quantity: item.quantity
+            });
+            totalCalories += parseFloat(calories);
+        }
 
         const newEntry = new DietEntry({
-            user: user._id, // User._id와 연결
+            user: user._id,
             date: date || new Date(),
             mealType: mealType,
-            foodItems: foodItems,
+            foodItems: processedFoodItems, // ✅ 처리된 foodItems 사용
             waterIntakeMl: waterIntakeMl,
             totalCalories: totalCalories,
             notes: notes
