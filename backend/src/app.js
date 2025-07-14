@@ -5,7 +5,8 @@ const connectDB = require('./config/db');
 const aiRoutes = require('./routes/aiRoutes');
 const userRoutes = require('./routes/userRoutes');
 const dietRoutes = require('./routes/dietRoutes');
-const workoutRoutes = require('./routes/workoutRoutes'); // ✅ 새로 추가: workoutRoutes 불러오기
+const workoutRoutes = require('./routes/workoutRoutes');
+const chatHistoryRoutes = require('./routes/chatHistoryRoutes'); // ✅ 새로 추가: chatHistoryRoutes 불러오기
 
 const app = express();
 
@@ -17,7 +18,8 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/diet', dietRoutes);
-app.use('/api/workout', workoutRoutes); // ✅ 새로 추가: /api/workout 경로로 workoutRoutes 연결
+app.use('/api/workout', workoutRoutes);
+app.use('/api/chatHistory', chatHistoryRoutes); // ✅ 새로 추가: /api/chatHistory 경로로 chatHistoryRoutes 연결
 
 // 기본 라우트 (서버 작동 확인용)
 app.get('/', (req, res) => {
