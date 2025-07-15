@@ -7,8 +7,26 @@ const aiService = require('../services/aiService'); // ✅ 수정: externalApi �
 exports.addDietEntry = async (req, res) => {
     const { nickname, pin, date, mealType, foodItems, waterIntakeMl, notes } = req.body;
 
-    if (!nickname || !pin || !foodItems || foodItems.length === 0) {
-        return res.status(400).json({ message: '닉네임, PIN, 식단 항목은 필수입니다.' });
+    // 필수 필드 검사
+    if (!nickname || nickname.trim() === '') {
+        return res.status(400).json({ message: '닉네임은 필수 입력 항목입니다.' });
+    }
+    if (!pin) { // PIN은 선택사항일 수 있지만, 여기서는 API 호출 인증에 사용되므로 필수
+        return res.status(400).json({ message: 'PIN 번호는 필수 입력 항목입니다.' });
+    }
+    if (!foodItems || !Array.isArray(foodItems) || foodItems.length === 0) {
+        return res.status(400).json({ message: '식단 항목(foodItems)은 필수로, 최소 하나 이상의 음식을 포함해야 합니다.' });
+    }
+
+    // mealType 유효성 검사
+    const validMealTypes = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
+    if (mealType && !validMealTypes.includes(mealType)) {
+        return res.status(400).json({ message: `유효하지 않은 식사 유형입니다. (${validMealTypes.join(', ')}) 중 하나여야 합니다.` });
+    }
+
+    // waterIntakeMl 유효성 검사
+    if (waterIntakeMl !== undefined && (typeof waterIntakeMl !== 'number' || waterIntakeMl < 0)) {
+        return res.status(400).json({ message: '물 섭취량(waterIntakeMl)은 0 이상의 숫자여야 합니다.' });
     }
 
     try {
@@ -21,6 +39,23 @@ exports.addDietEntry = async (req, res) => {
         const processedFoodItems = [];
 
         for (const item of foodItems) {
+            // foodItem 개별 필드 유효성 검사
+            if (!item.name || item.name.trim() === '') {
+                return res.status(400).json({ message: '식단 항목의 음식명(name)은 필수입니다.' });
+            }
+            if (item.calories !== undefined && (typeof item.calories !== 'number' || item.calories < 0)) {
+                return res.status(400).json({ message: `${item.name}의 칼로리(calories)는 0 이상의 숫자여야 합니다.` });
+            }
+            if (item.protein !== undefined && (typeof item.protein !== 'number' || item.protein < 0)) {
+                return res.status(400).json({ message: `${item.name}의 단백질(protein)은 0 이상의 숫자여야 합니다.` });
+            }
+            if (item.carbs !== undefined && (typeof item.carbs !== 'number' || item.carbs < 0)) {
+                return res.status(400).json({ message: `${item.name}의 탄수화물(carbs)은 0 이상의 숫자여야 합니다.` });
+            }
+            if (item.fat !== undefined && (typeof item.fat !== 'number' || item.fat < 0)) {
+                return res.status(400).json({ message: `${item.name}의 지방(fat)은 0 이상의 숫자여야 합니다.` });
+            }
+
             let calories = item.calories || 0;
             let protein = item.protein || 0;
             let carbs = item.carbs || 0;
@@ -58,9 +93,9 @@ exports.addDietEntry = async (req, res) => {
         const newEntry = new DietEntry({
             user: user._id,
             date: date || new Date(),
-            mealType: mealType,
-            foodItems: processedFoodItems, // ✅ 처리된 foodItems 사용
-            waterIntakeMl: waterIntakeMl,
+            mealType: mealType || 'other', // 유효성 검사 후 기본값 설정
+            foodItems: processedFoodItems,
+            waterIntakeMl: waterIntakeMl || 0, // 유효성 검사 후 기본값 설정
             totalCalories: totalCalories,
             notes: notes
         });
@@ -70,9 +105,13 @@ exports.addDietEntry = async (req, res) => {
 
     } catch (error) {
         console.error('식단 기록 중 오류:', error);
-        res.status(500).json({ message: '식단 기록에 실패했습니다.', error: error.message });
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: error.message });
+        }
+        res.status(500).json({ message: '서버 오류로 식단 기록에 실패했습니다.', error: error.message });
     }
 };
+
 
 // 사용자 식단 기록 조회 (GET 요청)
 exports.getDietEntries = async (req, res) => {
@@ -93,7 +132,7 @@ exports.getDietEntries = async (req, res) => {
         res.status(200).json({ message: '식단 기록을 성공적으로 가져왔습니다.', entries: dietEntries });
 
     } catch (error) {
-        console.error('식단 기록 조회 중 오류:', error);
+        console.error('식단/models/User 기록 조회 중 오류:', error);
         res.status(500).json({ message: '식단 기록 조회에 실패했습니다.', error: error.message });
     }
 };
