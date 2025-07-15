@@ -1,4 +1,4 @@
-@import 'C:\Course_Video\harufit\frontend\src\styles\common.css';
+@import '../../styles/common.css';
 
 .diet-card {
     padding: var(--spacing-lg);

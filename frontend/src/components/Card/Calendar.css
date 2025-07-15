@@ -1,9 +1,9 @@
-@import 'C:\Course_Video\harufit\frontend\src\styles\common.css';
+@import '../../styles/common.css';
 
 .calendar-card {
     padding: var(--spacing-lg);
     min-height: 20;
-}
+
 
 .card-header {
     position: relative;
