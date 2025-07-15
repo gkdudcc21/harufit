@@ -1,7 +1,18 @@
-@import '../../styles/common.css'; 
+
+@import 'C:\Course_Video\harufit\frontend\src\styles\common.css';
+
 
 .workout-card {
     padding: var(--spacing-lg);
+    min-height: 0;
+}
+
+.card-header {
+    position: relative;
+}
+
+.workout-card:hover .expand-btn {
+    opacity: 0.7;
 }
 
 .workout-content {
@@ -25,7 +36,7 @@
 
 .current-workout {
     position: relative;
-    border-left: 5px solid var(--secondary-accent); 
+    border-left: 5px solid var(--secondary-accent);
 }
 
 .recommended-workout {
@@ -61,6 +72,6 @@
 
 .workout-details p,
 .workout-details span {
-    color: var(--text-color-light); 
+    color: var(--text-color-light);
     margin: 0;
 }

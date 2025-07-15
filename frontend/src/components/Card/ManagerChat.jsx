@@ -4,7 +4,7 @@ import './ManagerChat.css';
 export default function ManagerChat() {
   return (
     <div className="manager-chat-card">
-      <div className="card-header">하루핏 매니저</div>
+      <div className="manager-card-header">하루핏 매니저</div>
       <div className="chat-content">
         <div className="manager-message">
           <p>안녕하세요! 하루핏과 함께 건강해질 준비 되셨나요?</p>
