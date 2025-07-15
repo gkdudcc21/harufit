@@ -21,49 +21,59 @@ exports.getCurrentUser = (req, res) => {
 
 // 새로운 사용자를 생성하는 함수
 exports.createUser = async (req, res) => {
-  const { nickname, mode, pin } = req.body; // 요청 본문에서 nickname과 mode를 가져옵니다.
+  const { nickname, mode, pin } = req.body;
 
-  // 닉네임 유효성 검사 (아주 간단한 예시)
   if (!nickname || nickname.trim() === '') {
-    return res.status(400).json({ message: '닉네임은 필수 입력 항목입니다.' });
+      return res.status(400).json({ message: '닉네임은 필수 입력 항목입니다.' });
   }
-  // ✅ pin 유효성 검사 추가 (필수로 할 경우)
-  if (pin && (pin.length < 4 || pin.length > 6)) { // PIN을 선택사항으로 두려면 이 검사를 제거하거나 조건부로 적용
-    return res.status(400).json({ message: 'PIN 번호는 4~6자리여야 합니다.' });
+
+  // 닉네임 길이 검사 (User 모델 스키마의 minlength, maxlength를 따름)
+  if (nickname.length < 2 || nickname.length > 20) { // 예시: 2~20자
+      return res.status(400).json({ message: '닉네임은 2자 이상 20자 이하로 입력해주세요.' });
   }
+
+  // ✅ PIN 번호 유효성 검사 강화
+  if (pin) { // PIN이 제공되었을 때만 검사
+      if (pin.length !== 4) { // 4자리만 허용하는 경우
+          return res.status(400).json({ message: 'PIN 번호는 정확히 4자리여야 합니다.' });
+      }
+      if (!/^\d+$/.test(pin)) { // ✅ 숫자로만 구성되었는지 검사 (정규식 사용)
+          return res.status(400).json({ message: 'PIN 번호는 숫자로만 구성되어야 합니다.' });
+      }
+  }
+
+
   try {
-    // 이미 존재하는 닉네임인지 확인
-    const userExists = await User.findOne({ nickname });
-    if (userExists) {
-      return res.status(409).json({ message: '이미 존재하는 닉네임입니다. 다른 닉네임을 선택해주세요.' });
-    }
+      const userExists = await User.findOne({ nickname });
+      if (userExists) {
+          return res.status(409).json({ message: '이미 존재하는 닉네임입니다. 다른 닉네임을 선택해주세요.' });
+      }
 
-    // 새로운 사용자 생성 및 데이터베이스에 저장
-    const user = await User.create({
-      nickname,
-      mode: mode || 'easy', // mode가 제공되지 않으면 기본값 'easy'
-      pin, // ✅ pin 저장
-    });
+      const user = await User.create({
+          nickname,
+          mode: mode || 'easy',
+          pin,
+      });
 
-    // 성공 응답 (생성된 사용자 정보 반환)
-    res.status(201).json({
-      message: '사용자가 성공적으로 생성되었습니다.',
-      user: {
-        id: user._id, // MongoDB에서 자동 생성된 ID
-        nickname: user.nickname,
-        mode: user.mode,
-        createdAt: user.createdAt,
-      },
-    });
+      res.status(201).json({
+          message: '사용자가 성공적으로 생성되었습니다.',
+          user: {
+              id: user._id,
+              nickname: user.nickname,
+              mode: user.mode,
+              createdAt: user.createdAt,
+          },
+      });
   } catch (error) {
-    console.error('사용자 생성 중 오류 발생:', error);
-    // MongoDB 유효성 검사 오류 (예: required 필드 누락) 처리
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: error.message });
-    }
-    res.status(500).json({ message: '서버 오류로 사용자 생성에 실패했습니다.', error: error.message });
+      console.error('사용자 생성 중 오류 발생:', error);
+      if (error.name === 'ValidationError') {
+          // Mongoose 스키마 유효성 검사 오류 (예: unique, enum)
+          return res.status(400).json({ message: error.message });
+      }
+      res.status(500).json({ message: '서버 오류로 사용자 생성에 실패했습니다.', error: error.message });
   }
 };
+
 
 // 닉네임으로 사용자 정보를 조회하는 함수
 exports.getUser = async (req, res) => {
