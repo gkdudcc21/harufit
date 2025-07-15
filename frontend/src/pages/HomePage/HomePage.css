@@ -1,3 +1,4 @@
+
 @import 'C:\Course_Video\harufit\frontend\src\styles\common.css';
 
 .homepage-container {
@@ -243,7 +244,9 @@
     right: auto;
     bottom: auto;
     width: auto;
+
     min-height: 280px;
+
     /* 그리드 아이템이므로 자동 너비 */
     height: 220px;
     /* 카드 내용 넘침 방지를 위해 높이 확보 (필요시 조정) */
@@ -278,6 +281,7 @@
     /* 상단 고정 요소 때문에 패딩 추가 */
     overflow-y: auto;
   }
+
   .card-wrapper.top-left {
     margin-top: -10px; /* 기존보다 위로 당기기 */
     margin-bottom: 12px;
@@ -285,6 +289,7 @@
 
   .mode-buttons {
     top: 35px;
+
     left: 55%;
     transform: translateX(-50%);
     gap: 8px;
@@ -333,7 +338,9 @@
     width: calc(100vw - 40px);
     height: auto;
     /* 콘텐츠에 따라 높이 자동 조절 */
+
     margin-top: 40px;
+
     /* 상단 메뉴바와 겹치지 않도록 조정 */
     margin-bottom: 10px;
     /* 채팅창과의 여백 */
@@ -341,6 +348,7 @@
     left: auto;
     transform: none;
     display: grid;
+
     grid-template-columns: repeat(2, 1fr);
     /* 한 줄에 카드 하나씩 배치 */
     gap: 20px;
@@ -355,6 +363,7 @@
     width: 100%;
     height: auto;
     min-height: 280px;
+
     box-sizing: border-box;
     backdrop-filter: blur(15px);
     background: rgba(255, 255, 255, 0.1);
@@ -364,6 +373,7 @@
     transition: all 0.3s ease;
     cursor: pointer;
     padding: 15px;
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -375,6 +385,7 @@
 
   .card-wrapper.calendar-card {
     margin-top: 6px; /* 또는 5px */
+
   }
 
 }

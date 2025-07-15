@@ -1,4 +1,4 @@
-@import 'C:\Course_Video\harufit\frontend\src\styles\common.css';
+@import '../../styles/common.css';
 
 .calendar-expanded-wrapper {
   position: fixed;
@@ -54,8 +54,11 @@
 
 .calendar-grid {
   display: grid;
+  padding: 5px;
   grid-template-columns: repeat(7, 1fr);
+
   gap: 8px;
+
 
 }
 
