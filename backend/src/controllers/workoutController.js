@@ -1,6 +1,6 @@
 // backend/src/controllers/workoutController.js
 const WorkoutEntry = require('../models/WorkoutEntry'); // WorkoutEntry 모델 불러오기
-const User = require('../models/user'); // User 모델 불러오기 (user.js 파일명에 맞춤)
+const User = require('../models/User'); // User 모델 불러오기 (user.js 파일명에 맞춤)
 
 // 운동 기록 추가 (POST 요청)
 exports.addWorkoutEntry = async (req, res) => {

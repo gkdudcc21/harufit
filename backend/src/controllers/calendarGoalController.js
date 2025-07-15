@@ -1,5 +1,5 @@
 // backend/src/controllers/calendarGoalController.js
-const User = require('../models/user');
+const User = require('../models/User');
 const DietEntry = require('../models/DietEntry'); // 식단 기록 모델 불러오기
 const WorkoutEntry = require('../models/WorkoutEntry'); // 운동 기록 모델 불러오기
 

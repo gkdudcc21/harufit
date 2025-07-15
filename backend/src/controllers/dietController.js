@@ -1,6 +1,6 @@
 // backend/src/controllers/dietController.js
 const DietEntry = require('../models/DietEntry');
-const User = require('../models/user');
+const User = require('../models/User'); // 'User' 모델명 대문자 통일
 const aiService = require('../services/aiService'); // ✅ 수정: externalApi 대신 aiService 불러오기
 
 // 식단 기록 추가 (POST 요청)
@@ -76,7 +76,7 @@ exports.addDietEntry = async (req, res) => {
 
 // 사용자 식단 기록 조회 (GET 요청)
 exports.getDietEntries = async (req, res) => {
-    const { nickname, pin } = req.query; // GET 요청에서는 쿼리 파라미터로 받음
+    const { nickname, pin } = req.query;
 
     if (!nickname || !pin) {
         return res.status(400).json({ message: '닉네임과 PIN 번호가 필요합니다.' });
@@ -88,7 +88,6 @@ exports.getDietEntries = async (req, res) => {
             return res.status(404).json({ message: '사용자를 찾을 수 없거나 PIN이 일치하지 않습니다.' });
         }
 
-        // 특정 사용자의 모든 식단 기록을 최신 순으로 조회
         const dietEntries = await DietEntry.find({ user: user._id }).sort({ date: -1 });
 
         res.status(200).json({ message: '식단 기록을 성공적으로 가져왔습니다.', entries: dietEntries });
@@ -101,8 +100,8 @@ exports.getDietEntries = async (req, res) => {
 
 // 식단 기록 업데이트 (PUT/PATCH 요청)
 exports.updateDietEntry = async (req, res) => {
-    const { nickname, pin, entryId } = req.params; // URL 파라미터에서 entryId 가져옴
-    const updateData = req.body; // 업데이트할 데이터
+    const { nickname, pin, entryId } = req.params;
+    const updateData = req.body;
 
     if (!nickname || !pin || !entryId) {
         return res.status(400).json({ message: '닉네임, PIN, 식단 ID는 필수입니다.' });
@@ -114,11 +113,10 @@ exports.updateDietEntry = async (req, res) => {
             return res.status(404).json({ message: '사용자를 찾을 수 없거나 PIN이 일치하지 않습니다.' });
         }
 
-        // 해당 사용자의 특정 식단 기록 찾기 및 업데이트
         const updatedEntry = await DietEntry.findOneAndUpdate(
-            { _id: entryId, user: user._id }, // user._id로 해당 사용자의 기록만 업데이트 가능하도록 함
+            { _id: entryId, user: user._id },
             updateData,
-            { new: true, runValidators: true } // 업데이트 후의 문서 반환, 스키마 유효성 검사 실행
+            { new: true, runValidators: true }
         );
 
         if (!updatedEntry) {
@@ -147,7 +145,6 @@ exports.deleteDietEntry = async (req, res) => {
             return res.status(404).json({ message: '사용자를 찾을 수 없거나 PIN이 일치하지 않습니다.' });
         }
 
-        // 해당 사용자의 특정 식단 기록 삭제
         const deletedEntry = await DietEntry.findOneAndDelete({ _id: entryId, user: user._id });
 
         if (!deletedEntry) {
