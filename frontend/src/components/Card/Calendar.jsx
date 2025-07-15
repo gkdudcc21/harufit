@@ -1,10 +1,9 @@
 import React from 'react';
-import './Calendar.css';  
+import './Calendar.css';
 
 export default function Calendar({ onExpand }) {
   const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
   const dates = Array.from({ length: 31 }, (_, i) => i + 1); // 1일부터 31일까지
-
   // 하드코딩된 선택된 날짜 (사진과 동일하게 1, 9, 10, 11, 12, 13, 14)
   const selectedDates = [1, 9, 10, 11, 12, 13, 14];
 

@@ -9,6 +9,9 @@ import WorkoutCard from "../../components/Card/WorkoutCard.jsx"
 import Calendar from "../../components/Card/Calendar.jsx"
 import ManagerChat from "../../components/Card/ManagerChat.jsx"
 import CalendarExpanded from "../../components/Card/CalendarExpanded.jsx";
+import StatusExpanded from "../../components/Card/StatusExpanded.jsx"
+import WorkoutExpanded from "../../components/Card/WorkoutExpanded.jsx"
+import DietExpanded from "../../components/Card/DietExpanded.jsx"
 
 export default function HomePage() {
   // IndexPage에서 넘어온 모드 정보를 가져옵니다.
@@ -18,6 +21,9 @@ export default function HomePage() {
 
   // 모달 상태 관리 
   const [isCalendarExpanded, setCalendarExpanded] = useState(false);
+  const [isStatusExpanded, setStatusExpanded] = useState(false);
+  const [isWorkoutExpanded, setWorkoutExpanded] = useState(false);
+  const [isDietExpanded, setDietExpanded] = useState(false);
 
   // 메뉴바 상태 관리
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs") // 초기 활성 메뉴 항목
@@ -27,7 +33,6 @@ export default function HomePage() {
     setActiveMenuItem(menuItem)
     console.log(`Selected menu: ${menuItem}`)
   }
-
 
   return (
     <div className="homepage-container">
@@ -68,13 +73,13 @@ export default function HomePage() {
           <Calendar onExpand={() => setCalendarExpanded(true)} />
         </div>
         <div className="card-wrapper top-right">
-          <StatusCard />
+          <StatusCard onExpand={() => setStatusExpanded(true)} />
         </div>
         <div className="card-wrapper bottom-left">
-          <DietCard />
+          <DietCard onExpand={() => setDietExpanded(true)} />
         </div>
         <div className="card-wrapper bottom-right">
-          <WorkoutCard />
+          <WorkoutCard onExpand={() => setWorkoutExpanded(true)} />
         </div>
       </div>
 
@@ -82,6 +87,31 @@ export default function HomePage() {
         <div className="modal-backdrop" onClick={() => setCalendarExpanded(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <CalendarExpanded onClose={() => setCalendarExpanded(false)} />
+          </div>
+        </div>
+      )}
+
+      {isStatusExpanded && (
+        <div className="modal-backdrop" onClick={() => setStatusExpanded(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <StatusExpanded onClose={() => setStatusExpanded(false)} />
+          </div>
+        </div>
+      )}
+
+
+      {isDietExpanded && (
+        <div className="modal-backdrop" onClick={() => setDietExpanded(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <DietExpanded onClose={() => setDietExpanded(false)} />
+          </div>
+        </div>
+      )}
+
+      {isWorkoutExpanded && (
+        <div className="modal-backdrop" onClick={() => setWorkoutExpanded(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <WorkoutExpanded onClose={() => setWorkoutExpanded(false)} />
           </div>
         </div>
       )}

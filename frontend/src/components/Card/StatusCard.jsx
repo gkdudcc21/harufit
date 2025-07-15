@@ -1,10 +1,13 @@
 import React from 'react';
 import './StatusCard.css';
 
-export default function StatusCard() {
+export default function StatusCard({ onExpand }) {
   return (
     <div className="status-card card-base">
-      <div className="card-header">상태</div>
+      <div className="card-header">
+        <span>상태</span>
+        <button className="expand-btn" onClick={onExpand}>▶</button>
+      </div>
       <div className="status-content">
         <div className="status-item">
           <div className="status-details">
