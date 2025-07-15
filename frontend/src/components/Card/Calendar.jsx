@@ -1,8 +1,7 @@
-// src/components/common/Calendar.jsx
 import React from 'react';
-import './Calendar.css'; // Calendar 전용 스타일
+import './Calendar.css';  
 
-export default function Calendar() {
+export default function Calendar({ onExpand }) {
   const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
   const dates = Array.from({ length: 31 }, (_, i) => i + 1); // 1일부터 31일까지
 
@@ -13,6 +12,7 @@ export default function Calendar() {
     <div className="calendar-card  card-base">
       <div className="card-header">
         <span>달력</span>
+        <button className="expand-btn" onClick={onExpand}>▶</button>
       </div>
       <div className="calendar-grid">
         {daysOfWeek.map(day => (

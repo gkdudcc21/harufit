@@ -3,17 +3,35 @@
 .calendar-card {
     padding: 20px;
     min-height: 20;
-
 }
 
+.card-header {
+    position: relative;
+}
+
+.expand-btn {
+    position: absolute;
+    color: aliceblue;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.calendar-card:hover .expand-btn {
+    opacity: 0.6;
+}
 
 .calendar-grid {
     display: grid;
+    padding: 20px;
     grid-template-columns: repeat(7, 1fr);
     gap: 0px;
     text-align: center;
-    grid-area: auto;
-
 }
 
 .day-of-week {

@@ -8,12 +8,16 @@ import DietCard from "../../components/Card/DietCard.jsx"
 import WorkoutCard from "../../components/Card/WorkoutCard.jsx"
 import Calendar from "../../components/Card/Calendar.jsx"
 import ManagerChat from "../../components/Card/ManagerChat.jsx"
+import CalendarExpanded from "../../components/Card/CalendarExpanded.jsx";
 
 export default function HomePage() {
   // IndexPage에서 넘어온 모드 정보를 가져옵니다.
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const selectedMode = queryParams.get("mode") || "normal" // 기본값 'normal'
+
+  // 모달 상태 관리 
+  const [isCalendarExpanded, setCalendarExpanded] = useState(false);
 
   // 메뉴바 상태 관리
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs") // 초기 활성 메뉴 항목
@@ -23,6 +27,7 @@ export default function HomePage() {
     setActiveMenuItem(menuItem)
     console.log(`Selected menu: ${menuItem}`)
   }
+
 
   return (
     <div className="homepage-container">
@@ -60,7 +65,7 @@ export default function HomePage() {
       {/* 메인 컨텐츠 영역 - 카드들 */}
       <div className="main-cards-area">
         <div className="card-wrapper top-left">
-          <Calendar />
+          <Calendar onExpand={() => setCalendarExpanded(true)} />
         </div>
         <div className="card-wrapper top-right">
           <StatusCard />
@@ -72,6 +77,14 @@ export default function HomePage() {
           <WorkoutCard />
         </div>
       </div>
+
+      {isCalendarExpanded && (
+        <div className="modal-backdrop" onClick={() => setCalendarExpanded(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <CalendarExpanded onClose={() => setCalendarExpanded(false)} />
+          </div>
+        </div>
+      )}
 
       {/* 우측 채팅 영역 */}
       <div className="chat-area">
