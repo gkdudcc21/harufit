@@ -1,7 +1,10 @@
 .mode-description {
   position: absolute;
   top: 50%;
-  left: -140%; /* ✔ 버튼의 왼쪽 바깥쪽 */
+
+  left: -140%;
+  /* ✔ 버튼의 왼쪽 바깥쪽 */
+
   transform: translateY(-50%);
   color: white;
   font-weight: 700;

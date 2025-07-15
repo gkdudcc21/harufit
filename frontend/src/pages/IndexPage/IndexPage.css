@@ -1,19 +1,15 @@
-/* IndexPage.css */
+<
+/* 기본 HTML, Body 스타일 */
+html,
+body,
+#root {
 
-/* 기본적인 Tailwind CSS 설정이 있다면 그대로 유지하거나 제거 (여기서는 제거된 상태를 가정) */
-/* @tailwind base; */
-/* @tailwind components; */
-/* @tailwind utilities; */
-
-/* IndexPage.css */
-
-/* 기본 스타일 */
-html, body, #root {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   overflow: hidden;
+
 }
 
 .index-container {
@@ -57,10 +53,15 @@ html, body, #root {
 
 .brand-name {
   color: #fbc02d;
+
+  /* HARU-FIT 강조 색상 */
 }
 
+
 .input-section {
-  margin-top: 20px; /* 제목 아래 자연스럽게 떨어지도록 */
+  margin-top: 20px;
+  /* 제목 아래 자연스럽게 떨어지도록 */
+
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -81,7 +82,32 @@ html, body, #root {
   padding: 8px;
   border-radius: 4px;
   border: none;
+
 }
+
+.nickname-input::placeholder {
+  color: #666;
+}
+
+.nickname-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  /* 파란색 포커스 링 */
+}
+
+.submit-btn {
+  background: #ea580c;
+  /* 오렌지 색상 */
+
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  transition: background-color 0.2s;
+}
+
 
 .submit-btn {
   background-color: #d56b2f;
@@ -90,12 +116,14 @@ html, body, #root {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+
 }
 
 .submit-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 
 .guest-btn-inline {
   background: none;
@@ -106,20 +134,19 @@ html, body, #root {
   cursor: pointer;
 }
 
-/* 모드 선택 버튼 */
+/* Difficulty Buttons Section */
 .difficulty-buttons-container {
   position: absolute;
-  right: 2rem;
+  right: 6rem;
+
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+
 }
 
-.difficulty-btn-wrapper {
-  position: relative;
-}
 
 .difficulty-btn {
   width: 6rem;
@@ -202,6 +229,7 @@ html, body, #root {
     gap: 10px;
   }
 
+
   .nickname-input {
     padding: 10px;
     font-size: 1rem;
@@ -219,4 +247,4 @@ html, body, #root {
   .header-text {
     font-size: 0.85rem;
   }
-}
+

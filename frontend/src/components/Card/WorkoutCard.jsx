@@ -1,0 +1,29 @@
+import React from 'react';
+import './WorkoutCard.css'; 
+import runningIcon from '../../assets/images/run-icon.png'; 
+import bikeIcon from '../../assets/images/bike-icon.png';       
+
+export default function WorkoutCard() {
+  return (
+    <div className="workout-card">
+      <div className="card-header">운동</div>
+      <div className="workout-content">
+        <div className="current-workout">
+          <img src={runningIcon} alt="Running Icon" className="workout-icon" />  
+          <div className="workout-details">
+            <p>조깅</p>
+            <span>(30분, 250 kcal)</span>
+          </div>
+        </div>
+        <div className="recommended-workout">
+          <span className="recommend-label">추천 운동</span>
+          <img src={bikeIcon} alt="Bike Icon" className="workout-icon" />  
+          <div className="workout-details">
+            <p>자전거 타기</p>
+            <span>(200 kcal)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
