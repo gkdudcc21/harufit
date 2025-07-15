@@ -1,9 +1,9 @@
 import React from 'react';
-import './StatusCard.css'; 
+import './StatusCard.css';
 
 export default function StatusCard() {
   return (
-    <div className="status-card">
+    <div className="status-card card-base">
       <div className="card-header">상태</div>
       <div className="status-content">
         <div className="status-item">

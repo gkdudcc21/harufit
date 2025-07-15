@@ -1,0 +1,139 @@
+@import 'C:\Course_Video\harufit\frontend\src\styles\common.css';
+
+.calendar-expanded-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 100;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  width: 800px;
+  height: 600px;
+  animation: zoomIn 0.4s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.month-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #444;
+  user-select: none;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day-header {
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 8px;
+  color: #c46767;
+  border-bottom: 1px solid #eee;
+}
+
+.calendar-cell {
+  height: 60px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  position: relative;
+  padding: 2px;
+  text-align: center;
+}
+
+.calendar-cell.today {
+  border: 2px solid #f9ba4b;
+  background: #fffbe8;
+}
+
+.date-number {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 2px auto;
+}
+
+.icon.purple {
+  background-color: #836eff;
+}
+
+.icon.green {
+  background-color: #36c768;
+}
+
+.calendar-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.box {
+  flex: 1;
+  padding: 10px;
+  margin: 8px;
+  background: #f4f6fa;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-top: 2px;
+}
+
+.stat {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.9rem;
+}
+
+.stat.workout {
+  color: #5cb85c;
+}
+
+.stat.calorie {
+  color: #d9534f;
+}
+
+.stat.weight {
+  color: #0275d8;
+  font-weight: bold;
+}

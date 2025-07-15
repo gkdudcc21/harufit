@@ -5,7 +5,7 @@ import bikeIcon from '../../assets/images/bike-icon.png';
 
 export default function WorkoutCard() {
   return (
-    <div className="workout-card">
+    <div className="workout-card card-base">
       <div className="card-header">운동</div>
       <div className="workout-content">
         <div className="current-workout">

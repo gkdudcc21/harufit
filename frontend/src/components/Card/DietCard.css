@@ -1,65 +1,62 @@
-/* src/components/Card/DietCard.css */
+@import 'C:\Course_Video\harufit\frontend\src\styles\common.css';
+
 .diet-card {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 20px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    color: white;
-    min-height: 0; /* ✨ 추가: Flex/Grid 아이템에서 내용이 넘치지 않도록 */
+    padding: var(--spacing-lg);
+    min-height: 0;
 }
 
-.card-header {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    color: white;
-    text-align: center;
-    background: rgba(255, 182, 193, 0.8);
-    padding: 10px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-}
 
 .diet-content {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    flex: 1;
-    overflow-y: auto; /* ✨ 추가: 내용이 넘칠 때 스크롤바 생성 */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-.diet-content::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    gap: var(--spacing-sm);
+    flex: 0.8;
+    overflow-y: auto;
+    /* ✨ 추가: 내용이 넘칠 때 스크롤바 생성 */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
-.diet-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
+.diet-content::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
 .water-intake {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 15px;
-    padding: 10px 15px;
+    order: -1;
+    gap: var(--spacing-sm);
+    margin-top: 10px;
+    padding: 8px 10px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
+    border: 1px solid var(--border-color-dark);
     color: rgba(255, 255, 255, 0.9);
     font-weight: bold;
     backdrop-filter: blur(5px);
 }
 
+.water-intake span {
+    white-space: normal;
+    word-break: break-word;
+    flex: 1;
+}
+
+
 .water-icon {
     width: 30px;
     height: 30px;
     object-fit: contain;
+}
+
+.diet-item {
+    background: var(--card-background-dark);
+    padding: 1px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.85rem;
 }
