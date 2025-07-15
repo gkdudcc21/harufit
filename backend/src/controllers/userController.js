@@ -1,5 +1,5 @@
 // backend/src/controllers/userController.js
-const User = require('../models/user'); // User 모델 불러오기
+const User = require('../models/User'); // User 모델 불러오기
 
 // 현재 사용자 정보를 반환하는 함수 (임시 데이터)
 exports.getCurrentUser = (req, res) => {
