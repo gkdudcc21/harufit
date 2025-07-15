@@ -20,7 +20,7 @@ const UserSchema = mongoose.Schema(
             type: String, // 숫자로만 구성될 경우 Number 타입으로 해도 되지만, String으로 유연하게 처리
             required: false, // 필수로 입력받을지 선택적으로 할지는 프론트엔드 기획에 따라 조절
             minlength: [4, 'PIN 번호는 최소 4자리여야 합니다.'], // 예시: 4자리 이상
-            maxlength: [6, 'PIN 번호는 최대 6자리여야 합니다.'], // 예시: 6자리 이하
+            maxlength: [4, 'PIN 번호는 최대 4자리여야 합니다.'], // 예시: 4자리 이하
         },
         // 여기에 나중에 이메일, 비밀번호 등 인증 관련 필드를 추가할 수 있습니다.
         // email: { type: String, required: true, unique: true },
