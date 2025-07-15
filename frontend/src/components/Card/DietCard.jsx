@@ -1,10 +1,10 @@
 import React from 'react';
-import './DietCard.css'; 
+import './DietCard.css';
 import waterBottleIcon from '../../assets/images/물통절반요.png';
 
 export default function DietCard() {
   return (
-    <div className="diet-card">
+    <div className="diet-card card-base">
       <div className="card-header">식단</div>
       <div className="diet-content">
         <div className="diet-item">
@@ -17,7 +17,7 @@ export default function DietCard() {
           <p>저녁: 연어 스테이크 (400 kcal)</p>
         </div>
         <div className="water-intake">
-          <img src={waterBottleIcon} alt="Water Bottle Icon" className="water-icon" /> 
+          <img src={waterBottleIcon} alt="Water Bottle Icon" className="water-icon" />
           <span>물 섭취: 1.5L / 2L</span>
         </div>
       </div>

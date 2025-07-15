@@ -10,8 +10,8 @@ export default function Calendar() {
   const selectedDates = [1, 9, 10, 11, 12, 13, 14];
 
   return (
-    <div className="calendar-card">
-      <div className="calendar-header">
+    <div className="calendar-card  card-base">
+      <div className="card-header">
         <span>달력</span>
       </div>
       <div className="calendar-grid">
