@@ -12,9 +12,12 @@ import CalendarExpanded from "../../components/Card/CalendarExpanded.jsx";
 import StatusExpanded from "../../components/Card/StatusExpanded.jsx"
 import WorkoutExpanded from "../../components/Card/WorkoutExpanded.jsx"
 import DietExpanded from "../../components/Card/DietExpanded.jsx"
+
 import useAuth from '../../hooks/useAuth';
 import useApi from '../../hooks/useApi';
 import { API_ENDPOINTS } from '../../utils/constants'; // 상수 임포트
+import "./HomePage.css";
+
 
 
 export default function HomePage() {
@@ -24,6 +27,7 @@ export default function HomePage() {
   const initialMode = queryParams.get("mode") || "normal" // 기본값 'normal'
   const [selectedMode, setSelectedMode] = useState(initialMode);
   const { nickname, mode } = useAuth();
+
 
   // 모달 상태 관리 
   const [isCalendarExpanded, setCalendarExpanded] = useState(false);
@@ -96,6 +100,7 @@ export default function HomePage() {
         <button className={`mode-btn ${selectedMode === "easy" ? "mode-easy" : "mode-inactive"}`} onClick={() => setSelectedMode("easy")}> EASY</button>
         <button className={`mode-btn ${selectedMode === "normal" ? "mode-normal" : "mode-inactive"}`} onClick={() => setSelectedMode("normal")}> NORMAL</button>
         <button className={`mode-btn ${selectedMode === "hard" ? "mode-hard" : "mode-inactive"}`} onClick={() => setSelectedMode("hard")}>HARD</button>
+
       </div>
 
       {/* 좌측 메뉴바 */}
@@ -105,11 +110,13 @@ export default function HomePage() {
             onClick={() => handleMenuClick("AboutUs")}>
             About Us
           </li>
+
           <li className={activeMenuItem === "calendar" ? "active" : ""}
             onClick={() => {
               handleMenuClick("calendar");
               setCalendarExpanded(true);
             }}>
+
             달력
           </li>
           <li className={activeMenuItem === "status" ? "active" : ""}
@@ -139,6 +146,7 @@ export default function HomePage() {
       {/* 메인 컨텐츠 영역 - 카드들 */}
       <div className="main-cards-area">
         <div className="card-wrapper top-left">
+
           <Calendar mode={selectedMode} data={calendarSummaryData} onExpand={() => setCalendarExpanded(true)} />
         </div>
         <div className="card-wrapper top-right">
@@ -149,6 +157,7 @@ export default function HomePage() {
         </div>
         <div className="card-wrapper bottom-right">
           <WorkoutCard mode={selectedMode} data={workoutSummaryData} onExpand={() => setWorkoutExpanded(true)} />
+
         </div>
       </div>
 
@@ -187,6 +196,7 @@ export default function HomePage() {
       {/* 우측 채팅 영역 */}
       <div className="chat-area">
         <ManagerChat mode={selectedMode} />
+
       </div>
     </div>
   )
