@@ -1,7 +1,7 @@
 // ⬅️사용자 인증(로그인, 로그아웃) 관련 상태를 관리하는 '인증 담당관' 훅.
 // login함수가 백엔드 API를 호출하고, 성공 여부를 반환하여 컴포넌트에서 로그인 성공 시 홈페이지로 이동하는 등의 로직 처리
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback  } from 'react';
 import apiClient from '../api/apiClient'
 
 export default function useAuth() {
@@ -50,7 +50,7 @@ export default function useAuth() {
     }
   }, []); // useCallback의 의존성 배열이 비어있어, 이 함수는 컴포넌트 마운트시 한번만 생성.
 
-  // 로그아웃 함수: 로컬스토리지에서 사용자 정보를 제거하고 상태를 초기화.
+  // 로그아웃 함수: 로컬스토리지에서 사용자 정보를 제거하고 UI상태를 초기화.
   const logout = useCallback(() => {
     localStorage.removeItem('userNickname');
     localStorage.removeItem('userPin');

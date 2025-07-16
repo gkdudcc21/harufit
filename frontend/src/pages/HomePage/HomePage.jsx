@@ -21,7 +21,8 @@ export default function HomePage() {
   // IndexPage에서 넘어온 모드 정보를 가져옵니다.
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
-  const selectedMode = queryParams.get("mode") || "normal" // 기본값 'normal'
+  const initialMode = queryParams.get("mode") || "normal" // 기본값 'normal'
+  const [selectedMode, setSelectedMode] = useState(initialMode);
   const { nickname, mode } = useAuth();
 
   // 모달 상태 관리 
@@ -32,6 +33,12 @@ export default function HomePage() {
 
   // 메뉴바 상태 관리
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs")
+
+  // 메뉴 클릭 핸들러
+  const handleMenuClick = (menuItem) => {
+    setActiveMenuItem(menuItem)
+    console.log(`Selected menu: ${menuItem}`)
+  }
 
   // ✅ useApi 훅을 사용하여 각 카드에 필요한 데이터 불러오기
   const { data: statusData, loading: statusLoading, error: statusError } = useApi(
@@ -72,14 +79,8 @@ export default function HomePage() {
     );
   }
 
-  // // 메뉴 클릭 핸들러
-  // const handleMenuClick = (menuItem) => {
-  //   setActiveMenuItem(menuItem)
-  //   console.log(`Selected menu: ${menuItem}`)
-  // }
-
   return (
-    <div className="homepage-container">
+    <div className={`homepage-container ${selectedMode}-theme`}>
       {/* 배경 이미지 */}
       <div className="background-image"></div>
 
@@ -92,27 +93,44 @@ export default function HomePage() {
 
       {/* 모드 버튼들 - 상단 좌측 */}
       <div className="mode-buttons">
-        <button className={`mode-btn ${selectedMode === "easy" ? "active" : ""}`}>EASY</button>
-        <button className={`mode-btn ${selectedMode === "normal" ? "active" : ""}`}>NORMAL</button>
-        <button className={`mode-btn ${selectedMode === "hard" ? "active" : ""}`}>HARD</button>
+        <button className={`mode-btn ${selectedMode === "easy" ? "mode-easy" : "mode-inactive"}`} onClick={() => setSelectedMode("easy")}> EASY</button>
+        <button className={`mode-btn ${selectedMode === "normal" ? "mode-normal" : "mode-inactive"}`} onClick={() => setSelectedMode("normal")}> NORMAL</button>
+        <button className={`mode-btn ${selectedMode === "hard" ? "mode-hard" : "mode-inactive"}`} onClick={() => setSelectedMode("hard")}>HARD</button>
       </div>
 
       {/* 좌측 메뉴바 */}
       <nav className="sidebar-menu">
         <ul className="menu-list">
-          <li className={activeMenuItem === "AboutUs" ? "active" : ""} onClick={() => setActiveMenuItem("home")}>
+          <li className={activeMenuItem === "AboutUs" ? "active" : ""}
+            onClick={() => handleMenuClick("AboutUs")}>
             About Us
           </li>
-          <li className={activeMenuItem === "calendar" ? "active" : ""} onClick={() => setActiveMenuItem("calendar")}>
+          <li className={activeMenuItem === "calendar" ? "active" : ""}
+            onClick={() => {
+              handleMenuClick("calendar");
+              setCalendarExpanded(true);
+            }}>
             달력
           </li>
-          <li className={activeMenuItem === "status" ? "active" : ""} onClick={() => setActiveMenuItem("status")}>
+          <li className={activeMenuItem === "status" ? "active" : ""}
+            onClick={() => {
+              handleMenuClick("status");
+              setStatusExpanded(true);
+            }}>
             상태
           </li>
-          <li className={activeMenuItem === "diet" ? "active" : ""} onClick={() => setActiveMenuItem("diet")}>
+          <li className={activeMenuItem === "diet" ? "active" : ""}
+            onClick={() => {
+              handleMenuClick("diet");
+              setDietExpanded(true);
+            }}>
             식단
           </li>
-          <li className={activeMenuItem === "workout" ? "active" : ""} onClick={() => setActiveMenuItem("workout")}>
+          <li className={activeMenuItem === "workout" ? "active" : ""}
+            onClick={() => {
+              handleMenuClick("workout");
+              setWorkoutExpanded(true);
+            }}>
             운동
           </li>
         </ul>
@@ -121,16 +139,16 @@ export default function HomePage() {
       {/* 메인 컨텐츠 영역 - 카드들 */}
       <div className="main-cards-area">
         <div className="card-wrapper top-left">
-          <Calendar data={calendarSummaryData} onExpand={() => setCalendarExpanded(true)} />
+          <Calendar mode={selectedMode} data={calendarSummaryData} onExpand={() => setCalendarExpanded(true)} />
         </div>
         <div className="card-wrapper top-right">
-          <StatusCard data={statusData} onExpand={() => setStatusExpanded(true)} />
+          <StatusCard mode={selectedMode} data={statusData} onExpand={() => setStatusExpanded(true)} />
         </div>
         <div className="card-wrapper bottom-left">
-          <DietCard data={dietSummaryData} onExpand={() => setDietExpanded(true)} />
+          <DietCard mode={selectedMode} data={dietSummaryData} onExpand={() => setDietExpanded(true)} />
         </div>
         <div className="card-wrapper bottom-right">
-          <WorkoutCard data={workoutSummaryData} onExpand={() => setWorkoutExpanded(true)} />
+          <WorkoutCard mode={selectedMode} data={workoutSummaryData} onExpand={() => setWorkoutExpanded(true)} />
         </div>
       </div>
 
@@ -150,7 +168,6 @@ export default function HomePage() {
         </div>
       )}
 
-
       {isDietExpanded && (
         <div className="modal-backdrop" onClick={() => setDietExpanded(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -169,7 +186,7 @@ export default function HomePage() {
 
       {/* 우측 채팅 영역 */}
       <div className="chat-area">
-        <ManagerChat />
+        <ManagerChat mode={selectedMode} />
       </div>
     </div>
   )
