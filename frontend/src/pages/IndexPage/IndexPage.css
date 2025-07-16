@@ -36,15 +36,25 @@ body,
   background-color: rgba(0, 0, 0, 0.3); /* 반투명 오버레이 */
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* 왼쪽 정렬 */
-  justify-content: center;
-  padding-left: 80px; /* 좌측 여백 */
+  /* ✅ 모든 자식 요소가 absolute로 고정되므로 flexbox 속성은 제거합니다. */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: flex-start; */
+  /* justify-content: center; */
+  padding-left: 80px; /* 좌측 여백은 유지 (absolute 자식들의 left 기준이 됨) */
   color: white;
-  position: relative; /* 자식 요소의 absolute 위치 지정을 위한 기준점 */
+  position: relative; /* 자식 요소의 absolute 위치 지정을 위한 기준점. 필수입니다. */
   z-index: 2;
-  padding-bottom: 50px; /* 메시지 영역이 들어갈 공간을 미리 확보 */
+  /* padding-bottom: 50px; 제거 */
+}
+
+/* ✅ 상단 환영 메시지 고정 */
+.header-text {
+  position: absolute; /* 절대 위치 지정 */
+  top: 31%; /* ✅ 이미지에 보이는 상단 위치에 맞춰 조정 */
+  left: 80px;
+  width: calc(100% - 160px);
+  z-index: 3;
 }
 
 .header-text p {
@@ -54,43 +64,54 @@ body,
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
+/* ✅ 메인 타이틀 고정 */
 .main-title {
   font-size: 2.8rem;
   font-weight: bold;
   line-height: 1.3;
   margin: 0;
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
+  position: absolute; /* 절대 위치 지정 */
+  top: calc(31% + 3rem); /* ✅ header-text 아래에 오도록 top 값 조정 */
+  left: 80px;
+  width: calc(100% - 160px);
+  z-index: 3;
 }
 
 .brand-name {
   color: #fbc02d; /* HARU-FIT 강조 색상 */
 }
 
-/* 닉네임/PIN 입력 섹션 */
+/* ✅ 닉네임/PIN 입력 섹션 고정 */
 .input-interaction-section {
-  margin-top: 20px; /* 제목 아래 자연스럽게 떨어지도록 */
-  display: flex;
-  flex-direction: column; /* 입력 그룹과 게스트 버튼을 세로로 정렬 */
-  align-items: flex-start; /* 왼쪽 정렬 */
-  gap: 15px; /* 입력 그룹과 게스트 버튼 사이 간격 */
+  /* margin-top: 20px; 제거 */
+  display: flex; /* 내부 요소 정렬을 위해 flex는 유지 */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  position: absolute; /* 절대 위치 지정 */
+  top: calc(31% + 3rem + 8rem); /* ✅ main-title 아래에 오도록 top 값 조정 */
+  left: 80px;
+  width: calc(100% - 160px);
+  z-index: 3;
 }
 
 .input-group {
   display: flex;
-  gap: 10px; /* 닉네임, PIN, 입장 버튼 사이 간격 */
+  gap: 10px;
   align-items: center;
 }
 
-.input-field { /* 닉네임과 PIN 입력창에 공통으로 적용될 스타일 */
-  padding: 8px 12px; /* 패딩 유지 */
+.input-field {
+  padding: 8px 12px;
   border-radius: 4px;
-  border: none; /* 테두리 없음 */
+  border: none;
   background-color: rgba(255, 255, 255, 0.2);
-  color: white; /* 텍스트 색상 흰색 */
-  font-size: 1rem; /* 폰트 크기 유지 */
-  outline: none; /* ✅ 아웃라인 제거는 유지 */
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
   transition: box-shadow 0.2s ease-in-out;
-  caret-color: white; /* ✅ 커서(caret) 색상 명시 */
+  caret-color: white;
 }
 
 .input-field::placeholder {
@@ -98,15 +119,15 @@ body,
 }
 
 .input-field:focus {
-  box-shadow: 0 0 0 3px rgba(174, 213, 129, 0.7); /* ✅ 포커스 시 테두리처럼 보이는 그림자 */
+  box-shadow: 0 0 0 3px rgba(174, 213, 129, 0.7);
 }
 
 .nickname-input {
   width: 180px;
 }
 
-.pin-input { /* PIN 번호 입력 칸 전용 스타일 */
-  width: 120px; /* PIN 칸 너비 유지 */
+.pin-input {
+  width: 120px;
 }
 
 .submit-btn {
@@ -133,15 +154,15 @@ body,
   background: none;
   color: white;
   border: none;
-  text-decoration: none; /* ✅ 밑줄 제거 */
+  text-decoration: none;
   font-size: 0.9rem;
   cursor: pointer;
   align-self: flex-start;
-  transition: color 0.2s ease; /* ✅ 트랜지션 다시 확인 */
+  transition: color 0.2s ease;
 }
 
 .guest-btn-inline:hover {
-    color: #fbc02d; /* ✅ 호버 시 강조 색상 다시 확인 */
+    color: #fbc02d;
 }
 
 /* API 응답 메시지 스타일 */
@@ -158,30 +179,39 @@ body,
     color: #aed581;
 }
 
-/* 메시지 영역의 위치를 절대적으로 고정 */
+/* ✅ 메시지 영역 고정 */
 .message-area-fixed {
     position: absolute;
     width: calc(100% - 160px);
-    
-    bottom: 308px; /* ✅ 메시지 위치 조정 (이 값을 조정하여 원하는 위치를 찾으세요) */
+    top: calc(31% + 3rem + 8rem + 5rem); /* ✅ input-interaction-section 아래에 오도록 top 값 조정 */
     left: 80px;
     min-height: 25px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    z-index: 3;
+    bottom: auto; /* bottom: 308px;은 이제 필요 없으므로 제거 */
 }
-
 
 /* Difficulty Buttons Section (모드 선택 버튼) */
 .difficulty-buttons-container {
-  position: absolute;
-  right: 6rem;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
+  position: absolute; /* ✅ absolute 유지 */
+  right: -200px; /* ✅ 애니메이션을 위한 초기 숨김 위치 유지 */
+  top: 50%; /* ✅ 유지 */
+  transform: translateY(-50%); /* ✅ 유지 */
+  display: flex; /* ✅ 내부 요소 정렬을 위해 flex 유지 */
   flex-direction: column;
   gap: 1.2rem;
   z-index: 3;
+  opacity: 0; /* ✅ 애니메이션을 위해 초기 투명도는 0 */
+  visibility: hidden; /* ✅ 애니메이션을 위해 초기에는 숨김 */
+  transition: right 0.7s ease-out, opacity 0.7s ease-out, visibility 0.7s; /* ✅ opacity와 visibility도 transition에 추가 */
+}
+
+.difficulty-buttons-container.show-modes {
+  right: 10rem; /* ✅ 나타날 최종 위치 유지 */
+  opacity: 1; /* ✅ show-modes일 때 보이도록 */
+  visibility: visible; /* ✅ show-modes일 때 보이도록 */
 }
 
 .difficulty-btn-wrapper {
@@ -219,7 +249,7 @@ body,
 .difficulty-btn.hard:hover { background-color: rgba(255, 205, 209, 0.9); color: #F44336; }
 
 .difficulty-btn.selected {
-  border: 3px solid #fbc02d;
+  /*border: 3px solid #fbc02d;*/
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(251, 192, 45, 0.6);
 }
@@ -232,8 +262,18 @@ body,
     .overlay {
         padding-left: 50px;
     }
+    /* ✅ header-text 반응형 위치 조정 */
+    .header-text {
+        top: 28%; /* 이미지에 맞춰 조정 */
+        left: 50px;
+        width: calc(100% - 100px);
+    }
+    /* ✅ main-title 반응형 위치 조정 */
     .main-title {
         font-size: 2.3rem;
+        top: calc(28% + 2.5rem); /* header-text 아래에 오도록 */
+        left: 50px;
+        width: calc(100% - 100px);
     }
     .header-text p {
         font-size: 1rem;
@@ -257,25 +297,43 @@ body,
     .pin-input {
         width: 120px;
     }
+    /* ✅ input-interaction-section 반응형 위치 조정 */
+    .input-interaction-section {
+        top: calc(28% + 2.5rem + 7rem); /* main-title 아래에 오도록 */
+        left: 50px;
+        width: calc(100% - 100px);
+    }
+    /* ✅ message-area-fixed 반응형 위치 조정 */
     .message-area-fixed {
-        top: calc(50% + 80px);
+        top: calc(28% + 2.5rem + 7rem + 7rem); /* input 섹션 아래에 오도록 */
         left: 50px;
         width: calc(100% - 100px);
     }
 }
 
-
 @media (max-width: 768px) {
     .overlay {
         padding-left: 20px;
-        align-items: center;
-        text-align: center;
-        justify-content: flex-start;
-        padding-top: 10vh;
+        align-items: center; /* 중앙 정렬로 변경 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        justify-content: flex-start; /* flex-start 유지 */
+        padding-top: 10vh; /* 상단 여백 유지 */
     }
     .header-text p, .main-title {
         text-align: center;
         margin-left: 0;
+    }
+    /* ✅ header-text 반응형 위치 조정 */
+    .header-text {
+        top: 8vh; /* 모바일에서 더 위로 올림 */
+        left: 20px;
+        width: calc(100% - 40px);
+    }
+    /* ✅ main-title 반응형 위치 조정 */
+    .main-title {
+        top: calc(8vh + 2rem);
+        left: 20px;
+        width: calc(100% - 40px);
     }
     .input-interaction-section {
         flex-direction: column;
@@ -283,6 +341,10 @@ body,
         max-width: 300px;
         align-items: center;
         margin-top: 30px;
+        position: absolute; /* 고정 유지 */
+        top: calc(8vh + 2rem + 6rem);
+        left: 50%;
+        transform: translateX(-50%); /* 중앙 정렬 */
     }
     .input-group {
         flex-direction: column;
@@ -301,11 +363,11 @@ body,
         align-self: center;
     }
     .message-area-fixed {
-        position: static;
+        position: absolute; /* static 대신 absolute 유지 */
         width: 100%;
-        left: 0;
-        bottom: auto;
-        top: auto;
+        left: 50%;
+        transform: translateX(-50%); /* 중앙 정렬 */
+        top: calc(8vh + 2rem + 6rem + 10rem);
         margin-top: 15px;
         text-align: center;
         justify-content: center;
