@@ -1,19 +1,24 @@
-// backend/src/routes/workoutRoutes.js
 const express = require('express');
-const workoutController = require('../controllers/workoutController'); // 컨트롤러 불러오기
-
 const router = express.Router();
+const workoutController = require('../controllers/workoutController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// 운동 기록 추가 (POST)
-router.post('/', workoutController.addWorkoutEntry);
+// ✅ '오늘의 운동 요약' API 라우트 추가
+// GET /api/workout/today
+router.get('/today', authMiddleware, workoutController.getTodayWorkoutSummary);
 
-// 사용자 운동 기록 조회 (GET)
-router.get('/', workoutController.getWorkoutEntries);
-
-// 운동 기록 업데이트 (PUT) - 닉네임, PIN, 운동 ID를 URL 파라미터로 받음
-router.put('/:nickname/:pin/:entryId', workoutController.updateWorkoutEntry);
-
-// 운동 기록 삭제 (DELETE) - 닉네임, PIN, 운동 ID를 URL 파라미터로 받음
-router.delete('/:nickname/:pin/:entryId', workoutController.deleteWorkoutEntry);
+// ✅ 다른 모든 라우트에도 authMiddleware를 적용
+//
+// GET /api/workout (해당 사용자의 모든 운동 기록 조회)
+router.get('/', authMiddleware, workoutController.getWorkoutEntries);
+//
+// POST /api/workout (새로운 운동 기록 추가)
+router.post('/', authMiddleware, workoutController.addWorkoutEntry);
+//
+// PUT /api/workout/:entryId (특정 운동 기록 수정)
+router.put('/:entryId', authMiddleware, workoutController.updateWorkoutEntry);
+//
+// DELETE /api/workout/:entryId (특정 운동 기록 삭제)
+router.delete('/:entryId', authMiddleware, workoutController.deleteWorkoutEntry);
 
 module.exports = router;

@@ -1,4 +1,3 @@
-// frontend/src/pages/IndexPage/IndexPage.jsx
 "use client";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +33,9 @@ export default function IndexPage() {
         setSelectedMode(mode);
         setApiMessage('');
         try {
+            // 백엔드에 모드 변경을 요청하는 API 호출
+            await apiClient.put('/users/mode', { mode });
+
             localStorage.setItem('userMode', mode);
             const userDisplayName = localStorage.getItem('userNickname') || 'Guest';
             navigate(`/home?nickname=${userDisplayName}&mode=${mode}`);
@@ -45,9 +47,12 @@ export default function IndexPage() {
 
     const handleEnterClick = async () => {
         setApiMessage('');
-    
         if (!nickname.trim()) {
             setApiMessage('닉네임을 입력해주세요.');
+            return;
+        }
+        if (nickname.trim().length < 2 || nickname.trim().length > 20) {
+            setApiMessage('닉네임은 2자 이상 20자 이하로 입력해주세요.');
             return;
         }
         if (!pin.trim()) {
@@ -58,50 +63,29 @@ export default function IndexPage() {
             setApiMessage('PIN 번호는 4자리 숫자로 입력해주세요.');
             return;
         }
-    
+
         try {
-            const userCheckResponse = await apiClient.get(`/users/${nickname.trim()}?pin=${pin.trim()}`);
-    
-            setApiMessage(`로그인 성공: ${userCheckResponse.data.message || '환영합니다!'}`);
-            localStorage.setItem('userNickname', userCheckResponse.data.user.nickname);
-            localStorage.setItem('userPin', userCheckResponse.data.user.pin);
-            localStorage.setItem('userMode', userCheckResponse.data.user.mode || 'normal');
-    
+            const response = await apiClient.post('/users', {
+                nickname: nickname.trim(),
+                pin: pin.trim(),
+            });
+
+            setApiMessage(`성공: ${response.data.message}`);
+            
+            localStorage.setItem('userNickname', response.data.user.nickname);
+            localStorage.setItem('userPin', response.data.user.pin);
+            localStorage.setItem('userMode', response.data.user.mode || 'normal');
+            
             setIsInitialState(false);
             setShowDifficultyButtons(true);
-    
+
         } catch (error) {
-            if (error.response) {
-                // ✅ 401 오류 (닉네임 없거나 PIN 틀림) -> 회원가입 시도
-                if (error.response.status === 401) {
-                    try {
-                        const createResponse = await apiClient.post('/users', {
-                            nickname: nickname.trim(),
-                            pin: pin.trim(),
-                            mode: 'normal'
-                        });
-    
-                        setApiMessage(`회원가입 성공: ${createResponse.data.message}`);
-                        localStorage.setItem('userNickname', createResponse.data.user.nickname);
-                        localStorage.setItem('userPin', pin.trim());
-                        localStorage.setItem('userMode', 'normal');
-    
-                        setIsInitialState(false);
-                        setShowDifficultyButtons(true);
-    
-                    } catch (createError) {
-                        // 회원가입 시도 중 '이미 존재하는 닉네임' 오류가 발생하면 여기에 걸림
-                        const errorMessage = createError.response?.data?.message || '사용자 생성 중 오류 발생';
-                        setApiMessage(`오류: ${errorMessage}`);
-                    }
-                } else {
-                    // 그 외 다른 오류 (500 서버 에러 등)
-                    const errorMessage = error.response.data.message || '알 수 없는 오류 발생';
-                    setApiMessage(`오류: ${errorMessage}`);
-                }
+            if (error.response && error.response.data && error.response.data.message) {
+                setApiMessage(`오류: ${error.response.data.message}`);
             } else {
-                setApiMessage('오류: 서버에 연결할 수 없습니다.');
+                setApiMessage('오류: 알 수 없는 오류가 발생했습니다.');
             }
+            console.error('Login/Signup error:', error);
         }
     };
     
@@ -204,13 +188,8 @@ export default function IndexPage() {
                             </div>
                         ))}
                     </div>
-
                 </div>
-              ))}
             </div>
-          )}
         </div>
-      </div>
-    </div>
-  );
+    );
 }

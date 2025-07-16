@@ -181,7 +181,7 @@
   top: 50%;
   right: 300px;
   transform: translateY(-50%);
-  width: 350px;
+  width: 400px;
   height: 650px;
   backdrop-filter: blur(15px);
   background: rgba(255, 255, 255, 0.1);
