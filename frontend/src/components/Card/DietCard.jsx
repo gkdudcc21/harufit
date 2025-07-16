@@ -3,10 +3,11 @@ import './DietCard.css';
 import waterBottleIcon from '../../assets/images/물통절반요.png';
 
 
-export default function DietCard({ onExpand }) {
+
+export default function DietCard({ onExpand  , mode}) {
   return (
     <div className="diet-card card-base">
-      <div className="card-header">
+      <div className={`card-header ${mode}-theme`}>
         <span>식단</span>
         <button className="expand-btn" onClick={onExpand}>▶</button>
       </div>
