@@ -3,10 +3,10 @@ import './WorkoutCard.css';
 import runningIcon from '../../assets/images/run-icon.png';
 import bikeIcon from '../../assets/images/bike-icon.png';
 
-export default function WorkoutCard({ onExpand }) {
+export default function WorkoutCard({ mode, onExpand }) {
   return (
     <div className="workout-card card-base">
-      <div className="card-header">
+      <div className={`card-header ${mode}-theme`}>
         <span>운동</span>
         <button className="expand-btn" onClick={onExpand}>▶</button>
       </div>

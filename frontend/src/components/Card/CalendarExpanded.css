@@ -3,27 +3,29 @@
 .calendar-expanded-wrapper {
   position: fixed;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
+  left: 45%;
+  transform: translate(-45%, -50%) scale(0.96);
+  /* 위치 고정 + 초기 축소 */
+  opacity: 0;
   z-index: 100;
   background: white;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   padding: 24px;
-  width: 800px;
-  height: 600px;
-  animation: zoomIn 0.4s ease;
+  width: 750px;
+  min-height: 300px;
+  /* 필요 시 설정 */
+  max-height: 90vh;
+  overflow-y: auto;
+
+  /* ✨ 핵심 부드러운 등장 효과 */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
-@keyframes zoomIn {
-  from {
-    transform: translate(-50%, -50%) scale(0.7);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
+/* ✅ 모달 활성화 시 (zoomIn + fadeIn 효과) */
+.calendar-expanded-wrapper.active {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
 }
 
 .calendar-header {
@@ -32,9 +34,10 @@
   align-items: center;
   margin-bottom: 4px;
   padding: 3px 10px 5px;
-  padding-top: 15px; 
-  margin-top: 8px;      
-  margin-bottom: 4px; /* ↓ 달력 본문과의 간격 최소화 */
+  padding-top: 15px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  /* ↓ 달력 본문과의 간격 최소화 */
   text-align: center;
   line-height: 1.2;
   padding-top: 10px;
@@ -107,7 +110,10 @@
 .calendar-summary {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  /* ✅ 작아지면 줄바꿈 허용 */
+  gap: 16px;
 }
 
 .box {

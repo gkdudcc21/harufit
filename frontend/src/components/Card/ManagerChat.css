@@ -22,6 +22,18 @@
     backdrop-filter: blur(10px);
 }
 
+.manager-card-header.easy-theme {
+    background-color:rgba(200, 230, 201, 0.9);
+  }
+  
+  .manager-card-header.normal-theme {
+    background-color: rgba(225, 190, 231, 0.9);
+  }
+  
+  .manager-card-header.hard-theme {
+    background-color: rgba(255, 205, 209, 0.9);
+  }
+
 .chat-content {
     flex: 1;
     display: flex;

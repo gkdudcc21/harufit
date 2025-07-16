@@ -1,5 +1,8 @@
 
+
 @import '../../styles/common.css';
+
+
 
 .homepage-container {
   position: relative;
@@ -48,15 +51,37 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* 비활성화된 버튼 기본 회색 */
+.mode-inactive {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* 각 모드별 강조 버튼 */
+.mode-easy {
+  background-color: rgba(200, 230, 201, 0.9);
+  border: 2px solid white;
+  color: white;
+}
+
+.mode-normal {
+  background-color:rgba(225, 190, 231, 0.9);
+  border: 2px solid white;
+  color: white;
+}
+
+.mode-hard {
+  background-color: rgba(255, 205, 209, 0.9);
+  border: 2px solid white;
+  color: white;
+}
+
 .mode-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.mode-btn.active {
-  background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
-}
 
 /* 좌측 메뉴바 */
 .sidebar-menu {
@@ -104,7 +129,7 @@
 .main-cards-area {
   position: absolute;
   top: 50%;
-  left: 45%;
+  left: 38%;
   transform: translate(-50%, -50%);
   width: 800px;
   height: 650px;
@@ -154,7 +179,7 @@
 .chat-area {
   position: absolute;
   top: 50%;
-  right: 180px;
+  right: 300px;
   transform: translateY(-50%);
   width: 350px;
   height: 650px;
@@ -196,6 +221,7 @@
     height: 500px;
     /* 채팅창 높이 조정 */
   }
+  
 }
 
 @media (max-width: 1200px) {
@@ -283,8 +309,9 @@
   }
 
   .card-wrapper.top-left {
-    margin-top: -10px; /* 기존보다 위로 당기기 */
-    margin-bottom: 12px;
+    margin-top: 8px;
+    /* 기존보다 위로 당기기 */
+    margin-bottom: 9px;
   }
 
   .mode-buttons {
@@ -377,15 +404,28 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 0;        /* 여백 제거 */
-    padding-top: 0;  
-    margin-top: 10px;     /* 패딩도 제거 */
+    margin-top: 0;
+    /* 여백 제거 */
+    padding-top: 0;
+    margin-top: 10px;
+    /* 패딩도 제거 */
 
   }
 
   .card-wrapper.calendar-card {
-    margin-top: 6px; /* 또는 5px */
+    margin-top: 6px;
+    /* 또는 5px */
 
   }
+
+  /* 공통 카드 헤더 클래스 */
+  .card-header {
+    padding: 10px 20px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    border-radius: 15px;
+  }
+
 
 }
