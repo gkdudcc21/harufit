@@ -29,16 +29,26 @@ export default function IndexPage() {
         hard: "강력한 변화",
     };
 
+    // ✅✅✅ 핵심 수정 부분 ✅✅✅
     const handleModeSelect = async (mode) => {
         setSelectedMode(mode);
         setApiMessage('');
-        try {
-            // 백엔드에 모드 변경을 요청하는 API 호출
-            await apiClient.put('/users/mode', { mode });
 
+        const userNickname = localStorage.getItem('userNickname');
+
+        // 1. 게스트 사용자인지 확인
+        if (userNickname === 'Guest') {
+            // 2. 게스트이면 API 호출 없이 로컬스토리지에 모드 저장 후 바로 이동
             localStorage.setItem('userMode', mode);
-            const userDisplayName = localStorage.getItem('userNickname') || 'Guest';
-            navigate(`/home?nickname=${userDisplayName}&mode=${mode}`);
+            navigate(`/home?nickname=Guest&mode=${mode}`);
+            return; // 함수 종료
+        }
+
+        // 3. 정식 사용자일 경우에만 백엔드에 모드 변경 요청
+        try {
+            await apiClient.put('/users/mode', { mode });
+            localStorage.setItem('userMode', mode);
+            navigate(`/home?nickname=${userNickname}&mode=${mode}`);
         } catch (error) {
             setApiMessage(`오류: ${error.response?.data?.message || '모드 변경 중 오류 발생'}`);
             console.error('Mode select error:', error);
@@ -73,25 +83,23 @@ export default function IndexPage() {
             setApiMessage(`성공: ${response.data.message}`);
             
             localStorage.setItem('userNickname', response.data.user.nickname);
-            localStorage.setItem('userPin', response.data.user.pin);
+            localStorage.setItem('userPin', response.data.user.pin); // pin도 저장해주는 것이 좋습니다.
             localStorage.setItem('userMode', response.data.user.mode || 'normal');
             
             setIsInitialState(false);
             setShowDifficultyButtons(true);
 
         } catch (error) {
-            if (error.response && error.response.data && error.response.data.message) {
-                setApiMessage(`오류: ${error.response.data.message}`);
-            } else {
-                setApiMessage('오류: 알 수 없는 오류가 발생했습니다.');
-            }
+            const errorMessage = error.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+            setApiMessage(`오류: ${errorMessage}`);
             console.error('Login/Signup error:', error);
         }
     };
     
     const handleGuestMode = () => {
         setApiMessage('');
-        setNickname('게스트');
+        // '게스트'로 상태를 설정해야 헤더 텍스트가 즉시 바뀝니다.
+        setNickname('게스트'); 
         setPin('');
         localStorage.setItem('userNickname', 'Guest');
         localStorage.setItem('userPin', '0000');
