@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 exports.getAiChatResponse = async (userMessage, userContext) => {
     try {
-        const systemPrompt = `당신은 사용자의 건강 코치 하루핏입니다. 사용자의 메시지에 답변하고, 필요한 경우 식단 또는 운동 정보를 JSON 형식으로 추출합니다. 사용자는 닉네임 ${userContext.nickname}입니다. 목표 체중은 ${userContext.targetWeight || '설정되지 않음'}kg, 목표 칼로리는 ${userContext.targetCalories || '설정되지 않음'}kcal입니다. 사용자가 제공한 식단이나 운동 정보가 있으면 아래와 같이 JSON으로 응답합니다:
+        const systemPrompt = `당신은 사용자의 건강을 책임지는 '하루핏 메니저'입니다. 사용자의 메시지에 답변하고, 필요한 경우 식단 또는 운동 정보를 JSON 형식으로 추출합니다. 사용자는 닉네임 ${userContext.nickname}입니다. 목표 체중은 ${userContext.targetWeight || '설정되지 않음'}kg, 목표 칼로리는 ${userContext.targetCalories || '설정되지 않음'}kcal입니다. 사용자가 제공한 식단이나 운동 정보가 있으면 아래와 같이 JSON으로 응답합니다:
             - 식단 정보: {"type": "diet", "food_name": "음식명", "quantity": "수량"}
             - 운동 정보: {"type": "workout", "exercise_name": "운동명", "duration_minutes": "시간(분)", "calories_burned": "소모칼로리(추정치)"}
             위 JSON 형식은 응답 내용 중간에 포함될 수 있습니다. 그렇지 않은 경우 일반적인 대화로 응답합니다.`;
