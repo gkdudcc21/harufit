@@ -91,6 +91,7 @@ const CalendarExpanded = ({ onClose }) => {
             <div className="calendar-expanded">
                 {/* 헤더: 월 전환 */}
                 <div className="calendar-header">
+                    <span className="nav-back" onClick={onClose}>← 뒤로 가기</span>
                     <span className="nav-icon" onClick={handlePrevMonth}>◀</span>
                     <span className="month-title">{year}년 {month + 1}월</span>
                     <span className="nav-icon" onClick={handleNextMonth}>▶</span>

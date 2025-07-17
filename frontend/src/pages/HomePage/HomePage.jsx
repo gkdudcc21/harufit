@@ -12,6 +12,8 @@ import CalendarExpanded from "../../components/Card/CalendarExpanded.jsx";
 import StatusExpanded from "../../components/Card/StatusExpanded.jsx"
 import WorkoutExpanded from "../../components/Card/WorkoutExpanded.jsx"
 import DietExpanded from "../../components/Card/DietExpanded.jsx"
+import AboutUsExpanded from "../../components/Card/AboutUsExpanded.jsx"
+
 
 import useAuth from '../../hooks/useAuth';
 import useApi from '../../hooks/useApi';
@@ -34,6 +36,7 @@ export default function HomePage() {
   const [isStatusExpanded, setStatusExpanded] = useState(false);
   const [isWorkoutExpanded, setWorkoutExpanded] = useState(false);
   const [isDietExpanded, setDietExpanded] = useState(false);
+  const [isAboutExpanded, setAboutExpanded] = useState(false);
 
   // 메뉴바 상태 관리
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs")
@@ -107,16 +110,17 @@ export default function HomePage() {
       <nav className="sidebar-menu">
         <ul className="menu-list">
           <li className={activeMenuItem === "AboutUs" ? "active" : ""}
-            onClick={() => handleMenuClick("AboutUs")}>
+            onClick={() => {
+              handleMenuClick("AboutUs")
+              setAboutExpanded(true);             
+              }}>
             About Us
           </li>
-
           <li className={activeMenuItem === "calendar" ? "active" : ""}
             onClick={() => {
               handleMenuClick("calendar");
               setCalendarExpanded(true);
             }}>
-
             달력
           </li>
           <li className={activeMenuItem === "status" ? "active" : ""}
@@ -160,6 +164,14 @@ export default function HomePage() {
 
         </div>
       </div>
+
+      {isAboutExpanded && (
+        <div className="modal-backdrop" onClick={() => setAboutExpanded(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <AboutUsExpanded onClose={() => setAboutExpanded(false)} />
+          </div>
+        </div>
+      )}
 
       {isCalendarExpanded && (
         <div className="modal-backdrop" onClick={() => setCalendarExpanded(false)}>

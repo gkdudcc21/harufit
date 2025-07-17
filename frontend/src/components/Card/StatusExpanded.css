@@ -38,11 +38,11 @@
     font-size: 1.4rem;
 }
 
-.nav-back {
-    font-size: 1.2rem;
+/* .nav-back {
+    font-size: 0.8rem;
     cursor: pointer;
     color: #666;
-}
+} */
 
 .ai-comment {
     background: #f8f8f8;
