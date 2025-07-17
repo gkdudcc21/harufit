@@ -2,33 +2,19 @@
 
 .diet-card {
     padding: var(--spacing-lg);
-    min-height: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;         /* 🔥 상위 .card-wrapper가 높이 제한 중이므로 100%로 채움 */
+    height: 80%;         /* 🔥 상위 .card-wrapper가 높이 제한 중이므로 100%로 채움 */
     overflow: hidden;     /* 🔒 넘치는 부분 가리기 */
 }
 
 .card-header {
     position: relative;
+    margin-bottom: 10px;
 }
 
 .diet-card:hover .expand-btn {
     opacity: 0.7;
-}
-
-.diet-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    flex: 1;
-    overflow-y: auto;
-    /* ✨ 추가: 내용이 넘칠 때 스크롤바 생성 */
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
-    margin-bottom: 35px;
 }
 
 .diet-content::-webkit-scrollbar {
@@ -36,39 +22,122 @@
     /* Chrome, Safari, Opera */
 }
 
-.water-intake {
-    display: flex;
-    align-items: center;
-    order: 0;
-    gap: var(--spacing-sm);
-    margin-top: 10px;
-    padding: 8px 10px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    border: 1px solid var(--border-color-dark);
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: bold;
-    backdrop-filter: blur(5px);
+/* 🔥 핵심 수정: 전체 콘텐츠 영역을 CSS Grid로 설정 */
+.diet-content-grid {
+    flex-grow: 1;
+    display: grid;
+    /* 2개의 컬럼과 2개의 로우 생성 */
+    grid-template-columns: 1fr 1fr; /* 1:1 비율의 컬럼 */
+    grid-template-rows: 1fr auto;   /* 상단 영역은 남는 공간, 하단은 컨텐츠 크기만큼 */
+    gap: 0px;
+    /* height: 100%; */
 }
 
-.water-intake span {
-    white-space: normal;
-    word-break: break-word;
-    flex: 1;
+/* 1. 섭취 식단 (상단 좌측) */
+.eaten-meals-section { 
+    grid-column: 1 / 2; /* 첫 번째 컬럼 차지 */
+    grid-row: 1 / 2;    /* 첫 번째 로우 차지 */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center; /* 내부 아이템들을 세로로 중앙 정렬 */
+    margin-bottom: 10px;
+    margin-right: 8px;
+}
+
+.diet-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 5px;
+    font-size: 13px;
+    color: white;
+    line-height: 1.4;
+}
+.diet-item p { 
+    margin: 0; 
+    white-space: pre-line;
+}
+
+.diet-kcal {
+    color: #ca43ff;  
+    font-weight: bold; 
+}
+
+/* 2. 추천 식단 (상단 우측) */
+.recommendation-section {
+    grid-column: 2 / 2; /* 두 번째 컬럼 차지 */
+    grid-row: 1 / 2;    /* 첫 번째 로우 차지 */
+    margin-bottom: 10px;
+    background: rgba(224, 183, 224, 0.253);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: rgb(226, 76, 126);
+}
+
+.recommendation-header {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.rec-menu {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    white-space: pre-line;
+}
+
+/* 3. 물 섭취량 (하단 전체) */
+.water-section-grid {
+    grid-column: 1 / -1;  
+    grid-row: 2 / 2; 
+    height: 80%;
+}
+
+.water-intake {
+    display: flex;
+    /* flex-wrap: wrap; */
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    background: rgba(171, 200, 255, 0.25);
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+    height: 80%;
+}
+
+.eaten-water {
+    font-size: 14px;
+    padding: 5px;
+    white-space: nowrap;
 }
 
 
 .water-icon {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
+    width: 45px;
+    height: 40px;
 }
 
-.diet-item {
-    background: var(--card-background-dark);
-    padding: 1px 12px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.85rem;
+.water-progress-bar-container {
+    width: 100%;
+    height: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
+    flex-basis: 60%;
+    overflow: hidden;
+}
+
+.water-progress-bar {
+    height: 100%;
+    background-color: #63C5DA;
+    border-radius: 5px;
+    transition: width 0.5s ease-in-out;
+
 }

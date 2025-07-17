@@ -3,6 +3,7 @@
 .status-card {
     padding: var(--spacing-lg);
     min-height: 0;
+    height: 80%;
 }
 
 .card-header {
@@ -16,7 +17,6 @@
 .status-content {
     display: flex;
     flex-direction: column;
-    flex: 0.85;
     overflow-y: auto;
     /* ✨ 추가: 내용이 넘칠 때 스크롤바 생성 */
     -ms-overflow-style: none;
@@ -24,8 +24,7 @@
     scrollbar-width: none;
     /* Firefox */
     justify-content: center;
-    height: 100%;
-    overflow-y: auto;
+
 }
 
 .status-content::-webkit-scrollbar {
@@ -38,11 +37,10 @@
     align-items: center;
     flex-wrap: nowrap;
     /* ✨ 줄바꿈 금지 */
-    padding: 8px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     backdrop-filter: blur(90px);
-
+    padding: 20px 10px 20px 10px
 }
 
 .status-details {
@@ -56,6 +54,11 @@
 
 .status-details p {
     margin: 8px;
+}
+
+.status-value {
+    color: #f8ee65;  
+    font-weight: bold; 
 }
 
 .status-message {
@@ -87,6 +90,8 @@
 @media (max-width: 768px) {
     .status-card {
         padding: 0.8rem;
+        max-height: 280px;
+
     }
 
     .status-icon {
@@ -94,7 +99,9 @@
     }
 
     .status-text {
-        font-size: 1rem;
+        font-size: 0.8rem;
+        max-height: 200px;
+
     }
 }
 

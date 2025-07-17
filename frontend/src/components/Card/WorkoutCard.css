@@ -5,6 +5,8 @@
 .workout-card {
     padding: var(--spacing-lg);
     min-height: 0;
+    height: 80%;        
+
 }
 
 .card-header {

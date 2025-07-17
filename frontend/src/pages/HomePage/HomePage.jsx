@@ -54,10 +54,18 @@ export default function HomePage() {
       parts: ["가슴", "어깨"],
     },
     diet: {
-      totalCalories: 1890,
-      carbs: 200,
-      protein: 150,
-      fat: 60,
+      eatenMeals: [
+        { type: '점심', menu: '제육볶음 + 쌀밥', kcal: 700 },
+        { type: '저녁', menu: '연어 스테이크', kcal: 400 }
+      ],
+      waterIntake: {
+        current: 1.5,
+        goal: 2,
+      },
+      recommendedMeal: {
+        type: '아침',
+        menu: '그릭요거트, \n 견과류',
+      }
     },
     calendar: [
       { date: "2025-07-16", hasWorkout: true, hasDiet: true },
@@ -100,8 +108,8 @@ export default function HomePage() {
           <li className={activeMenuItem === "AboutUs" ? "active" : ""}
             onClick={() => {
               handleMenuClick("AboutUs")
-              setAboutExpanded(true);             
-              }}>
+              setAboutExpanded(true);
+            }}>
             About Us
           </li>
           <li className={activeMenuItem === "calendar" ? "active" : ""}

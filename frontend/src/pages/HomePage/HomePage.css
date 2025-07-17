@@ -366,10 +366,11 @@
     height: auto;
     /* 콘텐츠에 따라 높이 자동 조절 */
 
-    margin-top: 40px;
+    margin-top: 0px;
 
     /* 상단 메뉴바와 겹치지 않도록 조정 */
     margin-bottom: 10px;
+
     /* 채팅창과의 여백 */
     top: auto;
     left: auto;
