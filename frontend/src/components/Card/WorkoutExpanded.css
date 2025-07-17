@@ -45,11 +45,13 @@
   font-size: 1.4rem;
 }
 
-.nav-back {
-  font-size: 0.9rem;
+/* 식단확장css에서의 nav-back이 전역에 적용됨 */
+/* .nav-back {
+  font-size: 0.8rem;
   cursor: pointer;
   color: #666;
-}
+} */ 
+
 
 .ai-comment {
   background: #f4f7ff;

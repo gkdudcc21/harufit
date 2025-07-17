@@ -3,7 +3,6 @@ import './DietCard.css';
 import waterBottleIcon from '../../assets/images/물통절반요.png';
 
 
-
 export default function DietCard({ onExpand  , mode}) {
   return (
     <div className="diet-card card-base">
