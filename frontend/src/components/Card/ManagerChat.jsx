@@ -3,19 +3,31 @@ import apiClient from '../../api/apiClient'; // API 클라이언트 import
 import './ManagerChat.css';  
 
 export default function ManagerChat({ mode }) {
-    // 대화 기록, 사용자 입력, 로딩 상태를 관리하는 state 추가
     const [messages, setMessages] = useState([
         { sender: 'ai', text: '안녕하세요! 하루핏과 함께 건강해질 준비 되셨나요?' }
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    
+    // ✅ 1. 스크롤과 입력창 포커스를 위한 ref 2개 생성
     const messagesEndRef = useRef(null);
+    const inputRef = useRef(null); // 입력창 참조를 위한 ref 추가
 
     // 메시지 목록이 변경될 때마다 맨 아래로 스크롤
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
+
     useEffect(scrollToBottom, [messages]);
+
+    // ✅ 2. 로딩 상태가 변경될 때마다 입력창에 포커스를 주는 useEffect 추가
+    useEffect(() => {
+        // 로딩이 끝났을 때(false) 입력창에 포커스를 줍니다.
+        if (!isLoading) {
+            inputRef.current?.focus();
+        }
+    }, [isLoading]);
+
 
     // 메시지 전송 처리 함수
     const handleSendMessage = async (e) => {
@@ -24,7 +36,6 @@ export default function ManagerChat({ mode }) {
 
         const userMessage = { sender: 'user', text: input };
         
-        // 이전 대화 기록을 AI에게 보낼 형식으로 변환
         const historyForApi = messages.map(msg => ({
             role: msg.sender === 'ai' ? 'assistant' : 'user',
             content: msg.text
@@ -35,7 +46,6 @@ export default function ManagerChat({ mode }) {
         setIsLoading(true);
 
         try {
-            // 백엔드의 AI 채팅 API 호출
             const response = await apiClient.post('/ai/chat', {
                 message: userMessage.text,
                 history: historyForApi
@@ -52,7 +62,6 @@ export default function ManagerChat({ mode }) {
     };
 
     return (
-        // JSX 구조를 실제 채팅창에 맞게 변경
         <div className="manager-chat-container">
             <div className={`manager-card-header ${mode}-theme`}>하루핏 AI 매니저</div>
             <div className="chat-messages">
@@ -71,7 +80,9 @@ export default function ManagerChat({ mode }) {
                 <div ref={messagesEndRef} />
             </div>
             <form className="chat-input-form" onSubmit={handleSendMessage}>
+                {/* ✅ 3. 생성한 inputRef를 input 태그에 연결 */}
                 <input
+                    ref={inputRef}
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
