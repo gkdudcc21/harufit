@@ -33,6 +33,8 @@ export default function HomePage() {
   const [isDietExpanded, setDietExpanded] = useState(false);
   const [isAboutExpanded, setAboutExpanded] = useState(false);
 
+  // ManagerChat에 포커스를 줄지 여부를 제어하는 상태
+  const [triggerChatFocus, setTriggerChatFocus] = useState(0); // 숫자 변경하여 useEffect 트리거
 
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs")
 
@@ -41,7 +43,14 @@ export default function HomePage() {
     console.log(`Selected menu: ${menuItem}`)
   }
 
-  // ✅ 실제 API 호출 대신 사용할 가짜 데이터 (Mock Data)
+  // '매니저에게 식단 기록하기' 버튼 클릭 시 호출될 함수
+  const handleLogDietToManager = () => {
+    setDietExpanded(false); // 식단 상세 모달 닫기
+    setTriggerChatFocus(prev => prev + 1); // ManagerChat의 포커스 로직 트리거
+    setActiveMenuItem("chat"); // 선택된 메뉴를 'chat'으로 변경 (시각적 피드백)
+  };
+
+  // 실제 API 호출 대신 사용할 가짜 데이터 (Mock Data)
   const mockData = {
     status: {
       weight: 75.5,
@@ -117,7 +126,6 @@ export default function HomePage() {
               handleMenuClick("calendar");
               setCalendarExpanded(true);
             }}>
-
             달력
           </li>
           <li className={activeMenuItem === "status" ? "active" : ""} onClick={() => { handleMenuClick("status"); setStatusExpanded(true); }}>
@@ -174,7 +182,7 @@ export default function HomePage() {
       {isDietExpanded && (
         <div className="modal-backdrop" onClick={() => setDietExpanded(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <DietExpanded onClose={() => setDietExpanded(false)} />
+            <DietExpanded onClose={() => setDietExpanded(false)} onLogDietToManager={handleLogDietToManager} />
           </div>
         </div>
       )}
@@ -187,7 +195,7 @@ export default function HomePage() {
       )}
 
       <div className="chat-area">
-        <ManagerChat mode={selectedMode} />
+        <ManagerChat mode={selectedMode} shouldFocusInput={triggerChatFocus} />
       </div>
     </div>
   )

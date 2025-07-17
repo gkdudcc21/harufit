@@ -103,8 +103,16 @@
     color: rgba(255, 255, 255, 0.6);
 }
 .chat-input:focus {
-    border-color: rgba(174, 213, 129, 0.8);
+    border-color: rgba(187, 233, 134, 0.952);
 }
+
+/* 카드탭에서 넘어왔을 때 */
+.chat-input.focused {
+    border: 2px solid #72cdf7ef;  
+    background-color: rgba(127, 194, 194, 0.603);
+    transition: all 0.4s ease-in-out; /* 부드러운 전환 효과 */
+}
+
 
 /* 기존 전송 버튼 디자인 유지 */
 .chat-send-btn {

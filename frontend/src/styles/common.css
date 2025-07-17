@@ -48,7 +48,6 @@ body,
 /* 전역적인 카드 스타일 (공통적인 부분만) */
 .card-base {
   filter: drop-shadow(7px 4px 4px var(--shadow-color));
-  /* background: transparent; */
   border: none;
   box-shadow: none;
   padding: var(--spacing-lg);
@@ -58,17 +57,17 @@ body,
   color: var(--text-color-light);
 }
 
-.card-header {
+/* 달력css에서 정의된 .card-header가 전역적으로 쓰이고 있음!  */
+/* .card-header {
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: var(--spacing-md);
   color: var(--text-color-light);
   text-align: center;
-  /* background: var(--primary-pink); */
-  padding: var(--spacing-sm);
+  padding: 7px;
   border-radius: 15px;
   backdrop-filter: blur(10px);
-}
+} */
 
 /* 모드별 카드 헤더 색상 */
 .card-header.easy-theme {

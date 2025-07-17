@@ -4,7 +4,7 @@
     padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
-    height: 80%;         /* 🔥 상위 .card-wrapper가 높이 제한 중이므로 100%로 채움 */
+    height: 88%;         /* 🔥 상위 .card-wrapper가 높이 제한 중이므로 100%로 채움 */
     overflow: hidden;     /* 🔒 넘치는 부분 가리기 */
 }
 
@@ -24,12 +24,15 @@
 
 /* 🔥 핵심 수정: 전체 콘텐츠 영역을 CSS Grid로 설정 */
 .diet-content-grid {
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Firefox */
     flex-grow: 1;
     display: grid;
     /* 2개의 컬럼과 2개의 로우 생성 */
-    grid-template-columns: 1fr 1fr; /* 1:1 비율의 컬럼 */
+    grid-template-columns: 1.5fr 1fr; /* 좌:우 1:1 비율 */
     grid-template-rows: 1fr auto;   /* 상단 영역은 남는 공간, 하단은 컨텐츠 크기만큼 */
-    gap: 0px;
+    gap: 1px;
     /* height: 100%; */
 }
 
@@ -39,7 +42,8 @@
     grid-row: 1 / 2;    /* 첫 번째 로우 차지 */
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    margin-left: 6px;
+    gap: 6px;
     justify-content: center; /* 내부 아이템들을 세로로 중앙 정렬 */
     margin-bottom: 10px;
     margin-right: 8px;
@@ -54,40 +58,42 @@
     line-height: 1.4;
 }
 .diet-item p { 
-    margin: 0; 
+    padding: 3px;
+    margin: 0px; 
     white-space: pre-line;
 }
 
 .diet-kcal {
-    color: #ca43ff;  
+    color: #ca43ffd3;  
     font-weight: bold; 
+    font-size: 11px;
 }
 
 /* 2. 추천 식단 (상단 우측) */
-.recommendation-section {
+.recommend-section {
     grid-column: 2 / 2; /* 두 번째 컬럼 차지 */
     grid-row: 1 / 2;    /* 첫 번째 로우 차지 */
-    margin-bottom: 10px;
-    background: rgba(224, 183, 224, 0.253);
-    border-radius: 10px;
-    padding: 10px;
+    margin: 5px 5px 15px 5px;
+    border-radius: 50px;
     display: flex;
+    background-color: rgba(255, 172, 211, 0.199);
     flex-direction: column;
     justify-content: center;
     color: rgb(226, 76, 126);
 }
 
 .recommendation-header {
-    font-weight: bold;
-    font-size: 13px;
+    font-size: 0.75rem;
+    text-align: center;
     margin-bottom: 5px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 244, 244, 0.979);
 }
 
 .rec-menu {
-    font-size: 15px;
+    font-size: 1.0rem;
+    text-align: center;
     font-weight: bold;
-    margin: 0 0 5px 0;
+    margin: 0 0 6px 0;
     white-space: pre-line;
 }
 
@@ -108,7 +114,6 @@
     border-radius: 12px;
     color: white;
     font-weight: bold;
-    height: 80%;
 }
 
 .eaten-water {
@@ -116,27 +121,23 @@
     padding: 5px;
     white-space: nowrap;
 }
-
-
 .water-icon {
     width: 45px;
     height: 40px;
 }
-
 .water-progress-bar-container {
     width: 100%;
     height: 15px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.521);
     border-radius: 5px;
     margin-top: 5px;
     margin-right: 5px;
     flex-basis: 60%;
     overflow: hidden;
 }
-
 .water-progress-bar {
     height: 100%;
-    background-color: #63C5DA;
+    background-color: #65d2eb;
     border-radius: 5px;
     transition: width 0.5s ease-in-out;
 
