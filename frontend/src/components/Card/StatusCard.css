@@ -23,6 +23,9 @@
     /* IE and Edge */
     scrollbar-width: none;
     /* Firefox */
+    justify-content: center;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .status-content::-webkit-scrollbar {
@@ -33,10 +36,13 @@
 .status-item {
     display: flex;
     align-items: center;
+    flex-wrap: nowrap;
+    /* ✨ 줄바꿈 금지 */
     padding: 8px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     backdrop-filter: blur(90px);
+
 }
 
 .status-details {
@@ -58,4 +64,55 @@
     color: rgba(255, 255, 255, 0.7);
     font-weight: bold;
     margin-top: 2px;
+}
+
+/* 아이콘 박스 */
+.status-icon {
+    width: 105px;
+    height: 80px;
+    flex-shrink: 0;
+    margin-right: -15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-icon img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0.95);
+}
+
+@media (max-width: 768px) {
+    .status-card {
+        padding: 0.8rem;
+    }
+
+    .status-icon {
+        font-size: 50px;
+    }
+
+    .status-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .status-card {
+        padding: 0.5rem;
+    }
+
+    .status-icon {
+        font-size: 42px;
+    }
+
+    .status-text {
+        font-size: 0.95rem;
+    }
+
+    .status-content {
+        flex-direction: column;
+        align-items: center;
+    }
 }
