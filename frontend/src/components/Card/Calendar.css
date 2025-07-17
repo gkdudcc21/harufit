@@ -1,22 +1,17 @@
 @import '../../styles/common.css';
 
 .calendar-card {
-
     padding: 10px 16px;
-    /* 기존보다 줄임 */
     min-height: auto;
     /* 숫자 제거 */
     box-sizing: border-box;
-    margin-top: 11px;
-
-    
+    margin-top: 10px;   
 }
-
 
 .card-header {
     font-weight: bold;
     font-size: 1.1rem;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     color: white;
     text-align: center;
     /* background: rgba(255, 182, 193, 0.9); */
@@ -45,7 +40,7 @@
 
 .calendar-grid {
     display: grid;
-    padding: 12px 20px 20px 20px;
+    padding: 5px 20px 20px 20px;
     grid-template-columns: repeat(7, 1fr);
     gap: 0px;
     text-align: center;
@@ -59,16 +54,14 @@
 }
 
 .calendar-day {
-    padding: 3px;
     border-radius: 6px;
     transition: background-color 0.2s, color 0.2s;
     cursor: pointer;
     color: var(--text-color-light);
     font-size: 0.8rem;
-    flex: 1;
     position: relative;
     cursor: pointer;
-
+    /* align-content: flex-start; */
 }
 
 .calendar-day:hover {
@@ -93,9 +86,9 @@
 @media (max-width: 768px) {
     .calendar-card {
         padding: 4px 6px;
-        height: auto;
+        max-height: 280px;
         /* 고정 높이 제거 */
-        min-height: 135px;
+        /* min-height: 135px; */
         /* 적절한 기본값 */
         box-sizing: border-box;
         margin-top: 10px;
@@ -109,7 +102,7 @@
     .calendar-day,
     .day-of-week {
         font-size: 0.7rem;
-        padding: 3.5px 0;
+        padding: 0px;
     }
 
     @media (min-width: 900px) and (max-width: 1100px) {

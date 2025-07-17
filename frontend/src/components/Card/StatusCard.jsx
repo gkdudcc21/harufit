@@ -15,8 +15,8 @@ export default function StatusCard({ onExpand, mode }) {
             <img src={personIcon} alt="아이콘"  />
             </div>
             <div className="status-details">
-              <p>체중: 70.5 kg</p>
-              <p>체지방: 25.1 %</p>
+            <p>체중: <span className="status-value">70.5 kg</span></p>
+            <p>체지방: <span className="status-value">25.1 %</span></p>
               <p className="status-message">AI코치: 목표 체중에 가까워지고 있어요! 꾸준함이 중요해요!</p>
             </div>
           </div>
