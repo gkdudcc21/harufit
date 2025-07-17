@@ -12,6 +12,8 @@ import CalendarExpanded from "../../components/Card/CalendarExpanded.jsx";
 import StatusExpanded from "../../components/Card/StatusExpanded.jsx"
 import WorkoutExpanded from "../../components/Card/WorkoutExpanded.jsx"
 import DietExpanded from "../../components/Card/DietExpanded.jsx"
+import AboutUsExpanded from "../../components/Card/AboutUsExpanded.jsx"
+
 
 import useAuth from '../../hooks/useAuth';
 // ✅ 실제 API 호출 관련 코드는 주석 처리합니다.
@@ -29,6 +31,9 @@ export default function HomePage() {
   const [isStatusExpanded, setStatusExpanded] = useState(false);
   const [isWorkoutExpanded, setWorkoutExpanded] = useState(false);
   const [isDietExpanded, setDietExpanded] = useState(false);
+  const [isAboutExpanded, setAboutExpanded] = useState(false);
+
+
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs")
 
   const handleMenuClick = (menuItem) => {
@@ -91,10 +96,20 @@ export default function HomePage() {
       </div>
       <nav className="sidebar-menu">
         <ul className="menu-list">
-          <li className={activeMenuItem === "AboutUs" ? "active" : ""} onClick={() => handleMenuClick("AboutUs")}>
+
+          <li className={activeMenuItem === "AboutUs" ? "active" : ""}
+            onClick={() => {
+              handleMenuClick("AboutUs")
+              setAboutExpanded(true);             
+              }}>
             About Us
           </li>
-          <li className={activeMenuItem === "calendar" ? "active" : ""} onClick={() => { handleMenuClick("calendar"); setCalendarExpanded(true); }}>
+          <li className={activeMenuItem === "calendar" ? "active" : ""}
+            onClick={() => {
+              handleMenuClick("calendar");
+              setCalendarExpanded(true);
+            }}>
+
             달력
           </li>
           <li className={activeMenuItem === "status" ? "active" : ""} onClick={() => { handleMenuClick("status"); setStatusExpanded(true); }}>
@@ -124,7 +139,16 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 모달 창들 */}
+
+      {isAboutExpanded && (
+        <div className="modal-backdrop" onClick={() => setAboutExpanded(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <AboutUsExpanded onClose={() => setAboutExpanded(false)} />
+          </div>
+        </div>
+      )}
+
+
       {isCalendarExpanded && (
         <div className="modal-backdrop" onClick={() => setCalendarExpanded(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
