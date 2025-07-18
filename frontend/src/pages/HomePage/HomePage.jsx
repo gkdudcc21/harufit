@@ -34,7 +34,6 @@ export default function HomePage() {
   const [isAboutExpanded, setAboutExpanded] = useState(false);
 
   const [triggerChatFocus, setTriggerChatFocus] = useState(0); 
-
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs")
 
   // ✅ [수정] useApi 훅을 사용하여 각 카드에 필요한 실제 데이터를 백엔드로부터 가져옵니다.
@@ -48,10 +47,33 @@ export default function HomePage() {
     console.log(`Selected menu: ${menuItem}`)
   }
 
+
+  // ManagerChat에 포커스 여부 제어하는 상태, 숫자 변경하여 useEffect 트리거로 ManagerChat 반응
+  const [triggerChatFocus, setTriggerChatFocus] = useState(0);
+  // 어떤 모달에서 ManagerChat을 트리거했는지 (초기 메시지 설정을 위함)
+  const [chatTriggerSource, setChatTriggerSource] = useState(null); // 'diet', 'workout', 'status'
+
+  // 식단 기록 매니저에게 보내는 함수
   const handleLogDietToManager = () => {
-    setDietExpanded(false); 
-    setTriggerChatFocus(prev => prev + 1); 
-    setActiveMenuItem("chat"); 
+    setDietExpanded(false); // 모달 닫기
+    setChatTriggerSource('diet'); // 식단 기록임을 알림
+    setTriggerChatFocus(prev => prev + 1); // ManagerChat에 포커스 요청 트리거
+  };
+
+  // 운동 기록 매니저에게 보내는 함수
+  const handleLogWorkoutToManager = () => {
+    setWorkoutExpanded(false);
+    setChatTriggerSource('workout');
+    setTriggerChatFocus(prev => prev + 1);
+    console.log('HomePage: handleLogWorkoutToManager 호출됨. chatTriggerSource:', 'workout', 'triggerChatFocus (다음 값):', triggerChatFocus + 1); 
+  };
+
+  // 상태 기록 매니저에게 보내는 함수
+  const handleLogStatusToManager = () => {
+    setStatusExpanded(false);
+    setChatTriggerSource('status');
+    setTriggerChatFocus(prev => prev + 1);
+    console.log('HomePage: handleLogStatusToManager 호출됨. chatTriggerSource:', 'status', 'triggerChatFocus (다음 값):', triggerChatFocus + 1); 
   };
   
   // ✅ [수정] 가짜 데이터(mockData) 객체를 삭제했습니다.
@@ -70,9 +92,11 @@ export default function HomePage() {
     return <div>데이터를 불러오는 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</div>;
   }
 
+
   return (
     <div className={`homepage-container ${selectedMode}-theme`}>
       <div className="background-image"></div>
+      {/* <h1 className="logo">하루핏로고 추후 추가</h1> */}
       <div className="user-info">
         <p>환영합니다, {nickname}님!</p>
         <p>모드: {selectedMode}</p>
@@ -139,7 +163,9 @@ export default function HomePage() {
       )}
       {isStatusExpanded && (
         <div className="modal-backdrop" onClick={() => setStatusExpanded(false)}>
-          <StatusExpanded onClose={() => setStatusExpanded(false)} />
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <StatusExpanded onClose={() => setStatusExpanded(false)} onLogStatusToManager={handleLogStatusToManager}/>
+          </div>
         </div>
       )}
       {isDietExpanded && (
@@ -149,12 +175,14 @@ export default function HomePage() {
       )}
       {isWorkoutExpanded && (
         <div className="modal-backdrop" onClick={() => setWorkoutExpanded(false)}>
-          <WorkoutExpanded onClose={() => setWorkoutExpanded(false)} />
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <WorkoutExpanded onClose={() => setWorkoutExpanded(false)} onLogWorkoutToManager={handleLogWorkoutToManager} />
+          </div>
         </div>
       )}
 
       <div className="chat-area">
-        <ManagerChat mode={selectedMode} shouldFocusInput={triggerChatFocus} />
+        <ManagerChat mode={selectedMode} shouldFocusInput={triggerChatFocus} triggerSource={chatTriggerSource}/>
       </div>
     </div>
   )

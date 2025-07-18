@@ -3,9 +3,7 @@
 .workout-card {
     padding: var(--spacing-lg);
     min-height: 0;
-
-    height: 88%;        
-
+    height: 88%;
 }
 
 .card-header {
@@ -25,7 +23,6 @@
     gap: var(--spacing-md);
     flex: 1;
     padding: 0 0.5rem;
-    /* 여백 살짝 추가 (선택) */
 }
 
 .current-workout,
@@ -46,12 +43,12 @@
 
 .current-workout {
     position: relative;
-    
+
 }
 
 .recommended-workout {
     position: relative;
-    
+
 }
 
 .recommend-label {
@@ -115,10 +112,11 @@
 
 .exercise-list li span:first-child {
     flex: 1;
-    white-space: normal;         /* 줄바꿈 허용 */
+    white-space: normal;
+    /* 줄바꿈 허용 */
     word-break: keep-all;
     overflow: visible;
-  }
+}
 
 .exercise-list li span:last-child {
     flex-shrink: 0;

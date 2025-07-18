@@ -5,7 +5,6 @@
   width: 100vw;
   min-height: 100vh;
   overflow-y: auto;
-
 }
 
 .background-image {
@@ -141,15 +140,13 @@
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   cursor: pointer;
-
 }
 
 .card-wrapper:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  background: rgba(255, 249, 249, 0.15);
+  background: rgba(255, 249, 249, 0.261);
 }
 
 .top-left {
@@ -240,9 +237,15 @@
     overflow-y: auto;
   }
 
+  .mode-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 8.5px;
+  }
+
   .main-cards-area {
-    position: relative;
-    top: auto;
+    /* position: relative; relative할 시 채팅창이 하단에 감 */
+    /* absolute 속성 제거 */
     left: auto;
     transform: none;
     width: 90%;
@@ -250,6 +253,7 @@
     height: auto;
     margin-top: 150px;
     margin-bottom: 20px;
+
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
@@ -284,25 +288,27 @@
   .homepage-container {
     flex-direction: column;
     padding-top: 100px;
+
     overflow-y: auto;
   }
 
   .card-wrapper.top-left {
     margin-top: 8px;
     margin-bottom: 9px;
+
   }
 
   .mode-buttons {
     top: 35px;
     left: 55%;
     transform: translateX(-50%);
-    gap: 8px;
+    gap: 20px;
   }
 
   .mode-btn {
-    width: 45px;
-    height: 45px;
-    font-size: 9px;
+    width: 50px;
+    height: 50px;
+    font-size: 8.5px;
   }
 
   .sidebar-menu {
@@ -311,26 +317,28 @@
   }
 
   .menu-list {
+    margin: 40px 5px 40px 5px;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 15px;
     justify-content: center;
   }
 
   .menu-list li {
-    padding: 6px 12px;
+    padding: 5px 12px;
     font-size: 12px;
   }
 
   .chat-area {
     order: -1;
     position: relative;
-    top: auto;
+    top: 50px;
     bottom: auto;
     right: auto;
     width: calc(100vw - 40px);
     height: 250px;
     margin: 20px auto;
+
     box-sizing: border-box;
   }
 
@@ -348,7 +356,7 @@
     gap: 20px;
     justify-content: center;
     align-items: start;
-    padding: 20px;
+    padding: 0px;
   }
 
   .card-wrapper {
@@ -372,7 +380,7 @@
     padding-top: 0;
     margin-top: 10px;
   }
-
+  
   .card-wrapper.calendar-card {
     margin-top: 6px;
   }
@@ -384,4 +392,5 @@
     color: white;
     border-radius: 15px;
   }
+
 }

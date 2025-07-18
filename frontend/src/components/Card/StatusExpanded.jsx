@@ -17,7 +17,7 @@ const renderChange = (change, unit) => {
 // ✅ 아이콘 컴포넌트 추가
 const CloseIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>);
 
-const StatusExpanded = ({ onClose }) => {
+const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
     const wrapperRef = useRef(null);
     const [hoveredData, setHoveredData] = useState(null);
 
@@ -84,6 +84,7 @@ const StatusExpanded = ({ onClose }) => {
                     <div className="goal-text">
                         <span>목표: {goalWeight.toFixed(1)}kg</span>
                         <span>현재: {currentStatus.weight ? currentStatus.weight.toFixed(1) : '-'}kg</span>
+
                     </div>
                     <div className="progress-bar-container">
                         <div className="progress-bar-filled" style={{ width: `${progressPercent}%` }}></div>
@@ -101,6 +102,7 @@ const StatusExpanded = ({ onClose }) => {
                     <span className="stat-card-label">체지방률</span>
                     <span className="stat-card-value">{currentStatus.bodyFat ? currentStatus.bodyFat.toFixed(1) : '-'} %</span>
                     <span className="stat-card-change">{renderChange(bodyFatChange, '%')}</span>
+
                 </div>
                  <div className="stat-card">
                     <span className="stat-card-label">골격근량</span>
