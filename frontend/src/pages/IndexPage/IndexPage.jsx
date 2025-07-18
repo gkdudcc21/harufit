@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // ✅ [수정] useEffect 추가
 import { useNavigate } from 'react-router-dom';
 import "./IndexPage.css";
 import runnerBackground from '../../assets/images/index_image.png';
@@ -29,30 +29,30 @@ export default function IndexPage() {
         hard: "강력한 변화",
     };
 
-    // ✅✅✅ 핵심 수정 부분 ✅✅✅
+    // ✅ [추가] 컴포넌트 마운트 시 토큰 확인 및 자동 리다이렉트
+    useEffect(() => {
+        const userToken = localStorage.getItem('userToken');
+        const userNickname = localStorage.getItem('userNickname');
+        const userMode = localStorage.getItem('userMode');
+
+        if (userToken && userNickname && userMode) {
+            // 유효한 토큰 및 사용자 정보가 있으면 바로 HomePage로 이동
+            navigate(`/home?nickname=${userNickname}&mode=${userMode}`);
+        } else {
+            // 토큰이 없거나 정보가 불완전하면 초기 상태 유지
+            setIsInitialState(true);
+            setShowDifficultyButtons(false);
+        }
+    }, [navigate]); // navigate 함수가 변경될 때마다 재실행될 수 있도록 의존성 배열에 추가
+
     const handleModeSelect = async (mode) => {
         setSelectedMode(mode);
         setApiMessage('');
-
         const userNickname = localStorage.getItem('userNickname');
 
-        // 1. 게스트 사용자인지 확인
-        if (userNickname === 'Guest') {
-            // 2. 게스트이면 API 호출 없이 로컬스토리지에 모드 저장 후 바로 이동
-            localStorage.setItem('userMode', mode);
-            navigate(`/home?nickname=Guest&mode=${mode}`);
-            return; // 함수 종료
-        }
-
-        // 3. 정식 사용자일 경우에만 백엔드에 모드 변경 요청
-        try {
-            await apiClient.put('/users/mode', { mode });
-            localStorage.setItem('userMode', mode);
-            navigate(`/home?nickname=${userNickname}&mode=${mode}`);
-        } catch (error) {
-            setApiMessage(`오류: ${error.response?.data?.message || '모드 변경 중 오류 발생'}`);
-            console.error('Mode select error:', error);
-        }
+        // ✅ [수정] 인증 기능이 완성될 때까지, 모드 선택은 localStorage에만 저장하고 바로 이동합니다.
+        localStorage.setItem('userMode', mode);
+        navigate(`/home?nickname=${userNickname}&mode=${mode}`);
     };
 
     const handleEnterClick = async () => {
@@ -81,11 +81,17 @@ export default function IndexPage() {
             });
 
             setApiMessage(`성공: ${response.data.message}`);
-            
+
+            // ✅ [핵심 수정] 백엔드로부터 받은 토큰을 localStorage에 저장합니다.
+            localStorage.setItem('userToken', response.data.token);
+
             localStorage.setItem('userNickname', response.data.user.nickname);
-            localStorage.setItem('userPin', response.data.user.pin); // pin도 저장해주는 것이 좋습니다.
+            localStorage.setItem('userPin', response.data.user.pin);
             localStorage.setItem('userMode', response.data.user.mode || 'normal');
-            
+
+            // ✅ [추가] 로그인 성공 시 이전 채팅 내역 초기화
+            localStorage.removeItem('chatMessages');
+
             setIsInitialState(false);
             setShowDifficultyButtons(true);
 
@@ -95,15 +101,18 @@ export default function IndexPage() {
             console.error('Login/Signup error:', error);
         }
     };
-    
+
     const handleGuestMode = () => {
         setApiMessage('');
-        // '게스트'로 상태를 설정해야 헤더 텍스트가 즉시 바뀝니다.
-        setNickname('게스트'); 
+        setNickname('게스트');
         setPin('');
         localStorage.setItem('userNickname', 'Guest');
         localStorage.setItem('userPin', '0000');
         localStorage.setItem('userMode', 'easy');
+
+        // ✅ [추가] 게스트 모드 진입 시 이전 채팅 내역 초기화
+        localStorage.removeItem('chatMessages');
+
         setIsInitialState(false);
         setShowDifficultyButtons(true);
     };

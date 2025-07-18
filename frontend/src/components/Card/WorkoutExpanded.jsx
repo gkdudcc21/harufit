@@ -25,10 +25,10 @@ const mockWorkoutData = {
   ]
 };
 
-// ✅ 아이콘 컴포넌트 추가
-const CloseIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>);
+// 아이콘 컴포넌트 추가
+const CloseIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>);
 
-// 도넛 차트 컴포넌트 (기존과 동일)
+// 도넛 차트 컴포넌트
 const DonutChart = ({ data }) => {
   const { cardio, strength, flexibility } = data;
   const total = cardio + strength + flexibility;
@@ -64,12 +64,13 @@ const DonutChart = ({ data }) => {
   );
 };
 
+// ✅ [수정] 사라졌던 컴포넌트의 기본 틀을 다시 추가했습니다.
+export default function WorkoutExpanded({ onClose, onLogWorkoutToManager }) {
   const {
     managerTip, workoutDistribution, weeklyGoalAchievement, workoutLog, todaysRecommendedWorkout, tomorrowsRecommendedWorkout
   } = mockWorkoutData;
 
   return (
-    // ✅ [수정] 클릭 이벤트가 번지는 것을 막고, 공통 CSS 클래스를 적용합니다.
     <div className="expanded-modal-container" onClick={(e) => e.stopPropagation()}>
       <header className="expanded-modal-header">
         <h2>오늘의 운동</h2>
@@ -77,8 +78,6 @@ const DonutChart = ({ data }) => {
           <CloseIcon />
         </button>
       </header>
-
-      {/* --- 이하 내용은 기존과 거의 동일합니다 --- */}
 
       <section className="manager-tip-section">
         <p><span className="font-semibold">하루핏 매니저:</span> {managerTip}</p>
