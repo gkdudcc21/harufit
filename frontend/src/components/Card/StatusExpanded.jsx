@@ -21,7 +21,7 @@ const renderChange = (change, unit) => {
 };
 
 
-const StatusExpanded = ({ onClose }) => {
+const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
     const wrapperRef = useRef(null);
     const [hoveredData, setHoveredData] = useState(null);
 
@@ -118,7 +118,8 @@ const StatusExpanded = ({ onClose }) => {
                 {/* 차트와 목표 진행률 바를 함께 배치 */}
                 <div className="chart-section">
                     <div className="chart-container">
-                        <LineChart chartData={chartData} chartOptions={chartOptions} />
+                        <LineChart chartData={chartData} chartOptions={chartOptions} /> 
+                        {/* 필요시 LineChat에 props로 이것들 추가hoveredData={hoveredData} setHoveredData={setHoveredData} */}
                     </div>
                      <div className="goal-status">
                         <div className="goal-text">
@@ -155,7 +156,7 @@ const StatusExpanded = ({ onClose }) => {
                 
                 {/* 다른 페이지와 통일된 버튼 */}
                  <div className="record-btn-container">
-                    <button className="record-btn">매니저에게 상태 기록하기</button>
+                    <button className="record-btn" onClick={onLogStatusToManager}>매니저에게 상태 기록하기</button>
                 </div>
             </div>
         </div>

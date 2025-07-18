@@ -32,10 +32,6 @@ export default function HomePage() {
   const [isWorkoutExpanded, setWorkoutExpanded] = useState(false);
   const [isDietExpanded, setDietExpanded] = useState(false);
   const [isAboutExpanded, setAboutExpanded] = useState(false);
-
-  // ManagerChat에 포커스를 줄지 여부를 제어하는 상태
-  const [triggerChatFocus, setTriggerChatFocus] = useState(0); // 숫자 변경하여 useEffect 트리거
-
   const [activeMenuItem, setActiveMenuItem] = useState("AboutUs")
 
   const handleMenuClick = (menuItem) => {
@@ -43,11 +39,32 @@ export default function HomePage() {
     console.log(`Selected menu: ${menuItem}`)
   }
 
-  // '매니저에게 식단 기록하기' 버튼 클릭 시 호출될 함수
+  // ManagerChat에 포커스 여부 제어하는 상태, 숫자 변경하여 useEffect 트리거로 ManagerChat 반응
+  const [triggerChatFocus, setTriggerChatFocus] = useState(0);
+  // 어떤 모달에서 ManagerChat을 트리거했는지 (초기 메시지 설정을 위함)
+  const [chatTriggerSource, setChatTriggerSource] = useState(null); // 'diet', 'workout', 'status'
+
+  // 식단 기록 매니저에게 보내는 함수
   const handleLogDietToManager = () => {
-    setDietExpanded(false); // 식단 상세 모달 닫기
-    setTriggerChatFocus(prev => prev + 1); // ManagerChat의 포커스 로직 트리거
-    setActiveMenuItem("chat"); // 선택된 메뉴를 'chat'으로 변경 (시각적 피드백)
+    setDietExpanded(false); // 모달 닫기
+    setChatTriggerSource('diet'); // 식단 기록임을 알림
+    setTriggerChatFocus(prev => prev + 1); // ManagerChat에 포커스 요청 트리거
+  };
+
+  // 운동 기록 매니저에게 보내는 함수
+  const handleLogWorkoutToManager = () => {
+    setWorkoutExpanded(false);
+    setChatTriggerSource('workout');
+    setTriggerChatFocus(prev => prev + 1);
+    console.log('HomePage: handleLogWorkoutToManager 호출됨. chatTriggerSource:', 'workout', 'triggerChatFocus (다음 값):', triggerChatFocus + 1); 
+  };
+
+  // 상태 기록 매니저에게 보내는 함수
+  const handleLogStatusToManager = () => {
+    setStatusExpanded(false);
+    setChatTriggerSource('status');
+    setTriggerChatFocus(prev => prev + 1);
+    console.log('HomePage: handleLogStatusToManager 호출됨. chatTriggerSource:', 'status', 'triggerChatFocus (다음 값):', triggerChatFocus + 1); 
   };
 
   // 실제 API 호출 대신 사용할 가짜 데이터 (Mock Data)
@@ -83,25 +100,11 @@ export default function HomePage() {
     ]
   };
 
-  /*
-  // ✅ 에러의 원인이 되는 실제 API 호출 부분 전체를 주석 처리합니다.
-  const { data: statusData, loading: statusLoading, error: statusError } = useApi(
-    API_ENDPOINTS.STATUS_TODAY, 'get'
-  );
-  // ... (다른 API 호출들도 모두 주석 처리)
-
-  if (statusLoading || workoutLoading || dietLoading || calendarLoading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (statusError || workoutError || dietError || calendarError) {
-    return <div>에러 발생!</div>;
-  }
-  */
 
   return (
     <div className={`homepage-container ${selectedMode}-theme`}>
       <div className="background-image"></div>
+      {/* <h1 className="logo">하루핏로고 추후 추가</h1> */}
       <div className="user-info">
         <p>환영합니다, {nickname}님!</p>
         <p>모드: {selectedMode}</p>
@@ -175,7 +178,7 @@ export default function HomePage() {
       {isStatusExpanded && (
         <div className="modal-backdrop" onClick={() => setStatusExpanded(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <StatusExpanded onClose={() => setStatusExpanded(false)} />
+            <StatusExpanded onClose={() => setStatusExpanded(false)} onLogStatusToManager={handleLogStatusToManager}/>
           </div>
         </div>
       )}
@@ -189,13 +192,13 @@ export default function HomePage() {
       {isWorkoutExpanded && (
         <div className="modal-backdrop" onClick={() => setWorkoutExpanded(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <WorkoutExpanded onClose={() => setWorkoutExpanded(false)} />
+            <WorkoutExpanded onClose={() => setWorkoutExpanded(false)} onLogWorkoutToManager={handleLogWorkoutToManager} />
           </div>
         </div>
       )}
 
       <div className="chat-area">
-        <ManagerChat mode={selectedMode} shouldFocusInput={triggerChatFocus} />
+        <ManagerChat mode={selectedMode} shouldFocusInput={triggerChatFocus} triggerSource={chatTriggerSource}/>
       </div>
     </div>
   )
