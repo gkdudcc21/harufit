@@ -1,10 +1,25 @@
 // backend/src/controllers/aiController.js
 const aiService = require('../services/aiService');
-// ChatHistory, User 모델은 나중에 DB 저장 시 필요하므로 일단 유지합니다.
-const ChatHistory = require('../models/ChatHistory');
-const User = require('../models/User');
+const DietEntry = require('../models/DietEntry');
+const WorkoutEntry = require('../models/WorkoutEntry');
 
-exports.handleChat = async (req, res) => {
+// ✅ [수정] 한글 식사 타입을 영어로 변환하기 위한 객체(Map)를 추가합니다.
+const mealTypeMap = {
+    '아침': 'breakfast',
+    '점심': 'lunch',
+    '저녁': 'dinner',
+    '간식': 'snack'
+};
+
+const workoutTypeMap = {
+    '유산소': 'cardio',
+    '근력': 'strength',
+    '요가': 'yoga',
+    '스트레칭': 'stretching'
+};
+
+
+exports.parseAndLogChat = async (req, res) => {
     const user = req.user;
     const { message, history } = req.body;
 
@@ -13,24 +28,67 @@ exports.handleChat = async (req, res) => {
     }
 
     try {
-        const userContext = {
-            nickname: user.nickname,
-            targetWeight: user.targetWeight,
-            targetCalories: user.targetCalories,
-        };
+        const userContext = { nickname: user.nickname };
         
-        // ✅ 1. 서비스로부터 '대화용 답변'과 '추출 데이터'를 분리해서 받음
         const { conversationalReply, extractedData } = await aiService.getAiChatResponse(message, history || [], userContext);
 
-        // (향후 이곳에 extractedData를 DB에 저장하는 로직을 추가할 수 있습니다)
+        const savedData = [];
+
+        if (extractedData && extractedData.length > 0) {
+            for (const item of extractedData) {
+                if (item.type === 'diet' && item.items) {
+                    for (const food of item.items) {
+                        const nutrition = await aiService.getNutritionEstimate(food.name);
+                        
+                        // ✅ [수정] AI가 분석한 한글 mealType을 영어로 변환합니다. (예: '점심' -> 'lunch')
+                        const englishMealType = mealTypeMap[item.mealType] || 'other';
+
+                        const newDiet = new DietEntry({
+                            user: user._id,
+                            mealType: englishMealType, // 변환된 영어 타입을 저장
+                            foodItems: [{ name: food.name, ...nutrition }],
+                            totalCalories: nutrition.calories,
+                        });
+                        await newDiet.save();
+                        savedData.push(newDiet);
+                    }
+                } else if (item.type === 'workout' && item.items) {
+                    let totalDuration = 0;
+                    let totalCalories = 0;
+                    const exercises = item.items.map(ex => {
+                        totalDuration += ex.durationMinutes || 0;
+                        totalCalories += ex.caloriesBurned || 0;
+                        return {
+                            name: ex.name,
+                            durationMinutes: ex.durationMinutes,
+                            sets: ex.sets,
+                            reps: ex.reps,
+                        };
+                    });
+                    
+                    // ✅ [수정] AI가 분석한 한글 workoutType을 영어로 변환합니다.
+                    const englishWorkoutType = workoutTypeMap[item.workoutType] || 'other';
+
+                    const newWorkout = new WorkoutEntry({
+                        user: user._id,
+                        workoutType: englishWorkoutType, // 변환된 영어 타입을 저장
+                        exercises: exercises,
+                        totalDurationMinutes: totalDuration,
+                        totalCaloriesBurned: totalCalories,
+                    });
+                    await newWorkout.save();
+                    savedData.push(newWorkout);
+                }
+            }
+        }
         
-        // ✅ 2. 프론트엔드에 '대화용 답변'과 '추출된 데이터'를 각각 전달
         res.status(200).json({
-            reply: conversationalReply, // 사용자에게 보여줄 순수한 대화 내용
-            extractedData: extractedData // 프론트에서 추가 처리를 위한 데이터
+            reply: conversationalReply,
+            savedData: savedData,
         });
 
     } catch (error) {
+        console.error('AI 채팅 처리 중 오류:', error);
         res.status(500).json({ message: '하루핏 AI 매니저와의 통신에 문제가 발생했습니다.', error: error.message });
     }
 };

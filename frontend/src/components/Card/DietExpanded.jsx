@@ -1,14 +1,12 @@
 import React from 'react';
+// ✅ [수정] 각 컴포넌트의 CSS 대신 공통 모달 CSS를 가져옵니다.
+import '../common/ExpandedModal.css'; 
 import './DietExpanded.css';
 
-// 임시 데이터
+// 임시 데이터 (기존과 동일)
 const mockDietData = {
-  totalCalories: 1500,
-  totalCarbs: 180,
-  totalProtein: 100,
-  totalFat: 50,
-  waterIntake: 1.2,
-  waterTarget: 2.0,
+  totalCalories: 1500, totalCarbs: 180, totalProtein: 100, totalFat: 50,
+  waterIntake: 1.2, waterTarget: 2.0,
   recordedMeals: {
     breakfast: { name: '기록 없음', calories: 0 },
     lunch: { name: '닭가슴살 샐러드', calories: 550 },
@@ -23,18 +21,14 @@ const mockDietData = {
     dinner: { name: '채소 볶음밥', calories: 450 },
   },
   weeklyAchievement: [
-    { day: '월', achieved: 95 },
-    { day: '화', achieved: 105 },
-    { day: '수', achieved: 80 },
-    { day: '목', achieved: 110 },
-    { day: '금', achieved: 90 },
-    { day: '토', achieved: 75 },
+    { day: '월', achieved: 95 }, { day: '화', achieved: 105 }, { day: '수', achieved: 80 },
+    { day: '목', achieved: 110 }, { day: '금', achieved: 90 }, { day: '토', achieved: 75 },
     { day: '오늘', achieved: 83 },
   ]
 };
 
 // 아이콘 컴포넌트
-const CloseIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>);
+const CloseIcon = () => (<svg xmlns="http://www.w.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>);
 
 export default function DietExpanded({ onClose, onLogDietToManager }) {
   const {
@@ -44,21 +38,21 @@ export default function DietExpanded({ onClose, onLogDietToManager }) {
   } = mockDietData;
 
   const calorieProgress = Math.min((totalCalories / calorieTarget) * 100, 100);
-
-  // 원형 프로그레스 바를 위한 계산
   const waterProgress = Math.min(waterIntake / waterTarget, 1);
-  const circumference = 2 * Math.PI * 36; // 반지름 36
+  const circumference = 2 * Math.PI * 36;
   const strokeDashoffset = circumference * (1 - waterProgress);
 
-
   return (
-    <div className="diet-expanded-container">
-      <header className="diet-expanded-header">
+    // ✅ [수정] 클릭 이벤트가 번지는 것을 막고, 공통 CSS 클래스를 적용합니다.
+    <div className="expanded-modal-container" onClick={(e) => e.stopPropagation()}>
+      <header className="expanded-modal-header">
         <h2>오늘의 식단</h2>
-        <button onClick={onClose} className="close-button">
+        <button onClick={onClose} className="expanded-modal-close-btn">
           <CloseIcon />
         </button>
       </header>
+
+      {/* --- 이하 내용은 기존과 거의 동일합니다 --- */}
 
       <section className="ai-coach-tip">
         <p><span className="font-semibold">하루핏 매니저:</span> {aiCoachTip}</p>
@@ -72,7 +66,6 @@ export default function DietExpanded({ onClose, onLogDietToManager }) {
       </section>
 
       <main className="diet-expanded-main">
-        {/* 수분 섭취 섹션: 원형 프로그레스 바로 변경 */}
         <div className="water-intake-box">
           <label>오늘의 수분 섭취</label>
           <div className="water-progress-container">
@@ -80,13 +73,8 @@ export default function DietExpanded({ onClose, onLogDietToManager }) {
               <circle className="water-progress-bg" cx="40" cy="40" r="36"></circle>
               <circle
                 className="water-progress-bar"
-                cx="40"
-                cy="40"
-                r="36"
-                style={{
-                  strokeDasharray: circumference,
-                  strokeDashoffset: strokeDashoffset
-                }}
+                cx="40" cy="40" r="36"
+                style={{ strokeDasharray: circumference, strokeDashoffset: strokeDashoffset }}
               ></circle>
             </svg>
             <div className="water-progress-text">
