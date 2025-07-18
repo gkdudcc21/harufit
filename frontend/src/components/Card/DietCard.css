@@ -4,8 +4,8 @@
     padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
-    height: 88%;         /* 🔥 상위 .card-wrapper가 높이 제한 중이므로 100%로 채움 */
-    overflow: hidden;     /* 🔒 넘치는 부분 가리기 */
+    height: 88%;         /* 상위 .card-wrapper가 높이 제한 중이므로 100%로 채움 */
+    overflow: hidden;     /* 넘치는 부분 가리기 */
 }
 
 .card-header {
@@ -22,7 +22,7 @@
     /* Chrome, Safari, Opera */
 }
 
-/* 🔥 핵심 수정: 전체 콘텐츠 영역을 CSS Grid로 설정 */
+/* 전체 콘텐츠 영역을 CSS Grid로 설정 */
 .diet-content-grid {
     overflow-y: auto;
     scrollbar-width: none;

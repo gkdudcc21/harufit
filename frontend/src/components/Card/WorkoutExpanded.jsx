@@ -113,7 +113,7 @@ const DonutChart = ({ data }) => {
 };
 
 
-export default function WorkoutExpanded({ onClose }) {
+export default function WorkoutExpanded({ onClose, onLogWorkoutToManager }) {
   const {
     managerTip, workoutDistribution, weeklyGoalAchievement, workoutLog, todaysRecommendedWorkout, tomorrowsRecommendedWorkout
   } = mockWorkoutData;
@@ -199,7 +199,7 @@ export default function WorkoutExpanded({ onClose }) {
           </div>
         </div>
         <div className="log-action-section">
-          <button className="log-workout-btn">매니저에게 운동 기록하기</button>
+          <button className="log-workout-btn" onClick={onLogWorkoutToManager}>매니저에게 운동 기록하기</button>
         </div>
       </footer>
     </div>

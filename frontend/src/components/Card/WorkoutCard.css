@@ -23,7 +23,6 @@
     gap: var(--spacing-md);
     flex: 1;
     padding: 0 0.5rem;
-    /* 여백 살짝 추가 (선택) */
 }
 
 .current-workout,
