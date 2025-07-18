@@ -2,22 +2,11 @@
 const aiService = require('../services/aiService');
 const DietEntry = require('../models/DietEntry');
 const WorkoutEntry = require('../models/WorkoutEntry');
+// ✅ [수정] DB 저장을 위해 Status 모델을 가져옵니다.
+const Status = require('../models/Status');
 
-// ✅ [수정] 한글 식사 타입을 영어로 변환하기 위한 객체(Map)를 추가합니다.
-const mealTypeMap = {
-    '아침': 'breakfast',
-    '점심': 'lunch',
-    '저녁': 'dinner',
-    '간식': 'snack'
-};
-
-const workoutTypeMap = {
-    '유산소': 'cardio',
-    '근력': 'strength',
-    '요가': 'yoga',
-    '스트레칭': 'stretching'
-};
-
+const mealTypeMap = { '아침': 'breakfast', '점심': 'lunch', '저녁': 'dinner', '간식': 'snack' };
+const workoutTypeMap = { '유산소': 'cardio', '근력': 'strength', '요가': 'yoga', '스트레칭': 'stretching' };
 
 exports.parseAndLogChat = async (req, res) => {
     const user = req.user;
@@ -29,9 +18,7 @@ exports.parseAndLogChat = async (req, res) => {
 
     try {
         const userContext = { nickname: user.nickname };
-        
         const { conversationalReply, extractedData } = await aiService.getAiChatResponse(message, history || [], userContext);
-
         const savedData = [];
 
         if (extractedData && extractedData.length > 0) {
@@ -39,13 +26,10 @@ exports.parseAndLogChat = async (req, res) => {
                 if (item.type === 'diet' && item.items) {
                     for (const food of item.items) {
                         const nutrition = await aiService.getNutritionEstimate(food.name);
-                        
-                        // ✅ [수정] AI가 분석한 한글 mealType을 영어로 변환합니다. (예: '점심' -> 'lunch')
                         const englishMealType = mealTypeMap[item.mealType] || 'other';
-
                         const newDiet = new DietEntry({
                             user: user._id,
-                            mealType: englishMealType, // 변환된 영어 타입을 저장
+                            mealType: englishMealType,
                             foodItems: [{ name: food.name, ...nutrition }],
                             totalCalories: nutrition.calories,
                         });
@@ -58,26 +42,29 @@ exports.parseAndLogChat = async (req, res) => {
                     const exercises = item.items.map(ex => {
                         totalDuration += ex.durationMinutes || 0;
                         totalCalories += ex.caloriesBurned || 0;
-                        return {
-                            name: ex.name,
-                            durationMinutes: ex.durationMinutes,
-                            sets: ex.sets,
-                            reps: ex.reps,
-                        };
+                        return { name: ex.name, durationMinutes: ex.durationMinutes, sets: ex.sets, reps: ex.reps };
                     });
-                    
-                    // ✅ [수정] AI가 분석한 한글 workoutType을 영어로 변환합니다.
                     const englishWorkoutType = workoutTypeMap[item.workoutType] || 'other';
-
                     const newWorkout = new WorkoutEntry({
                         user: user._id,
-                        workoutType: englishWorkoutType, // 변환된 영어 타입을 저장
+                        workoutType: englishWorkoutType,
                         exercises: exercises,
                         totalDurationMinutes: totalDuration,
                         totalCaloriesBurned: totalCalories,
                     });
                     await newWorkout.save();
                     savedData.push(newWorkout);
+                
+                // ✅ [핵심 수정] '상태' 기록 로직을 추가했습니다.
+                } else if (item.type === 'status') {
+                    const newStatus = new Status({
+                        user: user._id,
+                        weight: item.weight,
+                        bodyFatPercentage: item.bodyFatPercentage,
+                        // AI가 다른 상태 값도 분석하면 여기에 추가할 수 있습니다.
+                    });
+                    await newStatus.save();
+                    savedData.push(newStatus);
                 }
             }
         }

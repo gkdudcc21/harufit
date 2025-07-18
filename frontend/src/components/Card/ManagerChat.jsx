@@ -1,95 +1,151 @@
-import React, { useState, useEffect, useRef } from 'react';
-import apiClient from '../../api/apiClient'; // API 클라이언트 import
+import React, { useState, useEffect, useRef, memo } from 'react'; // ✅ [수정] memo import 추가
+import apiClient from '../../api/apiClient';
 import './ManagerChat.css';
 
-export default function ManagerChat({ mode, shouldFocusInput }) {
-    // ✅ [수정] 첫 메시지는 useEffect에서 닉네임과 함께 동적으로 생성하므로 초기 상태를 비웁니다.
-    const [messages, setMessages] = useState([]);
+// ✅ [수정] memo를 직접 사용
+const ManagerChat = memo(function ManagerChat({ mode, shouldFocusInput, triggerSource, onDataRefresh, systemMessage }) {
+    const [messages, setMessages] = useState(() => {
+        try {
+            const savedMessages = localStorage.getItem('chatMessages');
+            if (savedMessages) {
+                return JSON.parse(savedMessages);
+            }
+        } catch (error) {
+            console.error("Failed to parse chat messages from localStorage", error);
+        }
+        const userNickname = localStorage.getItem('userNickname') || '게스트';
+        const welcomeMessage = {
+            sender: 'ai',
+            text: `안녕하세요! ${userNickname}님, 하루핏과 함께 건강해질 준비 되셨나요?`
+        };
+        return [welcomeMessage];
+    });
+
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isSpecialFocusActive, setIsSpecialFocusActive] = useState(false);
+    const [initialMessageForFocus, setInitialMessageForFocus] = useState('');
+    const [initialPlaceholderForFocus, setInitialPlaceholderForFocus] = useState('');
 
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
 
-    // ✅ 모드별 설명을 위한 객체 추가
     const modeDescriptions = {
         easy: "편안한 시작",
         normal: "꾸준한 관리",
         hard: "강력한 변화",
     };
 
-    // ✅ [수정] useEffect를 사용하여 컴포넌트가 처음 로딩될 때 환영 메시지들을 설정합니다.
     useEffect(() => {
-        const userNickname = localStorage.getItem('userNickname') || '게스트';
-        const userMode = localStorage.getItem('userMode') || 'normal';
-        const welcomeMessage = {
-            sender: 'ai',
-            text: `안녕하세요! ${userNickname}님, 하루핏과 함께 건강해질 준비 되셨나요?`
-        };
-        // 메시지 상태를 업데이트합니다.
-        setMessages([welcomeMessage]);
-
-        // 1초 후에 모드에 대한 설명 메시지를 추가합니다.
-        const timer = setTimeout(() => {
+        const savedMessages = localStorage.getItem('chatMessages');
+        if (!savedMessages || !JSON.parse(savedMessages).some(msg => msg.sender === 'ai' && msg.text.includes('안녕하세요!'))) {
+            const userNickname = localStorage.getItem('userNickname') || '게스트';
+            const userMode = localStorage.getItem('userMode') || 'normal';
+            const welcomeMessage = {
+                sender: 'ai',
+                text: `안녕하세요! ${userNickname}님, 하루핏과 함께 건강해질 준비 되셨나요?`
+            };
             const modeInfoMessage = {
                 sender: 'ai',
                 text: `'${userMode.toUpperCase()}' 모드를 선택하셨군요. '${modeDescriptions[userMode]}'를 목표로 함께 나아가요!`
             };
-            setMessages(prevMessages => [...prevMessages, modeInfoMessage]);
-        }, 1000); // 1초 지연
+            setMessages([welcomeMessage, modeInfoMessage]);
+        }
+    }, []);
 
-        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+    useEffect(() => {
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }, [messages]);
 
-    }, []); // 빈 배열을 전달하여 이 효과가 한 번만 실행되도록 합니다.
-
+    useEffect(() => {
+        if (systemMessage && systemMessage.text) {
+            setMessages(prevMessages => [...prevMessages, systemMessage]);
+        }
+    }, [systemMessage]);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
-
     useEffect(scrollToBottom, [messages]);
-
-    // ✅ shouldFocusInput 로직은 현재 파일에 없으므로, 기본 포커스 로직만 유지합니다.
     useEffect(() => {
-        if (!isLoading) {
-            inputRef.current?.focus();
+        if (shouldFocusInput > 0 && triggerSource) {
+            if (inputRef.current) {
+                inputRef.current.focus();
+                let messageToSet = '';
+                let placeholderToSet = '';
+                switch (triggerSource) {
+                    case 'diet':
+                        messageToSet = "오늘 식단 기록할게요: ";
+                        placeholderToSet = "오늘 식단 기록을 시작해보세요!";
+                        break;
+                    case 'workout':
+                        // ✅ [수정] message_to_set -> messageToSet
+                        // ✅ [수정] placeholder_to_set -> placeholderToSet
+                        messageToSet = "오늘 운동 기록할게요: ";
+                        placeholderToSet = "오늘 운동 기록을 시작해보세요!";
+                        break;
+                    case 'status':
+                        messageToSet = "오늘 상태 기록할게요: ";
+                        placeholderToSet = "오늘 상태 기록을 시작해보세요!";
+                        break;
+                    default:
+                        messageToSet = "";
+                        placeholderToSet = "메시지를 입력하세요...";
+                        break;
+                }
+                setInput(messageToSet);
+                setInitialMessageForFocus(messageToSet);
+                setInitialPlaceholderForFocus(placeholderToSet);
+                setIsSpecialFocusActive(true);
+                setTimeout(() => {
+                    inputRef.current.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length);
+                }, 0);
+            }
         }
-    }, [isLoading]);
-
+    }, [shouldFocusInput, triggerSource]);
+    useEffect(() => {
+        if (isSpecialFocusActive && initialMessageForFocus && input !== initialMessageForFocus) {
+            setIsSpecialFocusActive(false);
+        }
+    }, [input, isSpecialFocusActive, initialMessageForFocus]);
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
 
         const userMessage = { sender: 'user', text: input };
-
         const historyForApi = messages.map(msg => ({
             role: msg.sender === 'ai' ? 'assistant' : 'user',
             content: msg.text
         }));
 
-        setMessages(prev => [...prev, userMessage]);
+        setMessages(prev => [...prev, userMessage]); // 사용자 메시지 먼저 추가
+
         setInput('');
         setIsLoading(true);
+        setIsSpecialFocusActive(false);
 
         try {
-            // ✅ [핵심 수정] API 호출 주소를 최신 기능인 '/ai/parse-and-log'로 변경합니다.
             const response = await apiClient.post('/ai/parse-and-log', {
                 message: userMessage.text,
                 history: historyForApi,
             });
 
-            // 1. AI의 대화 응답을 먼저 추가합니다.
             const aiReplyMessage = { sender: 'ai', text: response.data.reply };
-            setMessages(prev => [...prev, aiReplyMessage]);
+            let newMessagesBatch = [aiReplyMessage];
 
-            // 2. ✅ [핵심 수정] 백엔드에서 데이터가 성공적으로 저장되었다면, 확인 메시지를 추가합니다.
             if (response.data.savedData && response.data.savedData.length > 0) {
-                // 0.5초 후에 "기록했어요!" 메시지를 띄워서 자연스럽게 보이도록 합니다.
-                setTimeout(() => {
-                    const successLogMessage = { sender: 'ai', text: '말씀하신 내용을 바탕으로 식단/운동 정보를 기록했어요! 👍' };
-                    setMessages(prev => [...prev, successLogMessage]);
-                }, 500);
+                const successLogMessage = { sender: 'ai', text: '말씀하신 내용을 바탕으로 식단/운동 정보를 기록했어요! 👍' };
+                newMessagesBatch.push(successLogMessage);
+            }
+
+            setMessages(prev => [...prev, ...newMessagesBatch]); // 모든 AI 관련 메시지를 한 번에 추가
+
+            // 데이터 새로고침을 딜레이 시켜 메시지 표시 후 깜빡임 발생
+            if (response.data.savedData && response.data.savedData.length > 0 && onDataRefresh) {
+                setTimeout(() => { // 딜레이 추가 (예: 500ms)
+                    onDataRefresh();
+                }, 500); // 0.5초 후 데이터 새로고침 시작
             }
 
         } catch (error) {
@@ -98,6 +154,7 @@ export default function ManagerChat({ mode, shouldFocusInput }) {
             console.error("AI 채팅 오류:", error);
         } finally {
             setIsLoading(false);
+            inputRef.current?.focus();
         }
     };
 
@@ -120,18 +177,18 @@ export default function ManagerChat({ mode, shouldFocusInput }) {
                 <div ref={messagesEndRef} />
             </div>
             <form className="chat-input-form" onSubmit={handleSendMessage}>
-                <input
+                <input className={`chat-input ${isSpecialFocusActive ? 'focused' : ''}`}
                     ref={inputRef}
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="메시지를 입력하세요..."
+                    placeholder={isSpecialFocusActive ? initialPlaceholderForFocus : "메시지를 입력하세요..."}
                     disabled={isLoading}
-                    className="chat-input"
                 />
                 <button type="submit" disabled={isLoading} className="chat-send-btn">전송</button>
             </form>
         </div>
     );
-}
+}); // ✅ [수정] 함수 닫는 괄호와 세미콜론
 
+export default ManagerChat; // ✅ [수정] export default 문

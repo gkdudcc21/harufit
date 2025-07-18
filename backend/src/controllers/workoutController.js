@@ -14,22 +14,43 @@ exports.getTodayWorkoutSummary = async (req, res) => {
         const todayWorkouts = await WorkoutEntry.find({
             user: userId,
             createdAt: { $gte: todayStart, $lte: todayEnd }
-        });
+        }).sort({ createdAt: -1 }); // 최신순으로 정렬
 
-        let totalDurationMinutes = 0;
-        let totalCaloriesBurned = 0;
+        // ✅ [수정] 데이터가 없는 신규 사용자를 위한 처리
+        if (!todayWorkouts || todayWorkouts.length === 0) {
+            return res.status(200).json({
+                latestWorkout: null, // 최신 운동 없음
+                recommendedWorkout: { name: '자전거 타기', kcal: 200 }, // 임시 추천
+            });
+        }
+        
+        // ✅ [수정] 프론트엔드가 필요한 형태로 데이터를 가공합니다.
+        // 오늘 한 모든 운동 목록에서 최신 4개만 추출
+        const latestWorkoutDetails = [];
         todayWorkouts.forEach(entry => {
-            totalDurationMinutes += entry.totalDurationMinutes || 0;
-            totalCaloriesBurned += entry.totalCaloriesBurned || 0;
+            entry.exercises.forEach(ex => {
+                let details = '';
+                if(ex.durationMinutes) details += `${ex.durationMinutes}분`;
+                else if(ex.sets && ex.reps) details += `${ex.weightKg || ''}kg, ${ex.reps}회, ${ex.sets}세트`;
+                
+                latestWorkoutDetails.push({ name: ex.name, details: details });
+            });
         });
 
-        const summary = { totalDurationMinutes, totalCaloriesBurned };
+        const summary = {
+            latestWorkout: latestWorkoutDetails.slice(0, 4), // 최대 4개만 보냄
+            recommendedWorkout: { name: '자전거 타기', kcal: 200 }, // 임시 추천
+        };
+
         res.status(200).json(summary);
     } catch (error) {
         console.error('오늘의 운동 요약 조회 중 오류:', error);
         res.status(500).json({ message: '오늘의 운동 요약 조회 중 오류가 발생했습니다.' });
     }
 };
+
+
+// --- 이하 다른 함수들은 기존 코드를 그대로 유지합니다. ---
 
 // 운동 기록 추가
 exports.addWorkoutEntry = async (req, res) => {

@@ -17,9 +17,7 @@
 .workout-content {
     display: flex;
     flex-direction: row;
-    /* 기존: column → row로 변경 */
     justify-content: space-between;
-    /* 좌우 정렬 */
     gap: var(--spacing-md);
     flex: 1;
     padding: 0 0.5rem;
@@ -38,7 +36,6 @@
     width: 50%;
     box-sizing: border-box;
     justify-content: flex-start;
-    /* 내부 콘텐츠 정렬 */
 }
 
 .current-workout {
@@ -63,7 +60,6 @@
     font-weight: bold;
     backdrop-filter: blur(5px);
     right: 10px;
-    /* 왼쪽 → 오른쪽으로 변경 */
 }
 
 .workout-icon {
@@ -113,15 +109,33 @@
 .exercise-list li span:first-child {
     flex: 1;
     white-space: normal;
-    /* 줄바꿈 허용 */
     word-break: keep-all;
     overflow: visible;
 }
 
 .exercise-list li span:last-child {
     flex-shrink: 0;
-    /* 줄어들지 않게 */
     margin-left: 12px;
     text-align: right;
     white-space: nowrap;
 }
+
+/* ✅ [추가] 섹션 내부에 기록이 없을 때의 안내 메시지 스타일 */
+.empty-section-guide {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.italic-highlight {
+    font-style: italic;
+  }
+
+  
+
+  .my-colored-text {
+    color: #f8ee65
+  }

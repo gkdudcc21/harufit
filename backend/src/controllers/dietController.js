@@ -17,13 +17,41 @@ const getTodayDietSummary = async (req, res) => {
             createdAt: { $gte: todayStart, $lte: todayEnd }
         });
 
+        // ✅ [수정] 데이터가 없는 신규 사용자를 위한 처리
+        if (!todayDiets || todayDiets.length === 0) {
+            return res.status(200).json({
+                totalCalories: 0,
+                eatenMeals: [],
+                waterIntake: { current: 0, goal: 2 }, // 기본 목표 2L
+                recommendedMeal: { type: '저녁', menu: '가벼운 샐러드' }, // 임시 추천
+                targetCalories: req.user.targetCalories || 2000,
+            });
+        }
+
+        // ✅ [수정] 더 상세한 요약 정보를 계산합니다.
         let totalCalories = 0;
+        let totalWaterIntakeMl = 0;
+        const eatenMeals = [];
+
         todayDiets.forEach(diet => {
             totalCalories += diet.totalCalories || 0;
+            totalWaterIntakeMl += diet.waterIntakeMl || 0;
+            // 프론트엔드가 사용하기 좋은 형태로 식단 목록을 가공합니다.
+            eatenMeals.push({
+                type: diet.mealType,
+                menu: diet.foodItems.map(item => item.name).join(', '),
+                kcal: diet.totalCalories
+            });
         });
         
         const summary = {
             totalCalories,
+            eatenMeals,
+            waterIntake: {
+                current: totalWaterIntakeMl / 1000, // ml를 L로 변환
+                goal: 2 // 기본 목표 2L
+            },
+            recommendedMeal: { type: '저녁', menu: '가벼운 샐러드' }, // 임시 추천
             targetCalories: req.user.targetCalories || 2000,
         };
 
@@ -33,6 +61,8 @@ const getTodayDietSummary = async (req, res) => {
         res.status(500).json({ message: '오늘의 식단 요약 조회 중 서버 오류가 발생했습니다.' });
     }
 };
+
+// --- 이하 다른 함수들은 기존 코드를 그대로 유지합니다. ---
 
 // 식단 기록 추가
 const addDietEntry = async (req, res) => {
@@ -106,7 +136,6 @@ const deleteDietEntry = async (req, res) => {
     }
 };
 
-// ✅ 모든 함수를 여기서 한번에 내보냅니다.
 module.exports = {
     getTodayDietSummary,
     addDietEntry,
