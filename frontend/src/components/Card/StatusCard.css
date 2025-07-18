@@ -3,7 +3,6 @@
 .status-card {
     padding: var(--spacing-lg);
     min-height: 0;
-    height: 80%;
 }
 
 .card-header {
@@ -17,9 +16,8 @@
 .status-content {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    /* ✨ 추가: 내용이 넘칠 때 스크롤바 생성 */
-    -ms-overflow-style: none;
+    overflow-y: auto; /* 내용이 넘칠 때 스크롤바 생성 */
+    -ms-overflow-style: none; /* 스크롤바 숨김*/
     /* IE and Edge */
     scrollbar-width: none;
     /* Firefox */
@@ -91,7 +89,6 @@
     .status-card {
         padding: 0.8rem;
         max-height: 280px;
-
     }
 
     .status-icon {
@@ -101,7 +98,6 @@
     .status-text {
         font-size: 0.8rem;
         max-height: 200px;
-
     }
 }
 

@@ -23,15 +23,15 @@ export default function DietCard({ onExpand, mode, data }) {
         {/* 1. 섭취한 식단 (상단 좌측) */}
         <div className="eaten-meals-section">
           <div className="diet-item">
-            <p>점심: {lunch.menu} <span className="diet-kcal">({lunch.kcal} kcal)</span></p>
+            <p>점심: {lunch.menu} <br /> <span className="diet-kcal">{lunch.kcal} kcal</span></p>
           </div>
           <div className="diet-item">
-            <p>저녁: {dinner.menu} <span className="diet-kcal">({dinner.kcal} kcal)</span></p>
+            <p>저녁: {dinner.menu} <br /> <span className="diet-kcal">{dinner.kcal} kcal</span></p>
           </div>
         </div>
 
         {/* 2. 추천 식단 (상단 우측) */}
-        <div className="recommendation-section">
+        <div className="recommend-section">
           <div className="recommendation-header">오늘의 추천 식단 </div>
           <p className="rec-menu">{recommendedMeal.menu}</p>
         </div>
