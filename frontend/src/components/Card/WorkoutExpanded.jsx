@@ -1,56 +1,42 @@
 import React from 'react';
+// ✅ [수정] 공통 모달 CSS를 가져옵니다.
+import '../common/ExpandedModal.css';
 import './WorkoutExpanded.css';
 
-// 임시 데이터
+// 임시 데이터 (기존과 동일)
 const mockWorkoutData = {
   managerTip: '오늘은 근력 운동의 비중이 높았네요! 내일은 가벼운 유산소로 몸을 풀어주는 건 어떨까요?',
   totalCaloriesBurned: 350,
-  workoutDistribution: {
-    cardio: 30,
-    strength: 55,
-    flexibility: 15,
-  },
+  workoutDistribution: { cardio: 30, strength: 55, flexibility: 15 },
   weeklyGoalAchievement: [
-    { day: '월', achieved: 100 },
-    { day: '화', achieved: 80 },
-    { day: '수', achieved: 0 },
-    { day: '목', achieved: 110 },
-    { day: '금', achieved: 90 },
-    { day: '토', achieved: 120 },
+    { day: '월', achieved: 100 }, { day: '화', achieved: 80 }, { day: '수', achieved: 0 },
+    { day: '목', achieved: 110 }, { day: '금', achieved: 90 }, { day: '토', achieved: 120 },
     { day: '오늘', achieved: 80 },
   ],
   workoutLog: [
-    { name: '벤치 프레스', details: '60kg, 12회, 3세트' },
-    { name: '스쿼트', details: '80kg, 10회, 5세트' },
-    { name: '러닝', details: '20분' },
-    { name: '마무리 스트레칭', details: '10분' },
+    { name: '벤치 프레스', details: '60kg, 12회, 3세트' }, { name: '스쿼트', details: '80kg, 10회, 5세트' },
+    { name: '러닝', details: '20분' }, { name: '마무리 스트레칭', details: '10분' },
   ],
   todaysRecommendedWorkout: [
-    { name: '가벼운 조깅', details: '20분' },
-    { name: '폼롤러 스트레칭', details: '10분' },
+    { name: '가벼운 조깅', details: '20분' }, { name: '폼롤러 스트레칭', details: '10분' },
   ],
   tomorrowsRecommendedWorkout: [
-    { name: '하체 근력 운동', details: '40분' },
-    { name: '요가', details: '20분' },
+    { name: '하체 근력 운동', details: '40분' }, { name: '요가', details: '20분' },
   ]
 };
 
-// 아이콘 컴포넌트
-const CloseIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>);
+// ✅ 아이콘 컴포넌트 추가
+const CloseIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>);
 
-// 도넛 차트 컴포넌트
+// 도넛 차트 컴포넌트 (기존과 동일)
 const DonutChart = ({ data }) => {
   const { cardio, strength, flexibility } = data;
   const total = cardio + strength + flexibility;
   const radius = 52;
   const circumference = 2 * Math.PI * radius;
-
-  // ✅ 각 세그먼트의 길이를 계산합니다.
   const cardioLength = (cardio / total) * circumference;
   const strengthLength = (strength / total) * circumference;
   const flexibilityLength = (flexibility / total) * circumference;
-
-  // ✅ 각 세그먼트의 시작점을 계산합니다. (stroke-dashoffset)
   const strengthOffset = -cardioLength;
   const flexibilityOffset = -(cardioLength + strengthLength);
 
@@ -58,50 +44,16 @@ const DonutChart = ({ data }) => {
     <div className="donut-chart-container">
       <svg width="120" height="120" viewBox="0 0 120 120" className="donut-chart-svg">
         <defs>
-          <linearGradient id="gradCardio" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#60a5fa', stopOpacity: 1 }} />
-            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
-          </linearGradient>
-          <linearGradient id="gradStrength" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#34d399', stopOpacity: 1 }} />
-            <stop offset="100%" style={{ stopColor: '#10b981', stopOpacity: 1 }} />
-          </linearGradient>
-          <linearGradient id="gradFlexibility" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#facc15', stopOpacity: 1 }} />
-            <stop offset="100%" style={{ stopColor: '#f59e0b', stopOpacity: 1 }} />
-          </linearGradient>
-          <filter id="dropshadow" height="130%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-            <feOffset dx="1" dy="2" result="offsetblur" />
-            <feComponentTransfer>
-              <feFuncA type="linear" slope="0.2" />
-            </feComponentTransfer>
-            <feMerge>
-              <feMergeNode />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
+          <linearGradient id="gradCardio" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style={{ stopColor: '#60a5fa', stopOpacity: 1 }} /><stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} /></linearGradient>
+          <linearGradient id="gradStrength" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style={{ stopColor: '#34d399', stopOpacity: 1 }} /><stop offset="100%" style={{ stopColor: '#10b981', stopOpacity: 1 }} /></linearGradient>
+          <linearGradient id="gradFlexibility" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style={{ stopColor: '#facc15', stopOpacity: 1 }} /><stop offset="100%" style={{ stopColor: '#f59e0b', stopOpacity: 1 }} /></linearGradient>
+          <filter id="dropshadow" height="130%"><feGaussianBlur in="SourceAlpha" stdDeviation="2" /><feOffset dx="1" dy="2" result="offsetblur" /><feComponentTransfer><feFuncA type="linear" slope="0.2" /></feComponentTransfer><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
         </defs>
         <circle className="donut-chart-bg" cx="60" cy="60" r={radius} />
         <g style={{ filter: "url(#dropshadow)" }}>
-          {/* ✅ 각 세그먼트를 올바른 계산법으로 다시 그립니다. */}
-          <circle
-            className="donut-chart-segment segment-cardio"
-            cx="60" cy="60" r={radius}
-            strokeDasharray={`${cardioLength} ${circumference}`}
-          />
-          <circle
-            className="donut-chart-segment segment-strength"
-            cx="60" cy="60" r={radius}
-            strokeDasharray={`${strengthLength} ${circumference}`}
-            strokeDashoffset={strengthOffset}
-          />
-          <circle
-            className="donut-chart-segment segment-flexibility"
-            cx="60" cy="60" r={radius}
-            strokeDasharray={`${flexibilityLength} ${circumference}`}
-            strokeDashoffset={flexibilityOffset}
-          />
+          <circle className="donut-chart-segment segment-cardio" cx="60" cy="60" r={radius} strokeDasharray={`${cardioLength} ${circumference}`} />
+          <circle className="donut-chart-segment segment-strength" cx="60" cy="60" r={radius} strokeDasharray={`${strengthLength} ${circumference}`} strokeDashoffset={strengthOffset} />
+          <circle className="donut-chart-segment segment-flexibility" cx="60" cy="60" r={radius} strokeDasharray={`${flexibilityLength} ${circumference}`} strokeDashoffset={flexibilityOffset} />
         </g>
       </svg>
       <div className="donut-chart-text">
@@ -112,20 +64,22 @@ const DonutChart = ({ data }) => {
   );
 };
 
-
 export default function WorkoutExpanded({ onClose }) {
   const {
     managerTip, workoutDistribution, weeklyGoalAchievement, workoutLog, todaysRecommendedWorkout, tomorrowsRecommendedWorkout
   } = mockWorkoutData;
 
   return (
-    <div className="workout-expanded-container">
-      <header className="workout-expanded-header">
+    // ✅ [수정] 클릭 이벤트가 번지는 것을 막고, 공통 CSS 클래스를 적용합니다.
+    <div className="expanded-modal-container" onClick={(e) => e.stopPropagation()}>
+      <header className="expanded-modal-header">
         <h2>오늘의 운동</h2>
-        <button onClick={onClose} className="close-button">
+        <button onClick={onClose} className="expanded-modal-close-btn">
           <CloseIcon />
         </button>
       </header>
+
+      {/* --- 이하 내용은 기존과 거의 동일합니다 --- */}
 
       <section className="manager-tip-section">
         <p><span className="font-semibold">하루핏 매니저:</span> {managerTip}</p>

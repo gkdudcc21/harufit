@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const aiController = require('../controllers/aiController');
-const authMiddleware = require('../middleware/authMiddleware'); // 인증 미들웨어 불러오기
+const authMiddleware = require('../middleware/authMiddleware');
 
-// POST /api/ai/chat 엔드포인트 수정
-// authMiddleware를 추가하여 인증된 사용자만 접근 가능하도록 합니다.
-router.post('/chat', authMiddleware, aiController.handleChat);
+// ✅ [수정] 프론트엔드가 호출하는 API 경로('/parse-and-log')와 일치시킵니다.
+// ✅ [수정] 컨트롤러 함수 이름을 새로운 이름('parseAndLogChat')으로 변경합니다.
+router.post('/parse-and-log', authMiddleware, aiController.parseAndLogChat);
 
 module.exports = router;
