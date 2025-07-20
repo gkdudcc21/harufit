@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react"; // ✅ [수정] useEffect 추가
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./IndexPage.css";
 import runnerBackground from '../../assets/images/index_image.png';
@@ -29,48 +29,32 @@ export default function IndexPage() {
         hard: "강력한 변화",
     };
 
-    // ✅ [추가] 컴포넌트 마운트 시 토큰 확인 및 자동 리다이렉트
     useEffect(() => {
         const userToken = localStorage.getItem('userToken');
-        const userNickname = localStorage.getItem('userNickname');
-        const userMode = localStorage.getItem('userMode');
-
-        if (userToken && userNickname && userMode) {
-            // 유효한 토큰 및 사용자 정보가 있으면 바로 HomePage로 이동
-            navigate(`/home?nickname=${userNickname}&mode=${userMode}`);
-        } else {
-            // 토큰이 없거나 정보가 불완전하면 초기 상태 유지
-            setIsInitialState(true);
-            setShowDifficultyButtons(false);
+        if (userToken) {
+            navigate('/home');
         }
-    }, [navigate]); // navigate 함수가 변경될 때마다 재실행될 수 있도록 의존성 배열에 추가
+    }, [navigate]);
 
     const handleModeSelect = async (mode) => {
         setSelectedMode(mode);
         setApiMessage('');
         const userNickname = localStorage.getItem('userNickname');
-
-        // ✅ [수정] 인증 기능이 완성될 때까지, 모드 선택은 localStorage에만 저장하고 바로 이동합니다.
-        localStorage.setItem('userMode', mode);
-        navigate(`/home?nickname=${userNickname}&mode=${mode}`);
+        
+        try {
+            await apiClient.put('/users/mode', { mode });
+            localStorage.setItem('userMode', mode);
+            navigate(`/home?nickname=${userNickname}&mode=${mode}`);
+        } catch (error) {
+            setApiMessage('모드 설정 중 오류가 발생했습니다.');
+            console.error('Mode update error:', error);
+        }
     };
 
     const handleEnterClick = async () => {
         setApiMessage('');
-        if (!nickname.trim()) {
-            setApiMessage('닉네임을 입력해주세요.');
-            return;
-        }
-        if (nickname.trim().length < 2 || nickname.trim().length > 20) {
-            setApiMessage('닉네임은 2자 이상 20자 이하로 입력해주세요.');
-            return;
-        }
-        if (!pin.trim()) {
-            setApiMessage('PIN 번호를 입력해주세요.');
-            return;
-        }
-        if (pin.length !== 4 || !/^\d+$/.test(pin.trim())) {
-            setApiMessage('PIN 번호는 4자리 숫자로 입력해주세요.');
+        if (!nickname.trim() || !pin.trim()) {
+            setApiMessage('닉네임과 PIN을 모두 입력해주세요.');
             return;
         }
 
@@ -80,41 +64,42 @@ export default function IndexPage() {
                 pin: pin.trim(),
             });
 
-            setApiMessage(`성공: ${response.data.message}`);
-
-            // ✅ [핵심 수정] 백엔드로부터 받은 토큰을 localStorage에 저장합니다.
             localStorage.setItem('userToken', response.data.token);
-
             localStorage.setItem('userNickname', response.data.user.nickname);
-            localStorage.setItem('userPin', response.data.user.pin);
-            localStorage.setItem('userMode', response.data.user.mode || 'normal');
-
-            // ✅ [추가] 로그인 성공 시 이전 채팅 내역 초기화
             localStorage.removeItem('chatMessages');
 
+            if (response.data.message.includes('로그인')) {
+                localStorage.setItem('userMode', response.data.user.mode || 'normal');
+                navigate('/home');
+            } else {
+                setIsInitialState(false);
+                setShowDifficultyButtons(true);
+            }
+
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+            setApiMessage(`오류: ${errorMessage}`);
+        }
+    };
+
+    const handleGuestMode = async () => {
+        setApiMessage('');
+        try {
+            const response = await apiClient.post('/users/guest');
+
+            localStorage.setItem('userToken', response.data.token);
+            localStorage.setItem('userNickname', response.data.user.nickname);
+            // userMode는 다음 단계(모드 선택)에서 저장됩니다.
+            localStorage.removeItem('chatMessages');
+
+            // ✅ [핵심 수정] 바로 이동하는 대신, 모드 선택 버튼을 보여줍니다.
             setIsInitialState(false);
             setShowDifficultyButtons(true);
 
         } catch (error) {
             const errorMessage = error.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
             setApiMessage(`오류: ${errorMessage}`);
-            console.error('Login/Signup error:', error);
         }
-    };
-
-    const handleGuestMode = () => {
-        setApiMessage('');
-        setNickname('게스트');
-        setPin('');
-        localStorage.setItem('userNickname', 'Guest');
-        localStorage.setItem('userPin', '0000');
-        localStorage.setItem('userMode', 'easy');
-
-        // ✅ [추가] 게스트 모드 진입 시 이전 채팅 내역 초기화
-        localStorage.removeItem('chatMessages');
-
-        setIsInitialState(false);
-        setShowDifficultyButtons(true);
     };
 
     const handleMouseEnterModeBtn = (modeId) => {
@@ -127,16 +112,13 @@ export default function IndexPage() {
 
     return (
         <div className="index-container">
-            <div
-                className="background-image"
-                style={{ backgroundImage: `url(${runnerBackground})` }}
-            >
+            <div className="background-image" style={{ backgroundImage: `url(${runnerBackground})` }}>
                 <div className="overlay">
                     <div className="header-text">
                         {isInitialState ? (
                             <p>안녕하세요! 하루핏과 함께 건강해질 준비 되셨나요?</p>
                         ) : (
-                            <p><strong>{nickname} </strong>님, 하루핏과 함께 건강해질 준비 되셨나요?</p>
+                            <p><strong>{localStorage.getItem('userNickname') || nickname}</strong>님, 환영합니다! 목표를 향한 첫 걸음, 난이도를 선택해주세요.</p>
                         )}
                     </div>
                     <h1 className="main-title">
@@ -171,10 +153,7 @@ export default function IndexPage() {
                                     입장
                                 </button>
                             </div>
-                            <button
-                                onClick={handleGuestMode}
-                                className="guest-btn-inline"
-                            >
+                            <button onClick={handleGuestMode} className="guest-btn-inline">
                                 게스트로 입장
                             </button>
                         </div>

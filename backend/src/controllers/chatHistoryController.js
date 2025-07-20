@@ -1,6 +1,6 @@
 // backend/src/controllers/chatHistoryController.js
 const ChatHistory = require('../models/ChatHistory'); // ChatHistory 모델 불러오기
-const User = require('../models/User'); // User 모델 불러오기
+const User = require('../models/user'); // User 모델 불러오기
 
 // 특정 사용자의 대화 기록 조회
 exports.getChatHistory = async (req, res) => {

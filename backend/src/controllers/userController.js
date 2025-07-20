@@ -1,13 +1,40 @@
-const User = require('../models/User');
-// ✅ [추가] jsonwebtoken 라이브러리를 가져옵니다.
+const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
-// ✅ [추가] JWT 토큰을 생성하는 헬퍼 함수입니다.
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d', // 토큰 유효기간: 30일
+    expiresIn: '30d',
   });
 };
+
+// ✅ [핵심 수정] 게스트 유저 생성 함수 로직 변경
+exports.createGuestUser = async (req, res) => {
+  try {
+    // 닉네임을 'Guest'로 고정합니다.
+    const guestNickname = 'Guest';
+
+    // 혹시 모를 중복을 피하기 위해, 기존 'Guest' 계정이 있다면 삭제합니다.
+    // 이 방법은 동시에 여러 명이 게스트 접속을 시도할 때 문제를 일으킬 수 있으나,
+    // 현재 테스트 환경에서는 가장 간단하고 확실한 방법입니다.
+    await User.deleteOne({ nickname: guestNickname, isGuest: true });
+
+    const guestUser = await User.create({
+      nickname: guestNickname,
+      mode: 'easy',
+      isGuest: true,
+    });
+
+    res.status(201).json({
+      message: '게스트 사용자가 성공적으로 생성되었습니다.',
+      user: guestUser,
+      token: generateToken(guestUser._id),
+    });
+  } catch (error) {
+    console.error('게스트 사용자 생성 중 오류:', error);
+    res.status(500).json({ message: '게스트 처리 중 서버 오류가 발생했습니다.' });
+  }
+};
+
 
 // '로그인 또는 회원가입'을 모두 처리하는 함수
 exports.createUser = async (req, res) => {
@@ -16,7 +43,6 @@ exports.createUser = async (req, res) => {
   if (!nickname || !pin) {
     return res.status(400).json({ message: '닉네임과 PIN은 필수입니다.' });
   }
-  // ... (유효성 검사는 기존과 동일)
   const trimmedNickname = nickname.trim();
   if (trimmedNickname.length < 2 || trimmedNickname.length > 20) {
     return res.status(400).json({ message: '닉네임은 2자 이상 20자 이하로 입력해주세요.' });
@@ -29,9 +55,8 @@ exports.createUser = async (req, res) => {
   try {
     const existingUser = await User.findOne({ nickname: trimmedNickname });
 
-    if (existingUser) { // 사용자가 이미 존재할 경우 (로그인 시도)
+    if (existingUser) {
       if (existingUser.pin === parsedPin) {
-        // ✅ [수정] 로그인 성공 시, 토큰을 함께 발급하여 응답에 포함합니다.
         return res.status(200).json({
           message: '로그인에 성공했습니다.',
           user: existingUser,
@@ -42,14 +67,12 @@ exports.createUser = async (req, res) => {
       }
     }
 
-    // 사용자가 없을 경우 (회원가입)
     const newUser = await User.create({
       nickname: trimmedNickname,
       pin: parsedPin,
       mode: 'normal',
     });
 
-    // ✅ [수정] 회원가입 성공 시에도, 토큰을 함께 발급하여 응답에 포함합니다.
     res.status(201).json({
       message: '사용자가 성공적으로 생성되었습니다.',
       user: newUser,
@@ -81,7 +104,3 @@ exports.updateUserMode = async (req, res) => {
         res.status(500).json({ message: '모드 업데이트 중 서버 오류가 발생했습니다.' });
     }
 };
-
-// 더 이상 사용되지 않는 함수들
-exports.getUser = async (req, res) => {};
-exports.getCurrentUser = async (req, res) => {};

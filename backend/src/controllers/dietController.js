@@ -1,70 +1,90 @@
-// backend/src/controllers/dietController.js
 const DietEntry = require('../models/DietEntry');
-const User = require('../models/User');
+const User = require('../models/user');
+const mongoose = require('mongoose');
 
-// 오늘의 식단 요약 정보를 가져오는 함수
 const getTodayDietSummary = async (req, res) => {
     try {
-        const userId = req.user._id;
+        const userId = new mongoose.Types.ObjectId(req.user._id);
 
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0);
-        const todayEnd = new Date();
-        todayEnd.setHours(23, 59, 59, 999);
+        const now = new Date();
+        const kstOffset = 9 * 60 * 60 * 1000; 
+        const todayStart = new Date(new Date(now.getTime() + kstOffset).toISOString().slice(0, 10) + 'Z');
+        todayStart.setUTCHours(0, 0, 0, 0);
+        const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000 - 1);
 
-        const todayDiets = await DietEntry.find({
+        const todayEntries = await DietEntry.find({
             user: userId,
-            createdAt: { $gte: todayStart, $lte: todayEnd }
+            date: { $gte: todayStart, $lte: todayEnd }
         });
 
-        // ✅ [수정] 데이터가 없는 신규 사용자를 위한 처리
-        if (!todayDiets || todayDiets.length === 0) {
+        if (todayEntries.length === 0) {
             return res.status(200).json({
                 totalCalories: 0,
                 eatenMeals: [],
-                waterIntake: { current: 0, goal: 2 }, // 기본 목표 2L
-                recommendedMeal: { type: '저녁', menu: '가벼운 샐러드' }, // 임시 추천
+                waterIntake: { current: 0, goal: 2 },
+                recommendedMeal: null,
                 targetCalories: req.user.targetCalories || 2000,
             });
         }
-
-        // ✅ [수정] 더 상세한 요약 정보를 계산합니다.
+        
         let totalCalories = 0;
         let totalWaterIntakeMl = 0;
-        const eatenMeals = [];
-
-        todayDiets.forEach(diet => {
-            totalCalories += diet.totalCalories || 0;
-            totalWaterIntakeMl += diet.waterIntakeMl || 0;
-            // 프론트엔드가 사용하기 좋은 형태로 식단 목록을 가공합니다.
-            eatenMeals.push({
-                type: diet.mealType,
-                menu: diet.foodItems.map(item => item.name).join(', '),
-                kcal: diet.totalCalories
-            });
-        });
-        
-        const summary = {
-            totalCalories,
-            eatenMeals,
-            waterIntake: {
-                current: totalWaterIntakeMl / 1000, // ml를 L로 변환
-                goal: 2 // 기본 목표 2L
-            },
-            recommendedMeal: { type: '저녁', menu: '가벼운 샐러드' }, // 임시 추천
-            targetCalories: req.user.targetCalories || 2000,
+        const meals = {
+            breakfast: { items: [], kcal: 0 },
+            lunch: { items: [], kcal: 0 },
+            dinner: { items: [], kcal: 0 },
+            snack: { items: [], kcal: 0 },
         };
 
+        todayEntries.forEach(entry => {
+            totalCalories += entry.totalCalories || 0;
+            totalWaterIntakeMl += entry.waterIntakeMl || 0;
+
+            if (entry.foodItems && entry.foodItems.length > 0) {
+                const mealType = entry.mealType;
+                if (meals[mealType]) {
+                    entry.foodItems.forEach(food => {
+                        const existingFood = meals[mealType].items.find(i => i.name === food.name);
+                        if (existingFood) {
+                            existingFood.quantity += food.quantity;
+                        } else {
+                            meals[mealType].items.push({ name: food.name, quantity: food.quantity });
+                        }
+                    });
+                    meals[mealType].kcal += entry.totalCalories || 0;
+                }
+            }
+        });
+
+        const eatenMeals = Object.entries(meals)
+            .filter(([_, mealData]) => mealData.items.length > 0)
+            .map(([mealType, mealData]) => {
+                const menuString = mealData.items
+                    .map(food => food.quantity > 1 ? `${food.name} ${food.quantity}` : food.name)
+                    .join(', ');
+                return {
+                    type: mealType,
+                    menu: menuString,
+                    kcal: mealData.kcal
+                };
+            });
+
+        const summary = {
+            totalCalories: totalCalories,
+            eatenMeals: eatenMeals,
+            waterIntake: { current: totalWaterIntakeMl / 1000, goal: 2 },
+            recommendedMeal: null, 
+            targetCalories: req.user.targetCalories || 2000,
+        };
+        
         res.status(200).json(summary);
+
     } catch (error) {
         console.error('오늘의 식단 요약 조회 중 오류:', error);
         res.status(500).json({ message: '오늘의 식단 요약 조회 중 서버 오류가 발생했습니다.' });
     }
 };
 
-// --- 이하 다른 함수들은 기존 코드를 그대로 유지합니다. ---
-
-// 식단 기록 추가
 const addDietEntry = async (req, res) => {
     try {
         const { date, mealType, foodItems, waterIntakeMl, notes } = req.body;
@@ -72,19 +92,11 @@ const addDietEntry = async (req, res) => {
 
         let totalCalories = 0;
         if (foodItems && foodItems.length > 0) {
-            foodItems.forEach(item => {
-                totalCalories += item.calories || 0;
-            });
+            foodItems.forEach(item => { totalCalories += (item.calories || 0) * (item.quantity || 1); });
         }
 
         const newEntry = new DietEntry({
-            user: userId,
-            date: date || new Date(),
-            mealType,
-            foodItems,
-            waterIntakeMl,
-            totalCalories,
-            notes
+            user: userId, date: date || new Date(), mealType, foodItems, waterIntakeMl, totalCalories, notes
         });
 
         await newEntry.save();
@@ -95,7 +107,6 @@ const addDietEntry = async (req, res) => {
     }
 };
 
-// 사용자의 모든 식단 기록 조회
 const getDietEntries = async (req, res) => {
     try {
         const dietEntries = await DietEntry.find({ user: req.user._id }).sort({ date: -1 });
@@ -106,14 +117,12 @@ const getDietEntries = async (req, res) => {
     }
 };
 
-// 식단 기록 업데이트
+
 const updateDietEntry = async (req, res) => {
     try {
         const { entryId } = req.params;
         const updatedEntry = await DietEntry.findOneAndUpdate(
-            { _id: entryId, user: req.user._id },
-            req.body,
-            { new: true }
+            { _id: entryId, user: req.user._id }, req.body, { new: true }
         );
         if (!updatedEntry) return res.status(404).json({ message: '해당 식단 기록을 찾을 수 없거나 수정 권한이 없습니다.' });
         res.status(200).json({ message: '식단 기록이 성공적으로 업데이트되었습니다.', entry: updatedEntry });
@@ -123,7 +132,6 @@ const updateDietEntry = async (req, res) => {
     }
 };
 
-// 식단 기록 삭제
 const deleteDietEntry = async (req, res) => {
     try {
         const { entryId } = req.params;
@@ -135,6 +143,7 @@ const deleteDietEntry = async (req, res) => {
         res.status(500).json({ message: '식단 기록 삭제에 실패했습니다.' });
     }
 };
+
 
 module.exports = {
     getTodayDietSummary,

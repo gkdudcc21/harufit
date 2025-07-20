@@ -3,7 +3,6 @@ import './WorkoutCard.css';
 import bikeIcon from '../../assets/images/bike-icon.png';
 
 export default function WorkoutCard({ mode, onExpand, data }) {
-  // ✅ data prop에서 필요한 데이터를 안전하게 추출합니다.
   const latestWorkout = data?.latestWorkout;
   const recommendedWorkout = data?.recommendedWorkout;
 
@@ -14,10 +13,8 @@ export default function WorkoutCard({ mode, onExpand, data }) {
         <button className="expand-btn" onClick={onExpand}>▶</button>
       </div>
       <div className="workout-content">
-        {/* 최신 운동 섹션 */}
         <div className="current-workout">
           <div className="recommend-label">최신 운동</div>
-          {/* ✅ latestWorkout 데이터가 있으면 목록을, 없으면 안내 메시지를 보여줍니다. */}
           {latestWorkout && latestWorkout.length > 0 ? (
             <ul className="exercise-list">
               {latestWorkout.map((item, index) => (
@@ -25,18 +22,19 @@ export default function WorkoutCard({ mode, onExpand, data }) {
               ))}
             </ul>
           ) : (
-            <p className="empty-section-guide"><center>
-              매니저에게<br/>
-              <span className="italic-highlight"><span className="my-colored-text">"오늘 30분 달렸어"</span></span> 라고 말하며<br />
-              첫 기록을<br/> 시작해보세요!</center>
-            </p>
+            // ✅ [구조 수정] <p> 태그를 <div>로 변경하여 오류 해결
+            <div className="empty-section-guide">
+              <center>
+                매니저에게<br/>
+                <span className="italic-highlight"><span className="my-colored-text">"오늘 30분 달렸어"</span></span> 라고 말하며<br />
+                첫 기록을<br/> 시작해보세요!
+              </center>
+            </div>
           )}
         </div>
         
-        {/* 추천 운동 섹션 */}
         <div className="recommended-workout">
           <div className="recommend-label">추천 운동</div>
-          {/* ✅ recommendedWorkout 데이터가 있으면 아이콘과 운동을, 없으면 안내 메시지를 보여줍니다. */}
           {recommendedWorkout ? (
             <>
               <img src={bikeIcon} alt="Bike Icon" className="workout-icon" />
