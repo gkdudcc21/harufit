@@ -213,18 +213,18 @@
     left: 40%;
     transform: translate(-50%, -50%);
     width: 680px;
-    height: 500px;
+    height: 580px;
   }
 
   .card-wrapper {
     width: 320px;
-    height: 240px;
+    height: 280px;
   }
 
   .chat-area {
-    right: 50px;
+    right: 70px;
     width: 320px;
-    height: 500px;
+    height: 580px;
   }
   
 }
@@ -250,10 +250,8 @@
     transform: none;
     width: 90%;
     max-width: 600px;
-    height: auto;
-    margin-top: 150px;
+    margin-top: 80px;
     margin-bottom: 20px;
-
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
@@ -273,13 +271,12 @@
 
   .chat-area {
     position: relative;
-    top: auto;
+    top: 50px;
     right: auto;
     transform: none;
     width: 90%;
     max-width: 600px;
     height: 350px;
-    margin: 0 auto 50px auto;
     order: 2;
   }
 }
@@ -288,14 +285,12 @@
   .homepage-container {
     flex-direction: column;
     padding-top: 100px;
-
     overflow-y: auto;
   }
 
   .card-wrapper.top-left {
     margin-top: 8px;
     margin-bottom: 9px;
-
   }
 
   .mode-buttons {
@@ -336,9 +331,8 @@
     bottom: auto;
     right: auto;
     width: calc(100vw - 40px);
-    height: 250px;
-    margin: 20px auto;
-
+    height: 300px;
+    margin: 10px auto;
     box-sizing: border-box;
   }
 
@@ -347,7 +341,7 @@
     width: calc(100vw - 40px);
     height: auto;
     margin-top: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     top: auto;
     left: auto;
     transform: none;
@@ -363,7 +357,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    min-height: 280px;
+    min-height: 260px;
     box-sizing: border-box;
     backdrop-filter: blur(15px);
     background: rgba(255, 255, 255, 0.1);
@@ -376,21 +370,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 0;
     padding-top: 0;
-    margin-top: 10px;
+    margin-top: 0px;
   }
   
-  .card-wrapper.calendar-card {
-    margin-top: 6px;
-  }
-
-  .card-header {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    border-radius: 15px;
-  }
-
 }
