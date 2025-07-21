@@ -134,9 +134,18 @@
     font-style: italic;
   }
 
-  
-
   .my-colored-text {
     color: #f8ee65
   }
-  
+
+
+@media (max-width: 1400px) {
+    .empty-section-guide {
+        padding-top: 15px;
+        font-size: 0.75rem;
+        color: var(--text-color-light);
+        line-height: 1.5;
+        margin: 0;
+        text-align: center;
+    }
+}

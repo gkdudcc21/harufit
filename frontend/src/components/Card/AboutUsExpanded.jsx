@@ -1,4 +1,4 @@
-// AboutUsExpanded.jsx
+
 import React from 'react';
 import './AboutUsExpanded.css'; // 방금 만든 CSS 파일을 import
 import member1 from '../../assets/images/고진석님.jpg';
