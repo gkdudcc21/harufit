@@ -34,7 +34,13 @@ export default function DietCard({ onExpand, mode, data }) {
         <div className="recommend-section">
           <div className="recommendation-header">오늘의 추천 식단</div>
           {recommendedMeal && recommendedMeal.menu ? (
-            <p className="rec-menu">{recommendedMeal.menu}</p>
+            // ✅ [수정] 여러 줄 텍스트(메뉴 + 이유)를 표시하기 위해 p 태그에 스타일 추가
+            <p 
+              className="rec-menu" 
+              style={{ whiteSpace: 'pre-wrap', textAlign: 'center', fontSize: '0.9em' }}
+            >
+              {recommendedMeal.menu}
+            </p>
           ) : (
             <p className="empty-section-guide compact">
               매니저에게<br/>

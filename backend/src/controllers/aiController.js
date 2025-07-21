@@ -1,3 +1,5 @@
+// backend/src/controllers/aiController.js
+
 const aiService = require('../services/aiService');
 const DietEntry = require('../models/DietEntry');
 const WorkoutEntry = require('../models/WorkoutEntry');
@@ -62,11 +64,16 @@ exports.parseAndLogChat = async (req, res) => {
                                 savedData.push({ type: 'diet', data: newDiet });
                             }
                         } else if (item.type === 'workout' && item.items) {
-                             const englishWorkoutType = workoutTypeMap[item.workoutType] || 'other';
+                            const exercisesForDb = item.items.map(ex => ({
+                                name: ex.name,
+                                reps: ex.reps,
+                                sets: ex.sets,
+                                durationMinutes: ex.durationMinutes,
+                                weightKg: ex.weightKg,
+                            }));
                             const newWorkout = new WorkoutEntry({ 
                                 user: user._id, 
-                                workoutType: englishWorkoutType, 
-                                exercises: item.items,
+                                exercises: exercisesForDb,
                                 date: todayKST
                             });
                             await newWorkout.save();
@@ -80,6 +87,7 @@ exports.parseAndLogChat = async (req, res) => {
                                 }
                                 if (item.weightChange !== undefined && baseWeight !== null) {
                                     let change = parseFloat(item.weightChange);
+
                                     if (item.changeDirection === 'loss') {
                                         change = -change;
                                     }
@@ -135,20 +143,30 @@ exports.parseAndLogChat = async (req, res) => {
                         customReply = `네, 하루 물 섭취 목표량을 ${newGoal}L로 설정했어요!`;
                         savedData.push({ type: 'water_goal_update' });
                     }
+                // ✅ [수정] AI가 보내주는 '이유'가 포함된 답변을 가공하여 채팅창과 카드에 전달
                 } else if (functionName === 'get_diet_recommendation') {
                     const mealType = parsedArgs.mealType;
                     if (mealType) {
-                        const recommendation = await aiService.getSimpleDietRecommendation(mealType);
-                        customReply = `오늘은 ${mealType} 메뉴로 ${recommendation} 어떠세요? 맛있고 건강에도 좋을 거예요!`;
+                        const recommendationWithReason = await aiService.getSimpleDietRecommendation(mealType);
+                        const [menu, reason] = recommendationWithReason.split('\n');
+                        
+                        customReply = `오늘은 ${mealType} 메뉴로 **${menu}** 어떠세요? ${reason || '맛있고 건강에도 좋을 거예요!'}`;
                         
                         savedData.push({ 
                             type: 'diet_recommendation', 
-                            data: { mealType: mealType, menu: recommendation } 
+                            data: { mealType: mealType, menu: recommendationWithReason } 
                         });
 
                     } else {
                         customReply = "어떤 식사를 추천해드릴까요? (아침/점심/저녁)";
                     }
+                } else if (functionName === 'get_workout_recommendation') {
+                    const recommendation = await aiService.getSimpleWorkoutRecommendation(history);
+                    customReply = `오늘은 이 운동 어떠세요?\n\n${recommendation}`;
+                    savedData.push({ 
+                        type: 'workout_recommendation', 
+                        data: { name: recommendation } 
+                    });
                 } else if (functionName === 'request_clarification') {
                     clarificationQuestion = parsedArgs.question;
                 }

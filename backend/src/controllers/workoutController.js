@@ -1,9 +1,8 @@
 // backend/src/controllers/workoutController.js
 const WorkoutEntry = require('../models/WorkoutEntry');
 const User = require('../models/user');
-const mongoose = require('mongoose'); // mongoose 추가
+const mongoose = require('mongoose');
 
-// 오늘의 운동 요약 정보를 가져오는 함수
 exports.getTodayWorkoutSummary = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -15,32 +14,40 @@ exports.getTodayWorkoutSummary = async (req, res) => {
         todayStart.setUTCHours(0, 0, 0, 0);
         const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000 - 1);
 
-        // ✅ [핵심 수정] createdAt -> date 기준으로 오늘의 기록을 찾습니다.
         const todayWorkouts = await WorkoutEntry.find({
             user: userId,
             date: { $gte: todayStart, $lte: todayEnd }
-        }).sort({ date: -1 }); // 정렬 기준도 date로 변경
+        }).sort({ date: -1 });
 
+        // ✅ [수정] 운동 기록이 없을 때의 기본 응답 구조 명확화
         if (!todayWorkouts || todayWorkouts.length === 0) {
             return res.status(200).json({
-                latestWorkout: null,
-                recommendedWorkout: null,
+                latestWorkout: [], // 빈 배열로 초기화
+                recommendedWorkout: null, // 추천 운동은 여기서 다루지 않음
             });
         }
         
+        // ✅ [수정] 상세 정보를 텍스트로 가공하는 로직 강화
         const latestWorkoutDetails = [];
         todayWorkouts.forEach(entry => {
             entry.exercises.forEach(ex => {
-                let details = '';
-                if(ex.durationMinutes) details += `${ex.durationMinutes}분`;
-                else if(ex.sets && ex.reps) details += `${ex.weightKg || ''}kg, ${ex.reps}회, ${ex.sets}세트`;
-                
-                latestWorkoutDetails.push({ name: ex.name, details: details });
+                let detailsParts = [];
+                if (ex.weightKg) detailsParts.push(`${ex.weightKg}kg`);
+                if (ex.reps) detailsParts.push(`${ex.reps}회`);
+                if (ex.sets) detailsParts.push(`${ex.sets}세트`);
+                if (ex.durationMinutes) detailsParts.push(`${ex.durationMinutes}분`);
+
+                // 상세 정보가 하나라도 있을 때만 name과 함께 추가
+                if (detailsParts.length > 0) {
+                    latestWorkoutDetails.push({ name: ex.name, details: detailsParts.join(', ') });
+                } else {
+                    latestWorkoutDetails.push({ name: ex.name, details: '' }); // 상세 정보가 없으면 이름만
+                }
             });
         });
 
         const summary = {
-            latestWorkout: latestWorkoutDetails.slice(0, 4),
+            latestWorkout: latestWorkoutDetails.slice(0, 4), // 최신 4개 항목만 표시
             recommendedWorkout: null,
         };
 
@@ -51,7 +58,8 @@ exports.getTodayWorkoutSummary = async (req, res) => {
     }
 };
 
-// 운동 기록 추가
+// 이하 다른 함수들 (addWorkoutEntry, getWorkoutEntries 등)은 수정할 필요 없습니다.
+// ... (기존의 다른 컨트롤러 함수들) ...
 exports.addWorkoutEntry = async (req, res) => {
     try {
         const { date, workoutType, exercises, notes } = req.body;
@@ -66,7 +74,7 @@ exports.addWorkoutEntry = async (req, res) => {
 
         const newEntry = new WorkoutEntry({
             user: userId,
-            date: date || new Date(), // date 필드를 사용하도록 보장
+            date: date || new Date(),
             workoutType,
             exercises,
             totalDurationMinutes,
@@ -80,8 +88,6 @@ exports.addWorkoutEntry = async (req, res) => {
         res.status(500).json({ message: '운동 기록 추가에 실패했습니다.' });
     }
 };
-
-// 사용자의 모든 운동 기록 조회
 exports.getWorkoutEntries = async (req, res) => {
     try {
         const workoutEntries = await WorkoutEntry.find({ user: req.user._id }).sort({ date: -1 });
@@ -91,8 +97,6 @@ exports.getWorkoutEntries = async (req, res) => {
         res.status(500).json({ message: '운동 기록 조회에 실패했습니다.' });
     }
 };
-
-// 운동 기록 업데이트
 exports.updateWorkoutEntry = async (req, res) => {
     try {
         const { entryId } = req.params;
@@ -114,8 +118,6 @@ exports.updateWorkoutEntry = async (req, res) => {
         res.status(500).json({ message: '운동 기록 업데이트에 실패했습니다.' });
     }
 };
-
-// 운동 기록 삭제
 exports.deleteWorkoutEntry = async (req, res) => {
     try {
         const { entryId } = req.params;
