@@ -1,14 +1,26 @@
-@import 'C:\Course_Video\harufit\frontend\src\styles\common.css'; 
+@import '../../styles/common.css';
 
 .workout-card {
     padding: var(--spacing-lg);
+    min-height: 0;
+    height: 88%;
+}
+
+.card-header {
+    position: relative;
+}
+
+.workout-card:hover .expand-btn {
+    opacity: 0.7;
 }
 
 .workout-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     gap: var(--spacing-md);
     flex: 1;
+    padding: 0 0.5rem;
 }
 
 .current-workout,
@@ -21,34 +33,38 @@
     border: 1px solid var(--border-color-dark);
     background: var(--card-background-light);
     backdrop-filter: blur(5px);
+    width: 50%;
+    box-sizing: border-box;
+    justify-content: flex-start;
 }
 
 .current-workout {
     position: relative;
-    border-left: 5px solid var(--secondary-accent); 
+
 }
 
 .recommended-workout {
     position: relative;
-    border-left: 5px solid var(--tertiary-accent);
+
 }
 
 .recommend-label {
     position: absolute;
-    top: -10px;
+    top: 4px;
     left: 10px;
-    background: rgba(224, 176, 255, 0.8);
-    color: white;
+    background: #f9f6f17a;
+    color: rgb(75, 63, 63);
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: bold;
     backdrop-filter: blur(5px);
+    right: 10px;
 }
 
 .workout-icon {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
 }
 
@@ -61,6 +77,75 @@
 
 .workout-details p,
 .workout-details span {
-    color: var(--text-color-light); 
+    color: var(--text-color-light);
     margin: 0;
+}
+
+.exercise-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.exercise-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 2px 6px;
+    padding-left: 0;
+    color: var(--text-color-light);
+    word-break: keep-all;
+    white-space: nowrap;
+    background: transparent;
+    box-sizing: border-box;
+}
+
+.exercise-list li span:first-child {
+    flex: 1;
+    white-space: normal;
+    word-break: keep-all;
+    overflow: visible;
+}
+
+.exercise-list li span:last-child {
+    flex-shrink: 0;
+    margin-left: 12px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* ✅ [추가] 섹션 내부에 기록이 없을 때의 안내 메시지 스타일 */
+.empty-section-guide {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.italic-highlight {
+    font-style: italic;
+  }
+
+  .my-colored-text {
+    color: #f8ee65
+  }
+
+
+@media (max-width: 1400px) {
+    .empty-section-guide {
+        padding-top: 15px;
+        font-size: 0.75rem;
+        color: var(--text-color-light);
+        line-height: 1.5;
+        margin: 0;
+        text-align: center;
+    }
 }

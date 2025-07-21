@@ -1,0 +1,66 @@
+/* frontend/src/components/common/ExpandedModal.css */
+
+/* 모든 상세 페이지(모달)의 기본 틀 */
+.expanded-modal-container {
+    position: relative; /* 자식 요소의 absolute 위치 기준점 */
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px B25px rgba(0, 0, 0, 0.1);
+    padding: 24px 28px;
+    width: 95vw;
+    max-width: 680px; /* 모든 모달 크기 통일 */
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    color: #374151;
+    font-family: 'Inter', 'Pretendard', sans-serif;
+    
+    /* 애니메이션 효과 */
+    transform: scale(0.95);
+    animation: scaleUp 0.3s forwards;
+  }
+  
+  @keyframes scaleUp {
+    to {
+      transform: scale(1);
+    }
+  }
+  
+  /* 헤더: 제목과 닫기 버튼 */
+  .expanded-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+    width: 100%;
+  }
+  
+  .expanded-modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin: 0;
+  }
+  
+  /* 닫기 버튼 (X) */
+  .expanded-modal-close-btn {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+    position: absolute; /* 컨테이너 기준으로 위치 설정 */
+    top: 24px;
+    right: 28px;
+  }
+  
+  .expanded-modal-close-btn:hover {
+    color: #374151;
+  }
+  
+  /* 아이콘 SVG 스타일 */
+  .expanded-modal-close-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.5;
+  }

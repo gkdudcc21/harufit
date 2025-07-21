@@ -1,27 +1,62 @@
 import React from 'react';
-import './WorkoutCard.css'; 
-import runningIcon from '../../assets/images/run-icon.png'; 
-import bikeIcon from '../../assets/images/bike-icon.png';       
+import './WorkoutCard.css';
 
-export default function WorkoutCard() {
+export default function WorkoutCard({ onExpand, mode, data }) {
+  const latestWorkouts = data?.latestWorkout || [];
+  const recommendedWorkout = data?.recommendedWorkout || null;
+
   return (
     <div className="workout-card card-base">
-      <div className="card-header">운동</div>
-      <div className="workout-content">
+      <div className={`card-header ${mode}-theme`}>
+        <span>운동</span>
+        <button className="expand-btn" onClick={onExpand}></button>
+      </div>
+
+      <div className="workout-content"> 
+
         <div className="current-workout">
-          <img src={runningIcon} alt="Running Icon" className="workout-icon" />  
-          <div className="workout-details">
-            <p>조깅</p>
-            <span>(30분, 250 kcal)</span>
-          </div>
+          <div className="recommend-label" style={{ position: 'absolute', top: '4px', right: '10px' }}>최신 운동</div>
+          <ul className="exercise-list">
+            {latestWorkouts.length > 0 ? (
+              latestWorkouts.map((workout, index) => (
+                <li key={index}>
+                  <span>{workout.name}</span>
+                  {workout.details && <span>{workout.details}</span>}
+                </li>
+              ))
+            ) : (
+              <li className="empty-section-guide" style={{ justifyContent: 'center' }}>
+                "오늘 30분 달렸어" 와 같이<br/>
+                운동을 기록해보세요!
+              </li>
+            )}
+          </ul>
         </div>
+
         <div className="recommended-workout">
-          <span className="recommend-label">추천 운동</span>
-          <img src={bikeIcon} alt="Bike Icon" className="workout-icon" />  
-          <div className="workout-details">
-            <p>자전거 타기</p>
-            <span>(200 kcal)</span>
-          </div>
+          <div className="recommend-label">추천 운동</div>
+          {recommendedWorkout ? (
+            <div className="workout-details" style={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+              <p style={{
+                fontSize: '1.1em',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                // ✅ [수정] 이 한 줄을 추가하여 글자색을 다른 텍스트와 통일합니다.
+                color: 'var(--text-color-light)'
+              }}>
+                {recommendedWorkout.name}
+              </p>
+            </div>
+          ) : (
+            <p className="empty-section-guide" style={{ justifyContent: 'center' }}>
+              어떤 운동을 할지 고민되시나요?<br/>
+              매니저에게 <br/>
+              <span className="italic-highlight">
+                <span className="my-colored-text"> "운동 추천해줘"</span>
+              </span> 라고<br/>
+              말해보세요!
+            </p>
+          )}
         </div>
       </div>
     </div>

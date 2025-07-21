@@ -1,21 +1,23 @@
-"use client"
-
-import { useState } from "react"
+"use client";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import "./IndexPage.css"
+import "./IndexPage.css";
 import runnerBackground from '../../assets/images/index_image.png';
 import ModeDescription from '../../components/common/modeDescription.jsx';
+import apiClient from '../../api/apiClient';
 
 export default function IndexPage() {
-    const [showDifficultyButtons, setShowDifficultyButtons] = useState(false)
-    const [selectedMode, setSelectedMode] = useState("")
-    const [userInput, setUserInput] = useState("")
-    const [hoveredMode, setHoveredMode] = useState(''); // 호버된 모드 이름
+    const [showDifficultyButtons, setShowDifficultyButtons] = useState(false);
+    const [selectedMode, setSelectedMode] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [pin, setPin] = useState("");
+    const [hoveredMode, setHoveredMode] = useState('');
+    const [apiMessage, setApiMessage] = useState('');
+    const [isInitialState, setIsInitialState] = useState(true);
 
     const navigate = useNavigate();
 
     const difficultyModes = [
-
         { id: "easy", label: "EASY", color: "#C8E6C9" },
         { id: "normal", label: "NORMAL", color: "#E1BEE7" },
         { id: "hard", label: "HARD", color: "#FFCDD2" },
@@ -27,99 +29,161 @@ export default function IndexPage() {
         hard: "강력한 변화",
     };
 
-    const handleModeSelect = (mode) => {
-        setSelectedMode(mode)
-        console.log(`Selected mode: ${mode}`)
-        navigate(`/home?mode=${mode}`);
-    };
+    useEffect(() => {
+        const userToken = localStorage.getItem('userToken');
+        if (userToken) {
+            navigate('/home');
+        }
+    }, [navigate]);
 
-    const handleNicknameSubmit = () => {
-        if (userInput.trim()) {
-            setShowDifficultyButtons(true)
+    const handleModeSelect = async (mode) => {
+        setSelectedMode(mode);
+        setApiMessage('');
+        const userNickname = localStorage.getItem('userNickname');
+        
+        try {
+            await apiClient.put('/users/mode', { mode });
+            localStorage.setItem('userMode', mode);
+            navigate(`/home?nickname=${userNickname}&mode=${mode}`);
+        } catch (error) {
+            setApiMessage('모드 설정 중 오류가 발생했습니다.');
+            console.error('Mode update error:', error);
         }
     };
 
-    const handleGuestMode = () => {
-        setUserInput("게스트");
-        setShowDifficultyButtons(true);
+    const handleEnterClick = async () => {
+        setApiMessage('');
+        if (!nickname.trim() || !pin.trim()) {
+            setApiMessage('닉네임과 PIN을 모두 입력해주세요.');
+            return;
+        }
 
+        try {
+            const response = await apiClient.post('/users', {
+                nickname: nickname.trim(),
+                pin: pin.trim(),
+            });
+
+            localStorage.setItem('userToken', response.data.token);
+            localStorage.setItem('userNickname', response.data.user.nickname);
+            localStorage.removeItem('chatMessages');
+
+            if (response.data.message.includes('로그인')) {
+                localStorage.setItem('userMode', response.data.user.mode || 'normal');
+                navigate('/home');
+            } else {
+                setIsInitialState(false);
+                setShowDifficultyButtons(true);
+            }
+
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+            setApiMessage(`오류: ${errorMessage}`);
+        }
+    };
+
+    const handleGuestMode = async () => {
+        setApiMessage('');
+        try {
+            const response = await apiClient.post('/users/guest');
+
+            localStorage.setItem('userToken', response.data.token);
+            localStorage.setItem('userNickname', response.data.user.nickname);
+            // userMode는 다음 단계(모드 선택)에서 저장됩니다.
+            localStorage.removeItem('chatMessages');
+
+            // ✅ [핵심 수정] 바로 이동하는 대신, 모드 선택 버튼을 보여줍니다.
+            setIsInitialState(false);
+            setShowDifficultyButtons(true);
+
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+            setApiMessage(`오류: ${errorMessage}`);
+        }
+    };
+
+    const handleMouseEnterModeBtn = (modeId) => {
+        setHoveredMode(modeId);
+    };
+
+    const handleMouseLeaveModeBtn = () => {
+        setHoveredMode("");
     };
 
     return (
         <div className="index-container">
-            <div
-                className="background-image"
-                
-                style={{ backgroundImage: `url(${runnerBackground})` }}
-            >
-                <div className="difficulty-buttons-container"></div>
+            <div className="background-image" style={{ backgroundImage: `url(${runnerBackground})` }}>
                 <div className="overlay">
-                    {/* 상단 텍스트 */}
                     <div className="header-text">
-                        {showDifficultyButtons ? (
-                            <p><strong>{userInput || "USER"}</strong>님, 하루핏과 함께 건강해질 준비 되셨나요?</p>
-                        ) : (
+                        {isInitialState ? (
                             <p>안녕하세요! 하루핏과 함께 건강해질 준비 되셨나요?</p>
+                        ) : (
+                            <p><strong>{localStorage.getItem('userNickname') || nickname}</strong>님, 환영합니다! 목표를 향한 첫 걸음, 난이도를 선택해주세요.</p>
                         )}
                     </div>
-                    {/* 타이틀 */}
                     <h1 className="main-title">
                         YOUR AI HEALTH TRAINER, <br />
                         <span className="brand-name">HARU-FIT</span>
                     </h1>
-                    {/* 닉네임 입력창 */}
-                    {!showDifficultyButtons && (
-                        <div className="input-section">
+                    {isInitialState && (
+                        <div className="input-interaction-section">
                             <div className="input-group">
-
                                 <input
                                     type="text"
                                     placeholder="닉네임을 입력해주세요"
-                                    value={userInput}
-                                    onChange={(e) => setUserInput(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleNicknameSubmit()}
-                                    className="nickname-input"
+                                    value={nickname}
+                                    onChange={(e) => setNickname(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleEnterClick()}
+                                    className="input-field nickname-input"
+                                />
+                                <input
+                                    type="password"
+                                    placeholder="PIN 4자리 숫자"
+                                    value={pin}
+                                    onChange={(e) => setPin(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleEnterClick()}
+                                    maxLength="4"
+                                    className="input-field pin-input"
                                 />
                                 <button
-                                    onClick={handleNicknameSubmit}
+                                    onClick={handleEnterClick}
                                     className="submit-btn"
-                                    disabled={!userInput.trim()}
+                                    disabled={!nickname.trim() || !pin.trim()}
                                 >
                                     입장
                                 </button>
-                                <button
-                                    onClick={handleGuestMode}
-                                    className="guest-btn-inline"
-                                >
-                                    게스트 모드
-                                </button>
                             </div>
+                            <button onClick={handleGuestMode} className="guest-btn-inline">
+                                게스트로 입장
+                            </button>
                         </div>
                     )}
-                    {/* 모드 버튼 */}
-                    {showDifficultyButtons && (
-                        <div className="difficulty-buttons-container">
-                            {difficultyModes.map((mode) => (
-                                <div className="difficulty-btn-wrapper" key={mode.id}>
-                                    <div
-                                        className={`difficulty-btn ${mode.id} ${selectedMode === mode.id ? "selected" : ""}`}
-                                        style={{ backgroundColor: mode.color }}
-                                        onClick={() => handleModeSelect(mode.id)}
-                                        onMouseEnter={() => setHoveredMode(mode.id)}
-                                        onMouseLeave={() => setHoveredMode("")}
-                                    >
-                                        {mode.label}
-                                    </div>
-                                    {hoveredMode === mode.id && (
-                                        <ModeDescription
-                                            isVisible={true}
-                                            description={modeDescriptions[mode.id]}
-                                        />
-                                    )}
+                    <div className="message-area-fixed">
+                        {apiMessage && (
+                            <p className={`api-status-message ${apiMessage.startsWith('오류') ? 'error' : 'success'}`}>
+                                {apiMessage}
+                            </p>
+                        )}
+                    </div>
+                    <div className={`difficulty-buttons-container ${showDifficultyButtons ? 'show-modes' : ''}`}>
+                        {difficultyModes.map((mode) => (
+                            <div className="difficulty-btn-wrapper" key={mode.id}>
+                                <div
+                                    className={`difficulty-btn ${mode.id} ${selectedMode === mode.id ? "selected" : ""}`}
+                                    style={{ backgroundColor: mode.color }}
+                                    onClick={() => handleModeSelect(mode.id)}
+                                    onMouseEnter={() => handleMouseEnterModeBtn(mode.id)}
+                                    onMouseLeave={() => handleMouseLeaveModeBtn()}
+                                >
+                                    {mode.label}
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                                <ModeDescription
+                                    isVisible={hoveredMode === mode.id}
+                                    description={modeDescriptions[mode.id]}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
