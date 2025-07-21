@@ -96,29 +96,40 @@ const ManagerChat = memo(function ManagerChat({ mode, shouldFocusInput, triggerS
         setIsLoading(true);
         try {
             const response = await apiClient.post('/ai/parse-and-log', { message: userMessage.text, history: historyForApi });
-            const aiReplyMessage = { sender: 'ai', text: response.data.reply };
-            let newMessagesBatch = [aiReplyMessage];
-            
-            if (response.data.savedData && response.data.savedData.length > 0) {
-                const dataType = response.data.savedData[0].type;
-                let successText = '말씀하신 내용을 기록했어요! 👍';
-                switch (dataType) {
-                    case 'diet': successText = '말씀하신 내용을 바탕으로 식단 정보를 기록했어요! 🍽️'; break;
-                    case 'workout': successText = '말씀하신 내용을 바탕으로 운동 정보를 기록했어요! 💪'; break;
-                    case 'status': successText = '말씀하신 내용을 바탕으로 상태 정보를 업데이트했어요! 📊'; break;
-                    case 'water': successText = '물 섭취량을 기록했어요! 💧'; break;
-                }
-                const successLogMessage = { sender: 'ai', text: successText };
-                newMessagesBatch.push(successLogMessage);
-                if (onDataRefresh) { onDataRefresh(response.data.savedData); }
-            }
 
+            // 1. AI의 핵심 답변을 먼저 표시합니다.
+            const aiReplyMessage = { sender: 'ai', text: response.data.reply };
+            setMessages(prev => [...prev, aiReplyMessage]);
+
+            const savedData = response.data.savedData;
+            
+            // 2. 백엔드로부터 받은 데이터(기록 또는 추천)가 있다면, 무조건 HomePage로 전달하여 UI를 업데이트합니다.
+            if (savedData && savedData.length > 0) {
+                if (onDataRefresh) {
+                    onDataRefresh(savedData);
+                }
+
+                // 3. 데이터의 종류가 '기록'일 경우에만 추가적인 확인 메시지를 표시합니다.
+                const dataType = savedData[0].type;
+                if (dataType !== 'diet_recommendation' && dataType !== 'water_goal_update') {
+                     let successText = '말씀하신 내용을 바탕으로 정보를 업데이트했어요! 👍';
+                     switch (dataType) {
+                        case 'diet': successText = '말씀하신 내용을 바탕으로 식단 정보를 기록했어요! 🍽️'; break;
+                        case 'workout': successText = '말씀하신 내용을 바탕으로 운동 정보를 기록했어요! 💪'; break;
+                        case 'status': successText = '말씀하신 내용을 바탕으로 상태 정보를 업데이트했어요! 📊'; break;
+                        case 'water': successText = '물 섭취량을 기록했어요! 💧'; break;
+                    }
+                    const successLogMessage = { sender: 'ai', text: successText };
+                    setMessages(prev => [...prev, successLogMessage]);
+                }
+            }
+            
+            // 4. AI가 추가 질문을 한 경우, 해당 질문을 표시합니다.
             if (response.data.clarification) {
                 const clarificationMessage = { sender: 'ai', text: response.data.clarification };
-                newMessagesBatch.push(clarificationMessage);
+                setMessages(prev => [...prev, clarificationMessage]);
             }
 
-            setMessages(prev => [...prev, ...newMessagesBatch]);
         } catch (error) {
             const errorMessage = { sender: 'ai', text: '죄송해요, 지금은 답변하기 어려워요.' };
             setMessages(prev => [...prev, errorMessage]);
@@ -146,7 +157,6 @@ const ManagerChat = memo(function ManagerChat({ mode, shouldFocusInput, triggerS
                     ref={inputRef}
                     type="text"
                     value={input}
-                    // ✅ [핵심 수정] e.g.target.value -> e.target.value 오타 수정
                     onChange={(e) => setInput(e.target.value)}
                     placeholder={isSpecialFocusActive ? initialPlaceholderForFocus : "메시지를 입력하세요..."}
                     disabled={isLoading}

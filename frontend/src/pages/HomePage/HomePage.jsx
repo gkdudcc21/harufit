@@ -18,6 +18,13 @@ import useApi from '../../hooks/useApi';
 import { API_ENDPOINTS } from '../../utils/constants';
 import apiClient from "../../api/apiClient"
 
+// ✅ [추가] 오늘 날짜를 'YYYY-MM-DD' 형식으로 가져오는 헬퍼 함수
+const getTodayString = () => {
+  const today = new Date();
+  // 한국 시간 기준으로 날짜를 계산하여 Z(UTC) 타임존 문제를 해결합니다.
+  return new Date(today.getTime() - (today.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+};
+
 export default function HomePage() {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
@@ -31,10 +38,43 @@ export default function HomePage() {
   const [isDietExpanded, setDietExpanded] = useState(false);
   const [isAboutExpanded, setAboutExpanded] = useState(false);
 
-  const { data: statusData, error: statusError, setData: setStatusData, refetch: refetchStatus } = useApi(API_ENDPOINTS.STATUS_TODAY);
-  const { data: dietData, error: dietError, setData: setDietData, refetch: refetchDiet } = useApi(API_ENDPOINTS.DIET_TODAY);
+  const { data: statusData, error: statusError, refetch: refetchStatus } = useApi(API_ENDPOINTS.STATUS_TODAY);
+  const { data: dietData, error: dietError, refetch: refetchDiet } = useApi(API_ENDPOINTS.DIET_TODAY);
   const { data: workoutData, error: workoutError, refetch: refetchWorkout } = useApi(API_ENDPOINTS.WORKOUT_TODAY);
   const { data: calendarData, error: calendarError, refetch: refetchCalendar } = useApi(API_ENDPOINTS.CALENDAR_SUMMARY);
+
+  // ✅ [수정] 컴포넌트가 로드될 때 localStorage에서 오늘의 추천 데이터를 불러와서 상태를 초기화합니다.
+  const [recommendedMealData, setRecommendedMealData] = useState(() => {
+    const saved = localStorage.getItem('recommendedMeal');
+    if (saved) {
+      try {
+        const { date, data } = JSON.parse(saved);
+        if (date === getTodayString()) {
+          return data;
+        }
+      } catch (e) {
+        console.error("Failed to parse recommendedMeal from localStorage", e);
+        return null;
+      }
+    }
+    return null;
+  });
+
+  const [recommendedWorkoutData, setRecommendedWorkoutData] = useState(() => {
+    const saved = localStorage.getItem('recommendedWorkout');
+    if (saved) {
+      try {
+        const { date, data } = JSON.parse(saved);
+        if (date === getTodayString()) {
+          return data;
+        }
+      } catch (e) {
+        console.error("Failed to parse recommendedWorkout from localStorage", e);
+        return null;
+      }
+    }
+    return null;
+  });
 
   const handleDataUpdate = useCallback((savedDataArray) => {
     if (!savedDataArray || savedDataArray.length === 0) {
@@ -52,7 +92,7 @@ export default function HomePage() {
       const dataType = item.type;
       const dataPayload = item.data;
       
-      if (refetchedTypes.has(dataType) && dataType !== 'diet_recommendation') return;
+      if (refetchedTypes.has(dataType)) return;
 
       switch (dataType) {
         case 'status':
@@ -72,14 +112,16 @@ export default function HomePage() {
           refetchedTypes.add('workout');
           break;
         case 'diet_recommendation':
-          console.log('[Haru-Fit] Diet recommendation received. Updating state directly.', dataPayload);
-          setDietData(prevData => ({
-              ...prevData,
-              recommendedMeal: dataPayload
-          }));
+          setRecommendedMealData(dataPayload);
+          // ✅ [추가] 새로운 추천 데이터를 받을 때마다 오늘 날짜와 함께 localStorage에 저장합니다.
+          localStorage.setItem('recommendedMeal', JSON.stringify({ date: getTodayString(), data: dataPayload }));
+          break;
+        case 'workout_recommendation':
+          setRecommendedWorkoutData(dataPayload);
+          // ✅ [추가] 새로운 추천 데이터를 받을 때마다 오늘 날짜와 함께 localStorage에 저장합니다.
+          localStorage.setItem('recommendedWorkout', JSON.stringify({ date: getTodayString(), data: dataPayload }));
           break;
         case 'water_goal_update':
-            console.log('[Haru-Fit] Water goal updated. Triggering refetch for diet data.');
             refetchDiet();
             break;
         default:
@@ -91,8 +133,7 @@ export default function HomePage() {
     if (needsCalendarUpdate) {
       refetchCalendar();
     }
-  }, [refetchStatus, refetchDiet, refetchWorkout, refetchCalendar, setDietData]);
-
+  }, [refetchStatus, refetchDiet, refetchWorkout, refetchCalendar]);
 
   const [chatSystemMessage, setChatSystemMessage] = useState(null);
   
@@ -139,6 +180,16 @@ export default function HomePage() {
     return <div>데이터를 불러오는 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</div>;
   }
 
+  const finalDietData = {
+    ...dietData,
+    recommendedMeal: recommendedMealData || dietData?.recommendedMeal
+  };
+  
+  const finalWorkoutData = {
+    ...workoutData,
+    recommendedWorkout: recommendedWorkoutData || workoutData?.recommendedWorkout
+  };
+
   return (
     <div className={`homepage-container ${selectedMode}-theme`}>
       <div className="background-image"></div>
@@ -163,8 +214,8 @@ export default function HomePage() {
       <div className="main-cards-area">
         <div className="card-wrapper top-left"><Calendar mode={selectedMode} data={calendarData} onExpand={() => setCalendarExpanded(true)} /></div>
         <div className="card-wrapper top-right"><StatusCard mode={selectedMode} data={statusData} onExpand={() => setStatusExpanded(true)} /></div>
-        <div className="card-wrapper bottom-left"><DietCard mode={selectedMode} data={dietData} onExpand={() => setDietExpanded(true)} /></div>
-        <div className="card-wrapper bottom-right"><WorkoutCard mode={selectedMode} data={workoutData} onExpand={() => setWorkoutExpanded(true)} /></div>
+        <div className="card-wrapper bottom-left"><DietCard mode={selectedMode} data={finalDietData} onExpand={() => setDietExpanded(true)} /></div>
+        <div className="card-wrapper bottom-right"><WorkoutCard mode={selectedMode} data={finalWorkoutData} onExpand={() => setWorkoutExpanded(true)} /></div>
       </div>
 
       {isAboutExpanded && (<div className="modal-backdrop" onClick={() => setAboutExpanded(false)}><AboutUsExpanded onClose={() => setAboutExpanded(false)} /></div>)}
