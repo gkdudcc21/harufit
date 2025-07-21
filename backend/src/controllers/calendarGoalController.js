@@ -1,5 +1,5 @@
 // backend/src/controllers/calendarGoalController.js
-const User = require('../models/User');
+const User = require('../models/user');
 const DietEntry = require('../models/DietEntry');
 const WorkoutEntry = require('../models/WorkoutEntry');
 

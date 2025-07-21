@@ -1,7 +1,6 @@
-// backend/src/models/User.js
+// backend/src/models/user.js
 const mongoose = require('mongoose');
 
-// 사용자 스키마 정의
 const UserSchema = mongoose.Schema(
     {
         nickname: {
@@ -15,19 +14,27 @@ const UserSchema = mongoose.Schema(
             enum: ['easy', 'normal', 'hard'],
             default: 'easy',
         },
-        // ✅ PIN 번호 필드를 Number 타입으로 변경하고 필수로 설정
         pin: {
-            type: Number, // ✨ String 대신 Number로 변경합니다.
-            required: [true, 'PIN 번호는 필수입니다.'], // PIN이 필수로 입력되도록 required: true로 변경
+            type: Number,
+            required: false,
+        },
+        isGuest: {
+            type: Boolean,
+            default: false,
         },
         targetWeight: { type: Number, default: null },
         targetCalories: { type: Number, default: null },
+        // ✅ [핵심 수정] 개인별 물 목표량을 저장할 필드 추가 (단위: L)
+        waterGoal: { 
+            type: Number, 
+            default: 2 
+        },
     },
     {
         timestamps: true,
     }
 );
 
-// User 모델 생성 및 내보내기
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+
 module.exports = User;

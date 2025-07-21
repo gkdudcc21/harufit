@@ -1,31 +1,33 @@
+// backend/src/controllers/workoutController.js
 const WorkoutEntry = require('../models/WorkoutEntry');
-const User = require('../models/User');
+const User = require('../models/user');
+const mongoose = require('mongoose'); // mongoose 추가
 
 // 오늘의 운동 요약 정보를 가져오는 함수
 exports.getTodayWorkoutSummary = async (req, res) => {
     try {
         const userId = req.user._id;
 
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0);
-        const todayEnd = new Date();
-        todayEnd.setHours(23, 59, 59, 999);
+        const now = new Date();
+        const kstOffset = 9 * 60 * 60 * 1000;
+        
+        const todayStart = new Date(new Date(now.getTime() + kstOffset).toISOString().split('T')[0] + 'Z');
+        todayStart.setUTCHours(0, 0, 0, 0);
+        const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000 - 1);
 
+        // ✅ [핵심 수정] createdAt -> date 기준으로 오늘의 기록을 찾습니다.
         const todayWorkouts = await WorkoutEntry.find({
             user: userId,
-            createdAt: { $gte: todayStart, $lte: todayEnd }
-        }).sort({ createdAt: -1 }); // 최신순으로 정렬
+            date: { $gte: todayStart, $lte: todayEnd }
+        }).sort({ date: -1 }); // 정렬 기준도 date로 변경
 
-        // ✅ [수정] 데이터가 없는 신규 사용자를 위한 처리
         if (!todayWorkouts || todayWorkouts.length === 0) {
             return res.status(200).json({
-                latestWorkout: null, // 최신 운동 없음
-                recommendedWorkout: { name: '자전거 타기', kcal: 200 }, // 임시 추천
+                latestWorkout: null,
+                recommendedWorkout: null,
             });
         }
         
-        // ✅ [수정] 프론트엔드가 필요한 형태로 데이터를 가공합니다.
-        // 오늘 한 모든 운동 목록에서 최신 4개만 추출
         const latestWorkoutDetails = [];
         todayWorkouts.forEach(entry => {
             entry.exercises.forEach(ex => {
@@ -38,8 +40,8 @@ exports.getTodayWorkoutSummary = async (req, res) => {
         });
 
         const summary = {
-            latestWorkout: latestWorkoutDetails.slice(0, 4), // 최대 4개만 보냄
-            recommendedWorkout: { name: '자전거 타기', kcal: 200 }, // 임시 추천
+            latestWorkout: latestWorkoutDetails.slice(0, 4),
+            recommendedWorkout: null,
         };
 
         res.status(200).json(summary);
@@ -48,9 +50,6 @@ exports.getTodayWorkoutSummary = async (req, res) => {
         res.status(500).json({ message: '오늘의 운동 요약 조회 중 오류가 발생했습니다.' });
     }
 };
-
-
-// --- 이하 다른 함수들은 기존 코드를 그대로 유지합니다. ---
 
 // 운동 기록 추가
 exports.addWorkoutEntry = async (req, res) => {
@@ -67,7 +66,7 @@ exports.addWorkoutEntry = async (req, res) => {
 
         const newEntry = new WorkoutEntry({
             user: userId,
-            date,
+            date: date || new Date(), // date 필드를 사용하도록 보장
             workoutType,
             exercises,
             totalDurationMinutes,
