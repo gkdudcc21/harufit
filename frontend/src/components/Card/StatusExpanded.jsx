@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LineChart from '../common/LineChart.jsx';
 import { statusHistory } from '../../mocks/mockStatusHistory.js';
-// ✅ [수정] 공통 모달 CSS를 가져옵니다.
 import '../common/ExpandedModal.css';
 import './StatusExpanded.css';
 
@@ -9,7 +8,7 @@ import './StatusExpanded.css';
 const renderChange = (change, unit) => {
     if (change === 0 || isNaN(change)) return <span className="stat-change no-change">-</span>;
     const isPositive = change > 0;
-    const changeClass = isPositive ? 'increase' : 'decrease'; 
+    const changeClass = isPositive ? 'increase' : 'decrease';
     const arrow = isPositive ? '▲' : '▼';
     return <span className={`stat-change ${changeClass}`}>{arrow} {Math.abs(change).toFixed(1)}{unit}</span>;
 };
@@ -22,7 +21,7 @@ const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
     const [hoveredData, setHoveredData] = useState(null);
 
     // 차트 데이터 및 옵션 (기존과 동일)
-     const chartData = {
+    const chartData = {
         labels: statusHistory.map(data => data.date),
         datasets: [
             { label: '체중 (kg)', data: statusHistory.map(data => data.weight), borderColor: '#8e44ad', backgroundColor: 'rgba(142, 68, 173, 0.1)', yAxisID: 'y_weight', fill: true, tension: 0.3 },
@@ -69,7 +68,7 @@ const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
                     <CloseIcon />
                 </button>
             </header>
-            
+
             {/* --- 이하 내용은 기존과 거의 동일합니다 --- */}
 
             <div className="ai-briefing">
@@ -80,7 +79,7 @@ const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
                 <div className="chart-container">
                     <LineChart chartData={chartData} chartOptions={chartOptions} />
                 </div>
-                 <div className="goal-status">
+                <div className="goal-status">
                     <div className="goal-text">
                         <span>목표: {goalWeight.toFixed(1)}kg</span>
                         <span>현재: {currentStatus.weight ? currentStatus.weight.toFixed(1) : '-'}kg</span>
@@ -98,21 +97,21 @@ const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
                     <span className="stat-card-value">{currentStatus.weight ? currentStatus.weight.toFixed(1) : '-'} kg</span>
                     <span className="stat-card-change">{renderChange(weightChange, 'kg')}</span>
                 </div>
-                 <div className="stat-card">
+                <div className="stat-card">
                     <span className="stat-card-label">체지방률</span>
                     <span className="stat-card-value">{currentStatus.bodyFat ? currentStatus.bodyFat.toFixed(1) : '-'} %</span>
                     <span className="stat-card-change">{renderChange(bodyFatChange, '%')}</span>
 
                 </div>
-                 <div className="stat-card">
+                <div className="stat-card">
                     <span className="stat-card-label">골격근량</span>
                     <span className="stat-card-value">{currentStatus.muscle ? currentStatus.muscle.toFixed(1) : '-'} kg</span>
                     <span className="stat-card-change">{renderChange(muscleChange, 'kg')}</span>
                 </div>
             </div>
-            
-             <div className="record-btn-container">
-                <button className="record-btn">매니저에게 상태 기록하기</button>
+
+            <div className="record-btn-container">
+                <button className="record-btn" onClick={onLogStatusToManager}>매니저에게 상태 기록하기</button>
             </div>
         </div>
     );

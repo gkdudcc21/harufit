@@ -1,6 +1,5 @@
 import React from 'react';
-// ✅ [수정] 각 컴포넌트의 CSS 대신 공통 모달 CSS를 가져옵니다.
-import '../common/ExpandedModal.css'; 
+import '../common/ExpandedModal.css';
 import './DietExpanded.css';
 
 // 임시 데이터 (기존과 동일)

@@ -1,5 +1,4 @@
 import React from 'react';
-// ✅ [수정] 공통 모달 CSS를 가져옵니다.
 import '../common/ExpandedModal.css';
 import './WorkoutExpanded.css';
 

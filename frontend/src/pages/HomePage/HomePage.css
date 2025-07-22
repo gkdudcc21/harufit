@@ -127,14 +127,14 @@
   left: 38%;
   transform: translate(-50%, -50%);
   width: 800px;
-  height: 650px;
+  height: 670px;
   z-index: 5;
 }
 
 .card-wrapper {
   position: absolute;
   width: 380px;
-  height: 300px;
+  height: 320px;
   backdrop-filter: blur(25px);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -175,7 +175,7 @@
   right: 300px;
   transform: translateY(-50%);
   width: 400px;
-  height: 650px;
+  height: 670px;
   backdrop-filter: blur(15px);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;

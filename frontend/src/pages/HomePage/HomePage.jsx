@@ -86,12 +86,12 @@ export default function HomePage() {
     }
 
     let needsCalendarUpdate = false;
-    let refetchedTypes = new Set(); 
+    let refetchedTypes = new Set();
 
     savedDataArray.forEach(item => {
       const dataType = item.type;
       const dataPayload = item.data;
-      
+
       if (refetchedTypes.has(dataType)) return;
 
       switch (dataType) {
@@ -120,8 +120,8 @@ export default function HomePage() {
           localStorage.setItem('recommendedWorkout', JSON.stringify({ date: getTodayString(), data: dataPayload }));
           break;
         case 'water_goal_update':
-            refetchDiet();
-            break;
+          refetchDiet();
+          break;
         default:
           console.log(`[Haru-Fit] Unknown data type received: ${dataType}`);
           break;
@@ -145,7 +145,7 @@ export default function HomePage() {
   };
 
   const [chatSystemMessage, setChatSystemMessage] = useState(null);
-  
+
   const handleModeChange = async (mode) => {
     const today = new Date().toISOString().split('T')[0];
     const lastChangeDate = localStorage.getItem('lastModeChangeDate');
@@ -193,7 +193,7 @@ export default function HomePage() {
     ...dietData,
     recommendedMeal: recommendedMealData || dietData?.recommendedMeal
   };
-  
+
   const finalWorkoutData = {
     ...workoutData,
     recommendedWorkout: recommendedWorkoutData || workoutData?.recommendedWorkout
@@ -229,7 +229,7 @@ export default function HomePage() {
 
       {isAboutExpanded && (<div className="modal-backdrop" onClick={() => setAboutExpanded(false)}><AboutUsExpanded onClose={() => setAboutExpanded(false)} /></div>)}
       {isCalendarExpanded && (<div className="modal-backdrop" onClick={() => setCalendarExpanded(false)}><CalendarExpanded onClose={() => setCalendarExpanded(false)} /></div>)}
-      {isStatusExpanded && (<div className="modal-backdrop" onClick={() => setStatusExpanded(false)}><StatusExpanded data={statusData} onClose={() => setStatusExpanded(false)} onLogStatusToManager={handleLogStatusToManager}/></div>)}
+      {isStatusExpanded && (<div className="modal-backdrop" onClick={() => setStatusExpanded(false)}><StatusExpanded data={statusData} onClose={() => setStatusExpanded(false)} onLogStatusToManager={handleLogStatusToManager} /></div>)}
       {isDietExpanded && (<div className="modal-backdrop" onClick={() => setDietExpanded(false)}><DietExpanded onClose={() => setDietExpanded(false)} onLogDietToManager={handleLogDietToManager} /></div>)}
       {isWorkoutExpanded && (<div className="modal-backdrop" onClick={() => setWorkoutExpanded(false)}><WorkoutExpanded onClose={() => setWorkoutExpanded(false)} onLogWorkoutToManager={handleLogWorkoutToManager} /></div>)}
       
