@@ -74,20 +74,20 @@
     grid-column: 2 / 2; /* 두 번째 컬럼 차지 */
     grid-row: 1 / 2;    /* 첫 번째 로우 차지 */
     margin: 5px 5px 15px 5px;
-    border-radius: 50px;
+    border-radius: 10px;
     display: flex;
-    background-color: rgba(255, 172, 211, 0.199);
+    background-color: rgba(255, 255, 255, 0.199);
     flex-direction: column;
     justify-content: center;
-    color: rgb(226, 76, 126);
 }
 
 .recommendation-header {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     text-align: center;
     margin-bottom: 0px;
     margin-top: 0px;
-    color: rgba(255, 244, 244, 0.979);
+    color: rgb(124, 64, 64);
+    font-weight: bold;
 }
 
 .rec-menu {
@@ -96,6 +96,10 @@
     font-weight: bold;
     margin: 0 0 6px 0;
     white-space: pre-line;
+}
+
+.italic-highlight{
+    color: rgba(255, 255, 45, 0.815);
 }
 
 /* 3. 물 섭취량 (하단 전체) */

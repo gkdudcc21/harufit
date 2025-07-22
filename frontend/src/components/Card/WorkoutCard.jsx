@@ -9,7 +9,7 @@ export default function WorkoutCard({ onExpand, mode, data }) {
     <div className="workout-card card-base">
       <div className={`card-header ${mode}-theme`}>
         <span>운동</span>
-        <button className="expand-btn" onClick={onExpand}></button>
+        <button className="expand-btn" onClick={onExpand}>▶</button>
       </div>
 
       <div className="workout-content"> 
