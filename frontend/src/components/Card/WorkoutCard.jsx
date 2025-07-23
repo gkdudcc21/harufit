@@ -9,7 +9,7 @@ export default function WorkoutCard({ onExpand, mode, data }) {
     <div className="workout-card card-base">
       <div className={`card-header ${mode}-theme`}>
         <span>운동</span>
-        <button className="expand-btn" onClick={onExpand}></button>
+        <button className="expand-btn" onClick={onExpand}>▶</button>
       </div>
 
       <div className="workout-content"> 
@@ -25,10 +25,13 @@ export default function WorkoutCard({ onExpand, mode, data }) {
                 </li>
               ))
             ) : (
-              <li className="empty-section-guide" style={{ justifyContent: 'center' }}>
-                "오늘 30분 달렸어" 와 같이<br/>
+              <p className="empty-section-guide" style={{ justifyContent: 'center' }}>
+                <span className="italic-highlight">
+                <span className="my-colored-text">
+                "오늘 30분 달렸어" </span></span>
+                와 같이<br/>
                 운동을 기록해보세요!
-              </li>
+              </p>
             )}
           </ul>
         </div>
@@ -49,11 +52,11 @@ export default function WorkoutCard({ onExpand, mode, data }) {
             </div>
           ) : (
             <p className="empty-section-guide" style={{ justifyContent: 'center' }}>
-              어떤 운동을 할지 고민되시나요?<br/>
+              <br/>어떤 운동을 할지<br/> 고민되시나요?<br/>
               매니저에게 <br/>
               <span className="italic-highlight">
                 <span className="my-colored-text"> "운동 추천해줘"</span>
-              </span> 라고<br/>
+              </span> <br/>라고<br/>
               말해보세요!
             </p>
           )}
