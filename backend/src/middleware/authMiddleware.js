@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 const jwt = require('jsonwebtoken'); // ✅ [추가] jsonwebtoken 라이브러리 가져오기
 
 const authMiddleware = async (req, res, next) => {

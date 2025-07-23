@@ -394,3 +394,38 @@
   }
 
 }
+
+/* ✅ [추가] 사용자 환영 및 로그아웃 버튼 스타일 */
+.user-actions-wrapper {
+  position: absolute;
+  /* chat-area(top: 50%, height: 650px)의 정중앙 Y좌표에서 높이의 절반(325px)을 빼서 상단 위치를 계산하고, 
+     추가로 40px만큼 더 위로 올려 채팅창과 겹치지 않게 합니다. */
+  top: calc(50% - 325px - 40px);
+  right: 300px;
+  width: 400px;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end; /* 컨텐츠를 오른쪽으로 정렬합니다. */
+  align-items: baseline;
+  gap: 15px; /* 환영 메시지와 로그아웃 버튼 사이의 간격을 설정합니다. */
+}
+
+.welcome-message {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  /* 배경 이미지에 글자가 잘 보이도록 그림자 효과를 추가합니다. */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.logout-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 15px;
+  /* '게스트로 입장'과 비슷한 느낌을 주기 위해 밑줄을 추가합니다. */
+  text-decoration: none;
+  cursor: pointer;
+  padding: 5px;
+  font-weight: 500;
+}
