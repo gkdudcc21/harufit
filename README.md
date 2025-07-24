@@ -3,6 +3,7 @@
 > 배포 주소: [https://harufit.vercel.app](https://harufit.vercel.app)
 
 📄 [최종보고서 PDF 보기](https://github.com/gkdudcc21/harufit-report/blob/main/하루핏%20최종보고서pdf.pdf)
+📄 [HARUFIT 결과보고서 PDF 보기](https://github.com/gkdudcc21/harufit-report/blob/main/하루핏%20최종보고서pdf.pdf)
 
 ## 👨‍👩‍👧‍👦 하루핏 Team
 ![HaruFit 팀](https://github.com/gkdudcc21/harufit-report/blob/main/하루핏팀.jpg?raw=true)
@@ -11,18 +12,18 @@
 
 - **고진석**  
   Backend Developer / Feature Planner  
-  🔗 GitHub:[[ [jinseok-go](https://github.com/jinseok-go)](https://github.com/masterRLX)  
-  /n✉️ Email: pineappjames@gmail.com
+  🔗 GitHub:[[ [jinseok-go](https://github.com/jinseok-go)](https://github.com/masterRLX)
+  ✉️ Email: pineappjames@gmail.com
 
 - **구하영**  
   Project Manager / Frontend Support  
-  🔗 GitHub: [[gkdudcc21](https://github.com/gkdudcc21)](https://github.com/gkdudcc21) 
-  /n✉️ Email: gkdudcc21@gmail.com  
+  🔗 GitHub: [[gkdudcc21](https://github.com/gkdudcc21)](https://github.com/gkdudcc21)
+  ✉️ Email: gkdudcc21@gmail.com  
 
 - **이가원**  
   UI/UX Designer / Frontend  
   🔗 GitHub:[[leegawon](https://github.com/SolanaChoi)](https://github.com/SolanaChoi)
-  /n✉️ Email: ywgw5316@gmail.com
+  ✉️ Email: ywgw5316@gmail.com
 
 ## 📌 프로젝트 소개
 -HaruFit은 사용자의 건강한 라이프스타일을 지원하는 웹 애플리케이션입니다. 
