@@ -1,4 +1,8 @@
 # 🏋️‍♀️ HaruFit (하루핏)
+> AI 기반 건강관리 코칭 앱  
+> 배포 주소: [https://harufit.vercel.app](https://harufit.vercel.app)
+
+📄 [최종보고서 PDF 다운로드](https://github.com/gkdudcc21/harufit-report/blob/main/하루핏%20최종보고서pdf.pdf?raw=true)
 
 ## 📌 프로젝트 소개
 -HaruFit은 사용자의 건강한 라이프스타일을 지원하는 웹 애플리케이션입니다. 
