@@ -15,8 +15,6 @@ export default function useAuth() {
   // 로그인 함수: 백엔드 API를 호출하여 실제 로그인을 시도합니다.
   const login = useCallback(async (inputNickname, inputPin, inputMode = 'normal') => {
     try {
-      // apiClient를 사용하여 백엔드의 '/users' 엔드포인트로 POST 요청을 보냅니다.
-      // 이 요청은 사용자 생성 또는 로그인을 처리합니다.
       const response = await apiClient.post('/users', {
         nickname: inputNickname,
         pin: inputPin,
