@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { useLocation } from "react-router-dom"
+// ✅ [추가] 로그아웃 후 페이지 이동을 위해 useNavigate를 import합니다.
+import { useLocation, useNavigate } from "react-router-dom"
 import "./HomePage.css"
 import StatusCard from "../../components/Card/StatusCard.jsx"
 import DietCard from "../../components/Card/DietCard.jsx"
@@ -18,14 +19,14 @@ import useApi from '../../hooks/useApi';
 import { API_ENDPOINTS } from '../../utils/constants';
 import apiClient from "../../api/apiClient"
 
-// ✅ [추가] 오늘 날짜를 'YYYY-MM-DD' 형식으로 가져오는 헬퍼 함수
 const getTodayString = () => {
   const today = new Date();
-  // 한국 시간 기준으로 날짜를 계산하여 Z(UTC) 타임존 문제를 해결합니다.
   return new Date(today.getTime() - (today.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
 };
 
 export default function HomePage() {
+  // ✅ [추가] useNavigate 훅을 초기화합니다.
+  const navigate = useNavigate();
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const initialMode = localStorage.getItem('userMode') || queryParams.get("mode") || "normal";
@@ -43,7 +44,6 @@ export default function HomePage() {
   const { data: workoutData, error: workoutError, refetch: refetchWorkout } = useApi(API_ENDPOINTS.WORKOUT_TODAY);
   const { data: calendarData, error: calendarError, refetch: refetchCalendar } = useApi(API_ENDPOINTS.CALENDAR_SUMMARY);
 
-  // ✅ [수정] 컴포넌트가 로드될 때 localStorage에서 오늘의 추천 데이터를 불러와서 상태를 초기화합니다.
   const [recommendedMealData, setRecommendedMealData] = useState(() => {
     const saved = localStorage.getItem('recommendedMeal');
     if (saved) {
@@ -113,12 +113,10 @@ export default function HomePage() {
           break;
         case 'diet_recommendation':
           setRecommendedMealData(dataPayload);
-          // ✅ [추가] 새로운 추천 데이터를 받을 때마다 오늘 날짜와 함께 localStorage에 저장합니다.
           localStorage.setItem('recommendedMeal', JSON.stringify({ date: getTodayString(), data: dataPayload }));
           break;
         case 'workout_recommendation':
           setRecommendedWorkoutData(dataPayload);
-          // ✅ [추가] 새로운 추천 데이터를 받을 때마다 오늘 날짜와 함께 localStorage에 저장합니다.
           localStorage.setItem('recommendedWorkout', JSON.stringify({ date: getTodayString(), data: dataPayload }));
           break;
         case 'water_goal_update':
@@ -134,6 +132,17 @@ export default function HomePage() {
       refetchCalendar();
     }
   }, [refetchStatus, refetchDiet, refetchWorkout, refetchCalendar]);
+  
+  // ✅ [추가] 로그아웃 버튼 클릭 시 실행될 함수입니다.
+  const handleLogout = () => {
+    // 사용자에게 로그아웃 여부를 확인합니다.
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      // 확인 시 localStorage의 모든 데이터를 삭제합니다.
+      localStorage.clear();
+      // 로그인 페이지로 이동합니다.
+      navigate("/");
+    }
+  };
 
   const [chatSystemMessage, setChatSystemMessage] = useState(null);
 
@@ -223,6 +232,14 @@ export default function HomePage() {
       {isStatusExpanded && (<div className="modal-backdrop" onClick={() => setStatusExpanded(false)}><StatusExpanded data={statusData} onClose={() => setStatusExpanded(false)} onLogStatusToManager={handleLogStatusToManager} /></div>)}
       {isDietExpanded && (<div className="modal-backdrop" onClick={() => setDietExpanded(false)}><DietExpanded onClose={() => setDietExpanded(false)} onLogDietToManager={handleLogDietToManager} /></div>)}
       {isWorkoutExpanded && (<div className="modal-backdrop" onClick={() => setWorkoutExpanded(false)}><WorkoutExpanded onClose={() => setWorkoutExpanded(false)} onLogWorkoutToManager={handleLogWorkoutToManager} /></div>)}
+      
+      {/* ✅ [추가] 사용자 환영 메시지 및 로그아웃 버튼을 담는 컨테이너입니다. */}
+      <div className="user-actions-wrapper">
+        <span className="welcome-message">{nickname}님, 환영합니다!</span>
+        <button className="logout-button" onClick={handleLogout}>
+          로그아웃
+        </button>
+      </div>
 
       <div className="chat-area">
         <ManagerChat mode={selectedMode} shouldFocusInput={triggerChatFocus} triggerSource={chatTriggerSource} onDataRefresh={handleDataUpdate} systemMessage={chatSystemMessage} />

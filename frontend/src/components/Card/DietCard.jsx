@@ -44,7 +44,8 @@ export default function DietCard({ onExpand, mode, data }) {
           ) : (
             <p className="empty-section-guide compact">
               매니저에게<br/>
-              <span className="italic-highlight">"식단 추천해줘"</span> 라고<br />
+              <span className="italic-highlight">
+              <span className="my-colored-text">"식단 추천해줘"</span></span> 라고<br />
               말해보세요!
             </p>
           )}
