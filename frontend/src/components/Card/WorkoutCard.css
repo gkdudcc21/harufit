@@ -40,12 +40,10 @@
 
 .current-workout {
     position: relative;
-
 }
 
 .recommended-workout {
     position: relative;
-
 }
 
 .recommend-label {
@@ -53,7 +51,7 @@
     top: 4px;
     left: 10px;
     background: #f9f6f17a;
-    color: rgb(124, 64, 64);
+    color: rgb(188, 71, 71);
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -71,7 +69,7 @@
 .workout-details {
     display: flex;
     flex-direction: column;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.994);
     font-size: 0.9rem;
 }
 
@@ -121,7 +119,7 @@
     font-weight: bold;
 }
 
-/* ✅ [추가] 섹션 내부에 기록이 없을 때의 안내 메시지 스타일 */
+/* 섹션 내부 기록 없을 때의 안내 메시지 스타일 */
 .empty-section-guide {
     font-size: 0.8rem;
     color: var(--text-color-light);
@@ -134,11 +132,9 @@
 .italic-highlight {
     font-style: italic;
   }
-
   .my-colored-text {
-    color: #f8ee65
+    color: #f8ee65    
   }
-
 
 @media (max-width: 1400px) {
     .empty-section-guide {

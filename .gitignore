@@ -5,8 +5,8 @@
 .vscode/        # VS Code 관련 설정 파일
 .env            # 환경 변수 파일 (프론트/백엔드 모두 해당될 수 있음)
 
-.backend.zip
-.backend_RM_NODE.zip
+backend.zip
+backend_RM_NODE.zip
 
 # 프론트엔드 (frontend) 관련
 /frontend/node_modules/
