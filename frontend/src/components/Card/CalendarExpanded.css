@@ -57,7 +57,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
-    height: 450px; /* 달력 높이 고정 */
+    height: 450px; 
 }
 
 .day-header {

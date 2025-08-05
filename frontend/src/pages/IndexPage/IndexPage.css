@@ -1,4 +1,3 @@
-/* frontend/src/pages/IndexPage/IndexPage.css */
 
 /* 기본 HTML, Body, Root 스타일 */
 html,
@@ -11,9 +10,7 @@ body,
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   overflow-y: hidden;
-  /* 세로 스크롤바 숨김 */
   overflow-x: hidden;
-  /* 가로 스크롤바 숨김 */
 }
 
 .index-container {
@@ -21,7 +18,6 @@ body,
   width: 100vw;
   position: relative;
   overflow: hidden;
-  /* 페이지 전체 스크롤 방지 */
 }
 
 .background-image {
@@ -33,36 +29,26 @@ body,
   /* 오버레이 아래에 배치 */
   top: 0;
   left: 0;
-  filter: brightness(0.7);
-  /* 배경 이미지 어둡게 */
 }
 
 .overlay {
-  background-color: rgba(0, 0, 0, 0.3);
   /* 반투명 오버레이 */
   height: 100%;
   width: 100%;
-
-  /* ✅ 모든 자식 요소가 absolute로 고정되므로 flexbox 속성은 제거합니다. */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: flex-start; */
-  /* justify-content: center; */
+  /* 모든 자식 요소가 absolute로 고정되므로 flexbox 속성은 제거. */
   padding-left: 80px; /* 좌측 여백은 유지 (absolute 자식들의 left 기준이 됨) */
   color: white;
   position: relative; /* 자식 요소의 absolute 위치 지정을 위한 기준점. 필수입니다. */
   z-index: 2;
-  /* padding-bottom: 50px; 제거 */
 }
 
-/* ✅ 상단 환영 메시지 고정 */
+/* 상단 환영 메시지 고정 */
 .header-text {
-  position: absolute; /* 절대 위치 지정 */
-  top: 31%; /* ✅ 이미지에 보이는 상단 위치에 맞춰 조정 */
+  position: absolute; /* 절대 위치 */
+  top: 31%; 
   left: 80px;
   width: calc(100% - 160px);
   z-index: 3;
-
 }
 
 .header-text p {
@@ -72,52 +58,44 @@ body,
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* ✅ 메인 타이틀 고정 */
+/* 메인 타이틀 고정 */
 .main-title {
   font-size: 2.8rem;
   font-weight: bold;
   line-height: 1.3;
   margin: 0;
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
-  position: absolute; /* 절대 위치 지정 */
-  top: calc(31% + 3rem); /* ✅ header-text 아래에 오도록 top 값 조정 */
+  position: absolute; 
+  top: calc(31% + 3rem); /* header-text 아래에 오도록 top*/
   left: 80px;
   width: calc(100% - 160px);
   z-index: 3;
 }
 
 .brand-name {
-  color: #fbc02d;
-  /* HARU-FIT 강조 색상 */
+  color: #ffef5b;
 }
 
-/* ✅ 닉네임/PIN 입력 섹션 고정 */
+/* 닉네임/PIN 입력 섹션 고정 */
 .input-interaction-section {
-
-  /* margin-top: 20px; 제거 */
   display: flex; /* 내부 요소 정렬을 위해 flex는 유지 */
   flex-direction: column;
   align-items: flex-start;
   gap: 15px;
-  position: absolute; /* 절대 위치 지정 */
-  top: calc(31% + 3rem + 8rem); /* ✅ main-title 아래에 오도록 top 값 조정 */
+  position: absolute; 
+  top: calc(31% + 3rem + 8rem); /* main-title 아래에 오도록 */
   left: 80px;
   width: calc(100% - 160px);
   z-index: 3;
-
-
 }
 
 .input-group {
   display: flex;
   gap: 10px;
-
- 
   align-items: center;
 }
 
 .input-field {
-
   padding: 8px 12px;
   border-radius: 4px;
   border: none;
@@ -127,7 +105,6 @@ body,
   outline: none;
   transition: box-shadow 0.2s ease-in-out;
   caret-color: white;
-
 }
 
 .input-field::placeholder {
@@ -143,9 +120,7 @@ body,
 }
 
 .pin-input {
-
   width: 120px;
-
 }
 
 .submit-btn {
@@ -173,17 +148,14 @@ body,
   color: white;
   border: none;
   text-decoration: none;
-
   font-size: 0.9rem;
   cursor: pointer;
   align-self: flex-start;
   transition: color 0.2s ease;
-
 }
 
 .guest-btn-inline:hover {
     color: #fbc02d;
-
 }
 
 /* API 응답 메시지 스타일 */
@@ -202,41 +174,38 @@ body,
   color: #aed581;
 }
 
-/* ✅ 메시지 영역 고정 */
+/* 메시지 영역 고정 */
 .message-area-fixed {
-
     position: absolute;
     width: calc(100% - 160px);
-    top: calc(31% + 3rem + 8rem + 5rem); /* ✅ input-interaction-section 아래에 오도록 top 값 조정 */
+    top: calc(31% + 3rem + 8rem + 5rem); 
     left: 80px;
     min-height: 25px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     z-index: 3;
-    bottom: auto; /* bottom: 308px;은 이제 필요 없으므로 제거 */
-
 }
 
 /* Difficulty Buttons Section (모드 선택 버튼) */
 .difficulty-buttons-container {
-  position: absolute; /* ✅ absolute 유지 */
-  right: -200px; /* ✅ 애니메이션을 위한 초기 숨김 위치 유지 */
-  top: 50%; /* ✅ 유지 */
-  transform: translateY(-50%); /* ✅ 유지 */
-  display: flex; /* ✅ 내부 요소 정렬을 위해 flex 유지 */
+  position: absolute; /* absolute 유지 */
+  right: -200px; /* 애니메이션을 위한 초기 숨김 위치 유지 */
+  top: 50%; 
+  transform: translateY(-50%); 
+  display: flex; /* 내부 요소 정렬을 위해 flex 유지 */
   flex-direction: column;
   gap: 1.2rem;
   z-index: 3;
-  opacity: 0; /* ✅ 애니메이션을 위해 초기 투명도는 0 */
-  visibility: hidden; /* ✅ 애니메이션을 위해 초기에는 숨김 */
-  transition: right 0.7s ease-out, opacity 0.7s ease-out, visibility 0.7s; /* ✅ opacity와 visibility도 transition에 추가 */
+  opacity: 0; /* 애니메이션을 위해 초기 투명도는 0 */
+  visibility: hidden; /* 애니메이션을 위해 초기에는 숨김 */
+  transition: right 0.7s ease-out, opacity 0.7s ease-out, visibility 0.7s; /* opacity와 visibility도 transition에 추가 */
 }
 
 .difficulty-buttons-container.show-modes {
-  right: 10rem; /* ✅ 나타날 최종 위치 유지 */
-  opacity: 1; /* ✅ show-modes일 때 보이도록 */
-  visibility: visible; /* ✅ show-modes일 때 보이도록 */
+  right: 10rem; /* 나타날 최종 위치 유지 */
+  opacity: 1;  
+  visibility: visible;  
 }
 
 .difficulty-btn-wrapper {
@@ -270,45 +239,40 @@ body,
 }
 
 .difficulty-btn.easy:hover {
-  background-color: rgba(200, 230, 201, 0.9);
+  background-color: rgb(114, 205, 117);
   color: #388E3C;
 }
 
 .difficulty-btn.normal:hover {
-  background-color: rgba(225, 190, 231, 0.9);
+  background-color: rgba(235, 181, 244, 0.933);
   color: #8E24AA;
 }
 
 .difficulty-btn.hard:hover {
-  background-color: rgba(255, 205, 209, 0.9);
+  background-color: rgba(247, 162, 169, 0.967);
   color: #F44336;
 }
 
 .difficulty-btn.selected {
-  /*border: 3px solid #fbc02d;*/
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(251, 192, 45, 0.6);
 }
 
 /* ModeDescription 컴포넌트 스타일 (modeDescription.css에서 정의) */
 
-
-/* 반응형 디자인 */
 @media (max-width: 1024px) {
 
     .overlay {
         padding-left: 50px;
     }
-    /* ✅ header-text 반응형 위치 조정 */
     .header-text {
         top: 28%; /* 이미지에 맞춰 조정 */
         left: 50px;
         width: calc(100% - 100px);
     }
-    /* ✅ main-title 반응형 위치 조정 */
     .main-title {
         font-size: 2.3rem;
-        top: calc(28% + 2.5rem); /* header-text 아래에 오도록 */
+        top: calc(28% + 2.5rem); 
         left: 50px;
         width: calc(100% - 100px);
     }
@@ -334,41 +298,36 @@ body,
     .pin-input {
         width: 120px;
     }
-    /* ✅ input-interaction-section 반응형 위치 조정 */
     .input-interaction-section {
-        top: calc(28% + 2.5rem + 7rem); /* main-title 아래에 오도록 */
+        top: calc(28% + 2.5rem + 7rem); 
         left: 50px;
         width: calc(100% - 100px);
     }
-    /* ✅ message-area-fixed 반응형 위치 조정 */
     .message-area-fixed {
-        top: calc(28% + 2.5rem + 7rem + 7rem); /* input 섹션 아래에 오도록 */
+        top: calc(28% + 2.5rem + 7rem + 7rem); 
         left: 50px;
         width: calc(100% - 100px);
     }
-
 }
 
 @media (max-width: 768px) {
 
     .overlay {
         padding-left: 20px;
-        align-items: center; /* 중앙 정렬로 변경 */
-        text-align: center; /* 텍스트 중앙 정렬 */
-        justify-content: flex-start; /* flex-start 유지 */
-        padding-top: 10vh; /* 상단 여백 유지 */
+        align-items: center; 
+        text-align: center; 
+        justify-content: flex-start; 
+        padding-top: 10vh;
     }
     .header-text p, .main-title {
         text-align: center;
         margin-left: 0;
     }
-    /* ✅ header-text 반응형 위치 조정 */
     .header-text {
         top: 8vh; /* 모바일에서 더 위로 올림 */
         left: 20px;
         width: calc(100% - 40px);
     }
-    /* ✅ main-title 반응형 위치 조정 */
     .main-title {
         top: calc(8vh + 2rem);
         left: 20px;
@@ -380,10 +339,10 @@ body,
         max-width: 300px;
         align-items: center;
         margin-top: 30px;
-        position: absolute; /* 고정 유지 */
+        position: absolute; 
         top: calc(8vh + 2rem + 6rem);
         left: 50%;
-        transform: translateX(-50%); /* 중앙 정렬 */
+        transform: translateX(-50%); 
     }
     .input-group {
         flex-direction: column;
@@ -402,10 +361,10 @@ body,
         align-self: center;
     }
     .message-area-fixed {
-        position: absolute; /* static 대신 absolute 유지 */
+        position: absolute; 
         width: 100%;
         left: 50%;
-        transform: translateX(-50%); /* 중앙 정렬 */
+        transform: translateX(-50%); 
         top: calc(8vh + 2rem + 6rem + 10rem);
         margin-top: 15px;
         text-align: center;
@@ -420,17 +379,14 @@ body,
   .main-title {
     font-size: 1.8rem;
   }
-
   .header-text {
     font-size: 0.8rem;
   }
-
   .difficulty-btn {
     width: 60px;
     height: 60px;
     font-size: 0.85rem;
   }
-
   .difficulty-buttons-container {
     gap: 0.8rem;
   }

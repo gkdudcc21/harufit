@@ -35,9 +35,8 @@
     align-items: center;
     flex-wrap: nowrap;
     /* ✨ 줄바꿈 금지 */
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
-    backdrop-filter: blur(90px);
     padding: 20px 10px 20px 10px;
 }
 
@@ -45,9 +44,9 @@
     display: flex;
     font-size: 0.9rem;
     flex-direction: column;
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255);
+    text-shadow: 1px 1px 1px rgba(107, 96, 96, 0.485);
     flex: 1;
-    /* ✨ 추가: 내용이 길어질 때 유연하게 공간 차지 */
 }
 
 .status-details p {
@@ -55,14 +54,14 @@
 }
 
 .status-value {
-    color: #f8ee65;  
+    color: #f6ff43;  
     font-weight: bold; 
 }
 
 .status-message {
     font-style: italic;
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.913);
     font-weight: bold;
     margin-top: 2px;
 }
@@ -90,11 +89,9 @@
         padding: 0.8rem;
         max-height: 280px;
     }
-
     .status-icon {
         font-size: 50px;
     }
-
     .status-text {
         font-size: 0.8rem;
         max-height: 200px;
@@ -105,15 +102,12 @@
     .status-card {
         padding: 0.5rem;
     }
-
     .status-icon {
         font-size: 42px;
     }
-
     .status-text {
         font-size: 0.95rem;
     }
-
     .status-content {
         flex-direction: column;
         align-items: center;

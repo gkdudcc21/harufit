@@ -186,19 +186,18 @@
     color: #868e96;
 }
 
-/* ✅ 버튼을 감싸는 컨테이너 추가 */
+/* 버튼을 감싸는 컨테이너 */
 .record-btn-container {
     width: 100%;
     display: flex;
-    justify-content: center; /* 버튼을 중앙으로 정렬 */
+    justify-content: center; 
     margin-top: 10px;
 }
 
-/* ✅ 다른 페이지와 통일된 버튼 스타일 */
+/* 다른 페이지와 통일된 버튼 스타일 */
 .record-btn {
-    /* width: 100%; 제거 */
     padding: 12px 28px; /* 버튼 크기 조정 */
-    background-color: #3b82f6; /* 다른 페이지와 색상 통일 */
+    background-color: #3b82f6; 
     color: white;
     border: none;
     border-radius: 12px;
