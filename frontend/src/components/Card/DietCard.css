@@ -4,7 +4,7 @@
     padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
-    height: 88%;      /* 상위 .card-wrapper가 높이 제한 중이므로 100%로 채움 */
+    height: 88%;      /* 상위 .card-wrapper가 높이 제한 중 */
     overflow: hidden;   
 }
 
@@ -73,7 +73,7 @@
 .recommend-section {
     grid-column: 2 / 2; 
     grid-row: 1 / 2;    
-    margin: 5px 5px 15px 5px;
+    margin: 5px 5px 10px 5px;
     border-radius: 10px;
     display: flex;
     background-color: rgba(255, 255, 255, 0.199);
@@ -84,27 +84,36 @@
 .recommendation-header {
     font-size: 0.8rem;
     text-align: center;
-    margin-bottom: 0px;
+    margin-bottom: 15px;
     margin-top: 0px;
     color: rgb(178, 72, 72);
     font-weight: bold;
 }
 
 .rec-menu {
-    font-size: 1.0rem;
+    color: rgba(255, 255, 255, 0.918);
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 1px rgba(79, 44, 95, 0.568);
     text-align: center;
     font-weight: bold;
-    margin: 0 0 6px 0;
+    margin: 5px;
     white-space: pre-line;
 }
 
-.empty-section-guide {
-    color: rgb(255, 255, 255);
-    text-shadow: 1px 1px 1px rgba(128, 119, 119, 0.485); 
+.diet-empty-section-guide {
+    text-shadow: 2px 2px 1px rgba(128, 119, 119, 0.737);
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    line-height: 1.5;
+    margin: 5px;
+    text-align: center;
+    width: 90%;
 }
-.italic-highlight{
-    color: rgba(255, 255, 45, 0.815);
-    text-shadow: 1px 1px 1px rgba(128, 119, 119, 0.485);
+.diet-italic-highlight{
+    font-style: italic;
+    text-shadow: 1px 1px 1px rgba(163, 111, 111, 0.737);
+    color: rgb(255, 255, 64);
+    font-weight: 500;
 }
 
 /* 3. 물 섭취량 (하단 전체) */

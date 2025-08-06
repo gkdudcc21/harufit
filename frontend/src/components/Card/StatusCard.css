@@ -1,9 +1,5 @@
 @import '../../styles/common.css';
 
-.status-card {
-    padding: var(--spacing-lg);
-    min-height: 0;
-}
 
 .card-header {
     position: relative;
@@ -37,12 +33,14 @@
     /* ✨ 줄바꿈 금지 */
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
-    padding: 20px 10px 20px 10px;
+    margin-top: 5px;
+    padding: 25px 10px 25px 10px;
 }
 
 .status-details {
     display: flex;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    font-weight: 600;
     flex-direction: column;
     color: rgba(255, 255, 255);
     text-shadow: 1px 1px 1px rgba(107, 96, 96, 0.485);
@@ -50,7 +48,7 @@
 }
 
 .status-details p {
-    margin: 8px;
+    margin: 6px;
 }
 
 .status-value {
@@ -60,7 +58,7 @@
 
 .status-message {
     font-style: italic;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.913);
     font-weight: bold;
     margin-top: 2px;
@@ -84,9 +82,37 @@
     filter: brightness(0.95);
 }
 
+@media (max-width:1200px) {
+    .status-details {
+        display: flex;
+        font-size: 1rem;
+        font-weight: 500;
+        flex-direction: column;
+        color: rgba(255, 255, 255);
+        text-shadow: 1px 1px 1px rgba(107, 96, 96, 0.485);
+        flex: 1;
+    }
+    
+    .status-details p {
+        margin: 4px;
+    }
+    
+    .status-value {
+        color: #f6ff43;  
+        font-weight: bold; 
+    }
+    
+    .status-message {
+        font-style: italic;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.913);
+        font-weight: bold;
+        margin-top: 2px;
+    }
+}
 @media (max-width: 768px) {
     .status-card {
-        padding: 0.8rem;
+        padding: 0.7rem;
         max-height: 280px;
     }
     .status-icon {
