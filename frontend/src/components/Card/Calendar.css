@@ -1,7 +1,7 @@
 @import '../../styles/common.css';
 
 .calendar-card {
-    padding: 10px 16px;
+    padding: 8px 15px;
     min-height: auto;
     box-sizing: border-box;
     margin-top: 10px;   

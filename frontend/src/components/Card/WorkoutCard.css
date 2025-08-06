@@ -20,7 +20,6 @@
     justify-content: space-between;
     gap: var(--spacing-md);
     flex: 1;
-    padding: 0 0.5rem;
 }
 
 .current-workout,
@@ -52,31 +51,29 @@
     left: 10px;
     background: #f9f6f17a;
     color: rgb(188, 71, 71);
-    padding: 2px 8px;
+    padding: 2px;
+    text-align: center;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: bold;
     backdrop-filter: blur(5px);
     right: 10px;
 }
 
-.workout-icon {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-}
-
 .workout-details {
     display: flex;
     flex-direction: column;
-    color: rgba(255, 255, 255, 0.994);
-    font-size: 0.9rem;
+    text-shadow: 1px 1px 1px rgba(128, 119, 119, 0.737);
 }
 
 .workout-details p,
 .workout-details span {
-    color: var(--text-color-light);
-    margin: 0;
+    color: papayawhip;
+    font-size: 0.85rem;
+    font-weight: 450;
+    text-shadow: 1.3px 1.3px 1px rgba(114, 87, 87, 0.61);
+    text-align: center;
+    margin: 2px;
 }
 
 .exercise-list {
@@ -95,7 +92,6 @@
     align-items: center;
     width: 100%;
     padding: 0px 0px;
-    color: var(--text-color-light);
     word-break: keep-all;
     background: transparent;
     box-sizing: border-box;
@@ -104,14 +100,15 @@
 .exercise-list li span:first-child {
     flex: 1;
     font-size: 0.9em;
+    font-weight: 500;
+    text-shadow: 1.5px 1.5px 1px rgba(128, 119, 119, 0.737);
     white-space: normal;
     word-break: keep-all;
     overflow: visible;
 }
 
 .exercise-list li span:last-child {
-    /* flex-shrink: 0; */
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: rgb(56, 35, 131);
     margin-left: 5px;
     text-align: right;
@@ -121,7 +118,8 @@
 
 /* 섹션 내부 기록 없을 때의 안내 메시지 스타일 */
 .empty-section-guide {
-    font-size: 0.8rem;
+    text-shadow: 2px 2px 1px rgba(128, 119, 119, 0.737);
+    font-size: 0.85rem;
     color: var(--text-color-light);
     line-height: 1.6;
     margin: 0;
@@ -131,10 +129,8 @@
 
 .italic-highlight {
     font-style: italic;
-  }
-  .my-colored-text {
-    color: #f8ee65    
-  }
+    text-shadow: 1px 1px 1px rgba(128, 119, 119, 0.737);
+}
 
 @media (max-width: 1400px) {
     .empty-section-guide {
@@ -145,4 +141,10 @@
         margin: 0;
         text-align: center;
     }
+}
+
+@media (max-width: 760px) {
+    .workout-card {
+        padding: 10px;
+    }    
 }

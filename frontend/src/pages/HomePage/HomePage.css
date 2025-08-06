@@ -125,16 +125,16 @@
   position: absolute;
   top: 50%;
   left: 38%;
-  transform: translate(-50%, -50%);
-  width: 800px;
-  height: 670px;
+  transform: translate(-52%, -52%);
+  width: 820px;
+  height: 680px;
   z-index: 5;
 }
 
 .card-wrapper {
   position: absolute;
-  width: 380px;
-  height: 320px;
+  width: 390px;
+  height: 330px;
   backdrop-filter: blur(25px);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -171,11 +171,11 @@
 
 .chat-area {
   position: absolute;
+  transform: translate(20%, -52%);
   top: 50%;
   right: 300px;
-  transform: translateY(-50%);
-  width: 400px;
-  height: 670px;
+  width: 420px;
+  height: 680px;
   backdrop-filter: blur(15px);
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -205,25 +205,85 @@
   }
 }
 
+/* 사용자 환영 및 로그아웃 버튼 스타일 */
+.user-actions-wrapper {
+  transform: translate(15%, -50%);
+  position: absolute;
+  right: 300px;
+  width: 400px;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: baseline;
+  gap: 15px; 
+}
+
+.welcome-message {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.logout-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+
 @media (max-width: 1400px) {
   .main-cards-area {
     left: 40%;
-    transform: translate(-50%, -50%);
-    width: 680px;
-    height: 580px;
+    transform: translate(-45%, -50%);
+    width: 720px;
+    height: 680px;
   }
 
   .card-wrapper {
-    width: 320px;
-    height: 280px;
+    width: 350px;
+    height: 320px;
   }
 
   .chat-area {
-    right: 70px;
+    transform: translate(20%, -50%);
+    right: 100px;
     width: 320px;
-    height: 580px;
+    height: 700px;
+  }
+  .user-actions-wrapper {
+    top: calc(50% - 390px);
+    right: 5%;
+    width: 250px;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: baseline;
+    gap: 10px; 
   }
   
+  .welcome-message {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+  
+  .logout-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    font-weight: 500;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -232,6 +292,8 @@
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .mode-btn {
@@ -244,15 +306,12 @@
     /* position: relative; relative할 시 채팅창이 하단에 감 */
     /* absolute 속성 제거 */
     left: auto;
-    transform: none;
-    width: 90%;
-    max-width: 600px;
-    margin-top: 80px;
-    margin-bottom: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    z-index: 5;
+    gap: 15px;
+    transform: translate(0%, 0%);
+    width: 700px;
+    height: 580px;
   }
 
   .card-wrapper {
@@ -262,19 +321,44 @@
     right: auto;
     bottom: auto;
     width: auto;
-    min-height: 280px;
-    height: 220px;
+    height: 270px;
   }
 
   .chat-area {
     position: relative;
-    top: 50px;
     right: auto;
     transform: none;
     width: 90%;
     max-width: 600px;
     height: 350px;
     order: 2;
+  }
+  .user-actions-wrapper {
+    top: 60px;
+    right: 41%;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: baseline;
+    gap: 15px; 
+  }
+  
+  .welcome-message {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+  
+  .logout-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    font-weight: 500;
   }
 }
 
@@ -283,11 +367,6 @@
     flex-direction: column;
     padding-top: 100px;
     overflow-y: auto;
-  }
-
-  .card-wrapper.top-left {
-    margin-top: 8px;
-    margin-bottom: 9px;
   }
 
   .mode-buttons {
@@ -328,23 +407,20 @@
     bottom: auto;
     right: auto;
     width: calc(100vw - 40px);
-    height: 300px;
+    height: 320px;
     margin: 10px auto;
     box-sizing: border-box;
+    margin-bottom: 1px;
   }
 
   .main-cards-area {
     position: relative;
-    width: calc(100vw - 40px);
-    height: auto;
+    width: 580px;
+    height: 520px;
     margin-top: 0px;
-    margin-bottom: 5px;
-    top: auto;
-    left: auto;
-    transform: none;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
     align-items: start;
     padding: 0px;
@@ -354,7 +430,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    min-height: 260px;
+    max-height: 270px;
     box-sizing: border-box;
     backdrop-filter: blur(15px);
     background: rgba(255, 255, 255, 0.1);
@@ -363,55 +439,39 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     cursor: pointer;
-    padding: 15px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 0;
-    margin-top: 0px;
   }
   
-  .card-wrapper.calendar-card {
-    margin-top: 6px;
-  }
 
-  .card-header {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    border-radius: 15px;
-  }
-
-}
-
-/* 사용자 환영 및 로그아웃 버튼 스타일 */
 .user-actions-wrapper {
-  position: absolute;
-  top: calc(50% - 325px - 40px);
-  right: 300px;
-  width: 400px;
-  z-index: 10;
-  display: flex;
-  justify-content: flex-end; 
-  align-items: baseline;
-  gap: 15px; 
-}
-
-.welcome-message {
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-}
-
-.logout-button {
-  background-color: transparent;
-  border: none;
-  color: white;
-  font-size: 15px;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 5px;
-  font-weight: 500;
+    top: 13%;
+    right: 15%;
+    width: 250px;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: baseline;
+    gap: 15px; 
+  }
+  
+  .welcome-message {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+  
+  .logout-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 12.5px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 3px;
+    font-weight: 500;
+  }
 }
