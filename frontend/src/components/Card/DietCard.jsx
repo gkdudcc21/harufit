@@ -34,7 +34,7 @@ export default function DietCard({ onExpand, mode, data }) {
         <div className="recommend-section">
           <div className="recommendation-header">오늘의 추천 식단</div>
           {recommendedMeal && recommendedMeal.menu ? (
-            <p className="rec-menu" >{recommendedMeal.menu.split('\n')[0]} </p>
+            <p className="rec-menu" >{recommendedMeal.menu.split('\n')[0].replace(/^"|"$/g, '')} </p>
           ) : (
             <p className="diet-empty-section-guide">
               매니저에게<br/>
