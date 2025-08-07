@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
-// ✅ [추가] 로그아웃 후 페이지 이동을 위해 useNavigate를 import합니다.
+// 로그아웃 후 페이지 이동을 위해 useNavigate를 import.
 import { useLocation, useNavigate } from "react-router-dom"
 import "./HomePage.css"
 import StatusCard from "../../components/Card/StatusCard.jsx"
@@ -25,7 +25,7 @@ const getTodayString = () => {
 };
 
 export default function HomePage() {
-  // ✅ [추가] useNavigate 훅을 초기화합니다.
+  //useNavigate 훅 초기화
   const navigate = useNavigate();
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
@@ -133,13 +133,11 @@ export default function HomePage() {
     }
   }, [refetchStatus, refetchDiet, refetchWorkout, refetchCalendar]);
   
-  // ✅ [추가] 로그아웃 버튼 클릭 시 실행될 함수입니다.
+  // 로그아웃 버튼 클릭 시 실행될 함수.
   const handleLogout = () => {
-    // 사용자에게 로그아웃 여부를 확인합니다.
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      // 확인 시 localStorage의 모든 데이터를 삭제합니다.
       localStorage.clear();
-      // 로그인 페이지로 이동합니다.
+      // 로그인 페이지로 이동.
       navigate("/");
     }
   };
@@ -233,7 +231,6 @@ export default function HomePage() {
       {isDietExpanded && (<div className="modal-backdrop" onClick={() => setDietExpanded(false)}><DietExpanded onClose={() => setDietExpanded(false)} onLogDietToManager={handleLogDietToManager} /></div>)}
       {isWorkoutExpanded && (<div className="modal-backdrop" onClick={() => setWorkoutExpanded(false)}><WorkoutExpanded onClose={() => setWorkoutExpanded(false)} onLogWorkoutToManager={handleLogWorkoutToManager} /></div>)}
       
-      {/* ✅ [추가] 사용자 환영 메시지 및 로그아웃 버튼을 담는 컨테이너입니다. */}
       <div className="user-actions-wrapper">
         <span className="welcome-message">{nickname}님, 환영합니다!</span>
         <button className="logout-button" onClick={handleLogout}>

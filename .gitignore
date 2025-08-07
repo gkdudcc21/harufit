@@ -11,6 +11,8 @@ backend_RM_NODE.zip
 # 프론트엔드 (frontend) 관련
 /frontend/node_modules/
 /frontend/build/   # React 빌드 결과물
+/frontend/dist/    # Vite 등 다른 도구의 빌드 결과물 (추가)
+/frontend/.env
 /frontend/.env.local
 /frontend/.env.development.local
 /frontend/.env.test.local

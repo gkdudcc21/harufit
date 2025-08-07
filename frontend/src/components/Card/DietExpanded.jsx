@@ -42,7 +42,7 @@ export default function DietExpanded({ onClose, onLogDietToManager }) {
   const strokeDashoffset = circumference * (1 - waterProgress);
 
   return (
-    // ✅ [수정] 클릭 이벤트가 번지는 것을 막고, 공통 CSS 클래스를 적용합니다.
+    //클릭 이벤트가 번지는 것을 막고, 공통 CSS 클래스를 적용.
     <div className="expanded-modal-container" onClick={(e) => e.stopPropagation()}>
       <header className="expanded-modal-header">
         <h2>오늘의 식단</h2>
@@ -50,13 +50,9 @@ export default function DietExpanded({ onClose, onLogDietToManager }) {
           <CloseIcon />
         </button>
       </header>
-
-      {/* --- 이하 내용은 기존과 거의 동일합니다 --- */}
-
-      <section className="ai-coach-tip">
+      <section className="ai-tip-section">
         <p><span className="font-semibold">하루핏 매니저:</span> {aiCoachTip}</p>
       </section>
-
       <section className="nutrient-summary">
         <div className="nutrient-item"><span>{totalCalories}</span> Kcal</div>
         <div className="nutrient-item"><span>{totalCarbs}g</span> 탄수화물</div>

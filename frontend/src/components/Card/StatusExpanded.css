@@ -1,4 +1,4 @@
-/* StatusExpanded.css */
+
 .status-expanded-wrapper {
     position: fixed;
     top: 0;
@@ -69,25 +69,20 @@
     color: #343a40;
 }
 
-.status-title {
-    font-size: 1.5rem;
-    font-weight: 900;
-    margin: 0;
-}
-
-.ai-briefing {
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    padding: 16px 20px;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #333;
-}
-
-.ai-briefing p {
-    margin: 0;
-}
-
+.ai-tip-section {
+    background-color: #f9fafb;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 0.8rem;
+    line-height: 1.1;
+    color: #882facb4;
+    font-weight: 600;
+  }
+  
+  .font-semibold {
+    color: #000000b4;
+  }
+  
 .chart-section {
     display: flex;
     flex-direction: column;
@@ -132,21 +127,20 @@
 .stats-card-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 15px;
 }
 
 /* 개별 카드 스타일 */
 .stat-card {
     background-color: #f8f9fa;
-    border: 1px solid #f1f3f5;
-    padding: 20px;
+    border: 1px solid #e7ecf1;
+    padding: 15px;
     border-radius: 16px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 8px;
 }
 
 .stat-card-label {
@@ -156,7 +150,7 @@
 }
 
 .stat-card-value {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #212529;
 }
@@ -186,28 +180,25 @@
     color: #868e96;
 }
 
-/* 버튼을 감싸는 컨테이너 */
 .record-btn-container {
     width: 100%;
     display: flex;
     justify-content: center; 
-    margin-top: 10px;
 }
 
-/* 다른 페이지와 통일된 버튼 스타일 */
 .record-btn {
-    padding: 12px 28px; /* 버튼 크기 조정 */
-    background-color: #3b82f6; 
-    color: white;
+    width: 35%;
+    padding: 10px 12px; 
+    border-radius: 18px;
     border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: bold;
+    background-color: #3b82f6;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    box-shadow: 0 4px 15px rgba(92, 107, 192, 0.3);
+    transition: background-color 0.2s;
 }
 
 .record-btn:hover {
-    background-color: #2563eb;
+    background-color:#1a54d1;
 }

@@ -30,7 +30,6 @@
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    /* ✨ 줄바꿈 금지 */
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     margin-top: 5px;
@@ -58,9 +57,8 @@
 
 .status-message {
     font-style: italic;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.913);
-    font-weight: bold;
+    font-size: 0.92rem;
+    color: rgba(104, 71, 180, 0.897);
     margin-top: 2px;
 }
 

@@ -3,12 +3,12 @@ import './StatusCard.css';
 import personIcon from '../../assets/images/pp.png';
 
 export default function StatusCard({ onExpand, mode, data }) {
-  // ✅ [핵심 수정] 데이터가 null이거나 weight 속성이 없을 경우를 대비해 기본값을 0으로 설정합니다.
+  // 데이터가 null이거나 weight 속성 없을 경우 대비해 기본값을 0으로 설정.
   const weight = data?.weight ?? 0;
   const bodyFat = data?.bodyFatPercentage ?? 0;
   const isDataEmpty = !data || weight === 0;
 
-  // ✅ [핵심 수정] toFixed를 호출하기 전에, String으로 변환하여 오류를 방지합니다.
+  // toFixed를 호출하기 전에, String으로 변환하여 오류를 방지.
   const displayWeight = String(weight).includes('.') ? weight.toFixed(1) : String(weight);
   const displayBodyFat = String(bodyFat).includes('.') ? bodyFat.toFixed(1) : String(bodyFat);
 

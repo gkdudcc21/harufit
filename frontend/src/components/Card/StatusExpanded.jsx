@@ -60,7 +60,7 @@ const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
     const progressPercent = Math.max(0, 100 - (((currentStatus.weight - goalWeight) / (initialWeight - goalWeight)) * 100));
 
     return (
-        // ✅ [수정] 클릭 이벤트가 번지는 것을 막고, 공통 CSS 클래스를 적용합니다.
+        // 클릭 이벤트가 번지는 것을 막고, 공통 CSS 클래스를 적용.
         <div className="expanded-modal-container" onClick={(e) => e.stopPropagation()}>
             <header className="expanded-modal-header">
                 <h2>나의 몸 상태</h2>
@@ -69,11 +69,9 @@ const StatusExpanded = ({ onClose, onLogStatusToManager }) => {
                 </button>
             </header>
 
-            {/* --- 이하 내용은 기존과 거의 동일합니다 --- */}
-
-            <div className="ai-briefing">
-                <p><strong>하루핏 매니저:</strong> 최근 체중 변화가 꾸준히 나타나고 있네요! 그래프에 마우스를 올려 상세 수치를 확인해보세요.</p>
-            </div>
+            <section className="ai-tip-section">
+                <p><span className="font-semibold">하루핏 매니저:</span> 최근 체중 변화가 꾸준히 나타나고 있네요! 그래프에 마우스를 올려 상세 수치를 확인해보세요.</p>
+            </section>
 
             <div className="chart-section">
                 <div className="chart-container">

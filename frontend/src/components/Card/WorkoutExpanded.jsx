@@ -63,7 +63,7 @@ const DonutChart = ({ data }) => {
   );
 };
 
-// ✅ [수정] 사라졌던 컴포넌트의 기본 틀을 다시 추가했습니다.
+// 컴포넌트의 기본 틀 다시 추가.
 export default function WorkoutExpanded({ onClose, onLogWorkoutToManager }) {
   const {
     managerTip, workoutDistribution, weeklyGoalAchievement, workoutLog, todaysRecommendedWorkout, tomorrowsRecommendedWorkout
@@ -93,7 +93,7 @@ export default function WorkoutExpanded({ onClose, onLogWorkoutToManager }) {
         </div>
 
         <div className="workout-log-section">
-          <label>오늘 기록한 운동</label>
+          <p>오늘 기록한 운동</p>
           <ul className="workout-log-list">
             {workoutLog.map((item, index) => (
               <li key={index}>

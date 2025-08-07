@@ -1,4 +1,4 @@
-// frontend/src/components/Card/ManagerChat.jsx
+
 import React, { useState, useEffect, useRef, memo } from 'react';
 import apiClient from '../../api/apiClient';
 import './ManagerChat.css';
@@ -97,19 +97,19 @@ const ManagerChat = memo(function ManagerChat({ mode, shouldFocusInput, triggerS
         try {
             const response = await apiClient.post('/ai/parse-and-log', { message: userMessage.text, history: historyForApi });
 
-            // 1. AI의 핵심 답변을 먼저 표시합니다.
+            // 1. AI의 핵심 답변을 먼저 표시.
             const aiReplyMessage = { sender: 'ai', text: response.data.reply };
             setMessages(prev => [...prev, aiReplyMessage]);
 
             const savedData = response.data.savedData;
             
-            // 2. 백엔드로부터 받은 데이터(기록 또는 추천)가 있다면, 무조건 HomePage로 전달하여 UI를 업데이트합니다.
+            // 2. 백엔드로부터 받은 데이터(기록 또는 추천)가 있다면, 무조건 HomePage로 전달하여 UI를 업데이트.
             if (savedData && savedData.length > 0) {
                 if (onDataRefresh) {
                     onDataRefresh(savedData);
                 }
 
-                // 3. 데이터의 종류가 '기록'일 경우에만 추가적인 확인 메시지를 표시합니다.
+                // 3. 데이터의 종류가 '기록'일 경우에만 추가적인 확인 메시지를 표시.
                 const dataType = savedData[0].type;
                 if (dataType !== 'diet_recommendation' && dataType !== 'water_goal_update') {
                      let successText = '말씀하신 내용을 바탕으로 정보를 업데이트했어요! 👍';
@@ -124,7 +124,7 @@ const ManagerChat = memo(function ManagerChat({ mode, shouldFocusInput, triggerS
                 }
             }
             
-            // 4. AI가 추가 질문을 한 경우, 해당 질문을 표시합니다.
+            // 4. AI가 추가 질문을 한 경우, 해당 질문 표시.
             if (response.data.clarification) {
                 const clarificationMessage = { sender: 'ai', text: response.data.clarification };
                 setMessages(prev => [...prev, clarificationMessage]);

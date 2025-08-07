@@ -101,7 +101,7 @@
   color: rgba(111, 97, 185, 0.8);
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 16px;
+  font-size: 17px;
   font-style: italic;
   font-weight: 900;
   text-shadow: 1px 1px 1px rgb(172, 163, 163);
@@ -207,7 +207,8 @@
 
 /* 사용자 환영 및 로그아웃 버튼 스타일 */
 .user-actions-wrapper {
-  transform: translate(15%, -50%);
+  transform: translate(20%, -100%);
+  /* transform: translate(15%, -200%); */
   position: absolute;
   right: 300px;
   width: 400px;
@@ -235,7 +236,104 @@
   font-weight: 500;
 }
 
+@media (max-height: 850px) {
+  .main-cards-area {
+    left: 38%;
+    transform: translate(-45%, -46%);
+    width: 700px;
+    height: 620px;
+  }
 
+  .card-wrapper {
+    width: 330px;
+    height: 300px;
+  }
+
+  .chat-area {
+    transform: translate(-30%, -45%);
+    right: 100px;
+    width: 380px;
+    height: 600px;
+  }
+  .user-actions-wrapper {
+    transform: translate(-50%, -10%);
+    right: 5%;
+    width: 250px;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: baseline;
+    gap: 10px; 
+  }
+  
+  .welcome-message {
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+  
+  .logout-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    font-weight: 500;
+  }
+}
+
+
+@media (max-height: 650px) {
+  .main-cards-area {
+    left: 38%;
+    transform: translate(-50%, -48%);
+    width: 620px;
+    height: 560px;
+  }
+
+  .card-wrapper {
+    width: 300px;
+    height: 265px;
+  }
+
+  .chat-area {
+    transform: translate(-40%, -45%);
+    right: 100px;
+    width: 400px;
+    height: 540px;
+  }
+  .user-actions-wrapper {
+    transform: translate(-80%, -200%);
+    right: 5%;
+    width: 250px;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: baseline;
+    gap: 10px; 
+  }
+  
+  .welcome-message {
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+  
+  .logout-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    font-weight: 500;
+  }
+}
 
 @media (max-width: 1400px) {
   .main-cards-area {
@@ -257,7 +355,8 @@
     height: 700px;
   }
   .user-actions-wrapper {
-    top: calc(50% - 390px);
+    transform: translate(10%, -50%);
+    /* top: calc(50% - 375px); */
     right: 5%;
     width: 250px;
     z-index: 10;
@@ -269,7 +368,7 @@
   
   .welcome-message {
     color: white;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
   }
@@ -278,7 +377,7 @@
     background-color: transparent;
     border: none;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     text-decoration: none;
     cursor: pointer;
     padding: 5px;
@@ -301,7 +400,35 @@
     height: 50px;
     font-size: 8.5px;
   }
-
+  .sidebar-menu {
+    position: absolute;
+    top: 130px;
+    left: 40px;
+    z-index: 10;
+  }
+  
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .menu-list li {
+    padding: 12px 15px;
+    border-radius: 7px;
+    color: rgba(111, 97, 185, 0.8);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 900;
+    text-shadow: 1px 1px 1px rgb(172, 163, 163);
+  }
+  
+  
   .main-cards-area {
     /* position: relative; relative할 시 채팅창이 하단에 감 */
     /* absolute 속성 제거 */
@@ -381,7 +508,7 @@
     height: 50px;
     font-size: 8.5px;
   }
-
+  
   .sidebar-menu {
     top: 60px;
     width: 90%;
