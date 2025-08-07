@@ -1,4 +1,4 @@
-// ⬅️사용자 인증(로그인, 로그아웃) 관련 상태를 관리하는 '인증 담당관' 훅.
+// 사용자 인증(로그인, 로그아웃) 관련 상태를 관리하는 '인증 담당관' 훅.
 // login함수가 백엔드 API를 호출하고, 성공 여부를 반환하여 컴포넌트에서 로그인 성공 시 홈페이지로 이동하는 등의 로직 처리
 
 import { useState, useEffect, useCallback  } from 'react';
@@ -9,10 +9,10 @@ export default function useAuth() {
   const [pin, setPin] = useState(() => localStorage.getItem('userPin') || '');
   const [mode, setMode] = useState(() => localStorage.getItem('userMode') || 'normal');
 
-  // 사용자가 인증되었는지(로그인 상태인지) 여부를 나타내는 상태
+  // 사용자 인증(로그인 상태인지) 여부를 나타내는 상태
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('userNickname'));
 
-  // 로그인 함수: 백엔드 API를 호출하여 실제 로그인을 시도합니다.
+  // 로그인 함수: 백엔드 API 호출하여 실제 로그인을 시도.
   const login = useCallback(async (inputNickname, inputPin, inputMode = 'normal') => {
     try {
       const response = await apiClient.post('/users', {
@@ -21,7 +21,7 @@ export default function useAuth() {
         mode: inputMode
       });
 
-      // 요청 성공 시, 백엔드로부터 받은 사용자 정보를 로컬 스토리지에 저장합니다.
+      // 요청 성공 시, 백엔드로부터 받은 사용자 정보를 로컬 스토리지에 저장.
       // (예상 응답: { nickname, mode, ... })
       const { nickname: resNickname, mode: resMode } = response.data;
       localStorage.setItem('userNickname', resNickname);
@@ -32,8 +32,8 @@ export default function useAuth() {
       setNickname(resNickname);
       setPin(inputPin);
       setMode(resMode);
-      setIsAuthenticated(true); // 로그인 성공했으므로 인증상태 true로 변경
-
+      setIsAuthenticated(true); 
+      
       return { success: true, message: '로그인 성공!' };
     } catch (error) {
       // API 호출 중 에러 발생 시 처리

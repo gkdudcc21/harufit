@@ -52,7 +52,8 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     padding: 5px;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 450;
     color: white;
     text-shadow: 1px 1px 1px rgba(107, 96, 96, 0.485);
     line-height: 1.4;
@@ -66,7 +67,7 @@
 .diet-kcal {
     color: #ca43ffd3;  
     font-weight: bold; 
-    font-size: 11px;
+    font-size: 12.5px;
 }
 
 /* 추천 식단 (상단 우측) */
@@ -76,24 +77,23 @@
     margin: 5px 5px 10px 5px;
     border-radius: 10px;
     display: flex;
-    background-color: rgba(255, 255, 255, 0.199);
     flex-direction: column;
     justify-content: center;
 }
 
 .recommendation-header {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     text-align: center;
     margin-bottom: 15px;
     margin-top: 0px;
-    color: rgb(178, 72, 72);
+    color: rgb(131, 112, 112);
     font-weight: bold;
 }
 
 .rec-menu {
-    color: rgba(255, 255, 255, 0.918);
-    font-size: 0.9rem;
-    text-shadow: 1px 1px 1px rgba(79, 44, 95, 0.568);
+    color: rgb(255, 255, 255);
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 1px rgba(105, 52, 129, 0.568);
     text-align: center;
     font-weight: bold;
     margin: 5px;
@@ -101,8 +101,8 @@
 }
 
 .diet-empty-section-guide {
-    text-shadow: 2px 2px 1px rgba(128, 119, 119, 0.737);
-    font-size: 0.9rem;
+    text-shadow: 2.2px 2.2px 1px rgba(128, 119, 119, 0.737);
+    font-size: 0.95rem;
     color: var(--text-color-light);
     line-height: 1.5;
     margin: 5px;
@@ -111,12 +111,14 @@
 }
 .diet-italic-highlight{
     font-style: italic;
-    text-shadow: 1px 1px 1px rgba(163, 111, 111, 0.737);
-    color: rgb(255, 255, 64);
-    font-weight: 500;
+    text-shadow: none;
+    font-size: 0.95rem;
+    color: rgba(95, 63, 170, 0.849);
+    font-weight: bold;
+    margin-top: 2px;
 }
 
-/* 3. 물 섭취량 (하단 전체) */
+/* 물 섭취량 (하단 전체) */
 .water-section-grid {
     grid-column: 1 / -1;  
     grid-row: 2 / 2; 
@@ -159,5 +161,34 @@
     background-color: #65d2eb;
     border-radius: 5px;
     transition: width 0.5s ease-in-out;
-
 }
+
+@media (max-width: 1400px) {
+    .diet-empty-section-guide {
+        text-shadow: 2px 2px 1px rgba(128, 119, 119, 0.737);
+        font-size: 0.85rem;
+        color: var(--text-color-light);
+        line-height: 1.5;
+        margin: 5px;
+        text-align: center;
+        width: 90%;
+    }
+    .diet-italic-highlight{
+        font-style: italic;
+        text-shadow: none;
+        font-size: 0.9rem;
+        color: rgba(95, 63, 170, 0.849);
+        font-weight: bold;
+        margin-top: 2px;
+    }
+    .rec-menu {
+        color: rgb(255, 255, 255);
+        font-size: 1.1rem;
+        text-shadow: 1px 1px 1px rgba(105, 52, 129, 0.568);
+        text-align: center;
+        font-weight: bold;
+        margin: 5px;
+        white-space: pre-line;
+    }
+  }
+  

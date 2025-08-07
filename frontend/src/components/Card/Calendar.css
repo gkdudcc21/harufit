@@ -18,7 +18,6 @@
     padding: 8px;
 }
 
-/* 모드별 색깔 정의 */
 .card-header.easy-theme {
     background-color: rgba(189, 245, 191, 0.7);
 }

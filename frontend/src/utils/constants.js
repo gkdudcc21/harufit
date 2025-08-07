@@ -1,6 +1,6 @@
-// ⬅️ 앱 전반적으로 사용될 변하지 않는 값들(API 엔드포인트 url 경로 등)을 모아둔 '상수 저장소'
+// ⬅앱 전반적으로 사용될 변하지 않는 값들(API 엔드포인트 url 경로 등)을 모아둔 '상수 저장소'
 
-// ✅ API 엔드포인트 (URL 경로)를 여기에 모아둡니다.
+// API 엔드포인트 (URL 경로)를 여기에 모아둔다.
 export const API_ENDPOINTS = {
   // 1. 사용자 관리 API
   USERS: '/users', // POST: 사용자 생성, GET: 특정 사용자 조회 (이때는 /users/:nickname/:pin 조합)
@@ -37,7 +37,7 @@ export const API_ENDPOINTS = {
 };
 
 
-// ✅ 다른 상수들도 여기에 추가할 수 있습니다.
+// 다른 상수들도 여기에 추가할 수 있다.
 export const APP_CONFIG = {
   APP_NAME: '하루핏',
   DEFAULT_MODE: 'normal',

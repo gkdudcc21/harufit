@@ -1,12 +1,11 @@
 
 import React from 'react';
-import './AboutUsExpanded.css'; // 방금 만든 CSS 파일을 import
+import './AboutUsExpanded.css'; 
 import member1 from '../../assets/images/고진석님.jpg';
 import member2 from '../../assets/images/구하영님.jpg';
 import member3 from '../../assets/images/이가원님.jpg';
 
 
-// 팀원 정보를 배열로 관리하면 나중에 수정하거나 추가하기 아주 편하네.
 const teamData = [
   {
     id: 1,
@@ -25,7 +24,7 @@ const teamData = [
   {
     id: 3,
     name: '[이가원]',
-    role: 'UI/UX Designer \n Frontend ',
+    role: 'UI/UX Designer \n Frontend Developer',
     intro: '사용자가 마주하는 화면을 기획합니다.\n 하루핏 앱이 더 아름답고 쓰기 편하도록 디자인합니다.',
     imageUrl: member3
   }

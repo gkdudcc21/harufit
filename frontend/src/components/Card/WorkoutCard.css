@@ -1,150 +1,211 @@
 @import '../../styles/common.css';
 
 .workout-card {
-    padding: var(--spacing-lg);
-    min-height: 0;
-    height: 88%;
+  padding: var(--spacing-lg);
+  min-height: 0;
+  height: 88%;
 }
 
 .card-header {
-    position: relative;
+  position: relative;
 }
 
 .workout-card:hover .expand-btn {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .workout-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: var(--spacing-md);
-    flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex: 1;
 }
 
 .current-workout,
 .recommended-workout {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: 5px 10px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color-dark);
-    background: var(--card-background-light);
-    backdrop-filter: blur(5px);
-    width: 50%;
-    box-sizing: border-box;
-    justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 5px 5px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color-dark);
+  background: var(--card-background-light);
+  backdrop-filter: blur(5px);
+  width: 50%;
+  box-sizing: border-box;
+  justify-content: flex-start;
 }
 
 .current-workout {
-    position: relative;
+  position: relative;
 }
 
 .recommended-workout {
-    position: relative;
+  position: relative;
 }
 
 .recommend-label {
-    position: absolute;
-    top: 4px;
-    left: 10px;
-    background: #f9f6f17a;
-    color: rgb(188, 71, 71);
-    padding: 2px;
-    text-align: center;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    backdrop-filter: blur(5px);
-    right: 10px;
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  background: #f9f6f17a;
+  color: rgb(131, 112, 112);
+  padding: 2px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  backdrop-filter: blur(5px);
+  right: 10px;
 }
 
 .workout-details {
-    display: flex;
-    flex-direction: column;
-    text-shadow: 1px 1px 1px rgba(128, 119, 119, 0.737);
+  display: flex;
+  flex-direction: column;
+  text-shadow: 1px 1px 1px rgba(128, 119, 119, 0.737);
 }
 
 .workout-details p,
 .workout-details span {
-    color: papayawhip;
-    font-size: 0.85rem;
-    font-weight: 450;
-    text-shadow: 1.3px 1.3px 1px rgba(114, 87, 87, 0.61);
-    text-align: center;
-    margin: 2px;
+  color: papayawhip;
+  font-size: 0.9rem;
+  font-weight: 450;
+  text-shadow: 1.3px 1.3px 1px rgba(114, 87, 87, 0.61);
+  text-align: center;
+  margin: 2px;
 }
 
 .exercise-list {
+  list-style: none;
+  padding: 5px;
+  margin: 10px 0px 5px 2px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.exercise-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0px 0px;
+  word-break: keep-all;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.exercise-list li span:first-child {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  
+  text-shadow: 1.5px 1.5px 1px rgba(128, 119, 119, 0.737);
+  white-space: normal;
+  word-break: keep-all;
+  overflow: visible;
+}
+
+.exercise-list li span:last-child {
+  font-size: 0.9rem;
+  color: rgb(56, 35, 131);
+  text-align: right;
+  white-space: normal;
+  font-weight: bold;
+}
+
+/* 섹션 내부 기록 없을 때의 안내 메시지 스타일 */
+.empty-section-guide {
+  text-shadow: 2px 2px 1px rgba(128, 119, 119, 0.737);
+  font-size: 1rem;
+  color: var(--text-color-light);
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.italic-highlight {
+  font-style: italic;
+  text-shadow: none;
+  font-weight: 900;
+  color: rgba(95, 63, 170, 0.849);
+}
+
+@media (max-width: 1400px) {
+  .empty-section-guide {
+    padding-top: 15px;
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+  }
+
+  .exercise-list {
     list-style: none;
-    padding: 0;
-    margin: 15px 0px 5px 0px;
+    padding: 3px;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 3px;
-}
+  }
 
-.exercise-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0px 0px;
-    word-break: keep-all;
-    background: transparent;
-    box-sizing: border-box;
-}
 
-.exercise-list li span:first-child {
+  .exercise-list li span:first-child {
     flex: 1;
-    font-size: 0.9em;
+    font-size: 0.85em;
     font-weight: 500;
     text-shadow: 1.5px 1.5px 1px rgba(128, 119, 119, 0.737);
     white-space: normal;
     word-break: keep-all;
     overflow: visible;
+  }
+
+  .exercise-list li span:last-child {
+    font-size: 0.8rem;
+    color: rgb(56, 35, 131);
+    margin-left: 15px;
+    text-align: right;
+    white-space: normal;
+    font-weight: bold;
+  }
 }
 
-.exercise-list li span:last-child {
-    font-size: 0.8rem;
+@media (max-width: 760px) {
+  .workout-card {
+    padding: 10px;
+  }
+
+  .exercise-list {
+    margin-top: 5px;
+    list-style: none;
+    padding: 3px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .exercise-list li span:first-child {
+    flex: 1;
+    font-size: 0.75em;
+    font-weight: 400;
+    text-shadow: 1.5px 1.5px 1px rgba(128, 119, 119, 0.737);
+    white-space: normal;
+    word-break: keep-all;
+    overflow: visible;
+  }
+
+  .exercise-list li span:last-child {
+    font-size: 0.7rem;
     color: rgb(56, 35, 131);
     margin-left: 5px;
     text-align: right;
     white-space: normal;
     font-weight: bold;
-}
+  }
 
-/* 섹션 내부 기록 없을 때의 안내 메시지 스타일 */
-.empty-section-guide {
-    text-shadow: 2px 2px 1px rgba(128, 119, 119, 0.737);
-    font-size: 0.85rem;
-    color: var(--text-color-light);
-    line-height: 1.6;
-    margin: 0;
-    text-align: center;
-    width: 100%;
-}
-
-.italic-highlight {
-    font-style: italic;
-    text-shadow: 1px 1px 1px rgba(128, 119, 119, 0.737);
-}
-
-@media (max-width: 1400px) {
-    .empty-section-guide {
-        padding-top: 15px;
-        font-size: 0.75rem;
-        color: var(--text-color-light);
-        line-height: 1.5;
-        margin: 0;
-        text-align: center;
-    }
-}
-
-@media (max-width: 760px) {
-    .workout-card {
-        padding: 10px;
-    }    
 }

@@ -1,22 +1,22 @@
-// frontend/src/App.js
+ 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import IndexPage from './pages/IndexPage/IndexPage';
 import HomePage from './pages/HomePage/HomePage';
-import UserTestForm from './components/UserTestForm'; // UserTestForm 컴포넌트 임포트
+import UserTestForm from './components/UserTestForm'; 
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<IndexPage />} /> {/* 루트 경로에 IndexPage 연결 */}
-        <Route path="/home" element={<HomePage />} /> {/* "/home" 경로에 HomePage 연결 */}
+        <Route path="/" element={<IndexPage />} />  
+        <Route path="/home" element={<HomePage />} />  
 
-        {/* ✅ UserTestForm을 위한 별도 테스트 경로를 만듭니다. */}
+        {/* UserTestForm을 위한 별도 테스트 경로. */}
         <Route path="/user-test" element={<UserTestForm />} /> 
 
-        {/* 나중에 다른 페이지를 추가한다면 여기에 <Route>를 추가합니다. */}
+        {/* 다른 페이지 추가 시 여기에 <Route> 추가. */}
       </Routes>
     </Router>
   );

@@ -32,7 +32,6 @@ export default function Calendar({  mode , onExpand  }) {
           <div key={`empty-${i}`} className="empty-day"></div>
         ))}
 
-        {/* 날짜 표시 */}
         {dates.map((date) => (
           <div
             key={date}

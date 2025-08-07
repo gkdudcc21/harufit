@@ -1,6 +1,6 @@
-// frontend/src/components/UserTestForm.js
+
 import React, { useState } from 'react';
-import apiClient from '../api/apiClient'; // 앞서 생성한 apiClient 불러오기
+import apiClient from '../api/apiClient';
 
 function UserTestForm() {
   const [nickname, setNickname] = useState('');
@@ -16,7 +16,6 @@ function UserTestForm() {
     try {
       const response = await apiClient.post('/users', { nickname, mode: 'easy', pin });
       setMessage(`성공: ${response.data.message}`);
-      // 생성된 사용자 정보를 로컬 스토리지에 저장하여 다른 API 호출에 활용
       localStorage.setItem('userNickname', nickname);
       localStorage.setItem('userPin', pin);
       setUserData(response.data.user);
@@ -32,7 +31,6 @@ function UserTestForm() {
     setMessage('');
     setUserData(null);
     try {
-      // GET 요청은 apiClient 인터셉터에서 자동으로 닉네임과 PIN을 쿼리 파라미터에 추가합니다.
       const response = await apiClient.get(`/users/${nickname}`);
       setMessage(`성공: ${response.data.message}`);
       setUserData(response.data.user);
